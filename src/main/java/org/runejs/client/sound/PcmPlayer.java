@@ -10,6 +10,16 @@ import org.runejs.client.Class43;
 import org.runejs.client.util.Signlink;
 
 public class PcmPlayer implements Runnable {
+	
+    private static final int BYTES_PER_SAMPLE = 2;       // 16-bit audio
+    private static final int BITS_PER_SAMPLE = 16;       // 16-bit audio
+    
+    private static final int MONO   = 1;
+    private static final int STEREO = 2;
+    private static final boolean LITTLE_ENDIAN = false;
+    private static final boolean BIG_ENDIAN    = true;
+    private static final boolean SIGNED        = true;
+    private static final boolean UNSIGNED      = false;
 
 	private static int[] samples = new int[256];
 	private boolean aBoolean1820;
@@ -22,7 +32,7 @@ public class PcmPlayer implements Runnable {
 	private int anInt1827;
 	private int anInt1828;
 	private int anInt1830;
-	private int anInt1831;
+	private int capacity;
 	private long aLong1832;
 	private int[] anIntArray1833;
 	private SourceDataLine line;
@@ -32,113 +42,113 @@ public class PcmPlayer implements Runnable {
 
 	public PcmPlayer() throws Exception {
 		SoundSystem.timeMs = System.currentTimeMillis();
-		aLong1821 = 0L;
-		anInt1827 = 256;
-		aBoolean1820 = false;
-		anInt1828 = 0;
-		anInt1822 = 0;
-		anInt1824 = 0;
-		anIntArray1833 = new int[512];
-		audioFormat = new AudioFormat(22050.0F, 16, 1, true, false);
+		this.aLong1821 = 0L;
+		this.anInt1827 = 256;
+		this.aBoolean1820 = false;
+		this.anInt1828 = 0;
+		this.anInt1822 = 0;
+		this.anInt1824 = 0;
+		this.anIntArray1833 = new int[512];
+		this.audioFormat = new AudioFormat(22050.0F, BITS_PER_SAMPLE, MONO, SIGNED, LITTLE_ENDIAN);
 
 	}
 
 	private void method219(long arg0) throws Exception {
-		open(anInt1831);
+		this.open(this.capacity);
 		for (;;) {
-			int i = avail();
-			if (i < anInt1827)
+			int i = this.avail();
+			if (i < this.anInt1827)
 				break;
-			write();
+			this.write();
 		}
-		anInt1823 = 0;
-		anInt1830 = 0;
-		aLong1832 = arg0;
-		aLong1826 = arg0;
+		this.anInt1823 = 0;
+		this.anInt1830 = 0;
+		this.aLong1832 = arg0;
+		this.aLong1826 = arg0;
 	}
 
 	private void method221(long arg0) {
-		if (aLong1821 != 0L) {
-			for (/**/; aLong1832 < arg0; aLong1832 += (long) (256000 / SoundSystem.SAMPLE_RATE))
+		if (this.aLong1821 != 0L) {
+			for (/**/; this.aLong1832 < arg0; this.aLong1832 += 256000 / SoundSystem.SAMPLE_RATE)
 				skip(256);
-			if (arg0 < aLong1821)
+			if (arg0 < this.aLong1821)
 				return;
 			try {
-				method219(arg0);
+				this.method219(arg0);
 			} catch (Exception exception) {
-				close();
-				aLong1821 += 5000L;
+				this.close();
+				this.aLong1821 += 5000L;
 				return;
 			}
-			aLong1821 = 0L;
+			this.aLong1821 = 0L;
 		}
-		while (aLong1832 < arg0) {
-			aLong1832 += (long) (250880 / SoundSystem.SAMPLE_RATE);
+		while (this.aLong1832 < arg0) {
+			this.aLong1832 += 250880 / SoundSystem.SAMPLE_RATE;
 			int i;
 			try {
-				i = avail();
+				i = this.avail();
 			} catch (Exception exception) {
-				close();
-				aLong1821 = arg0;
+				this.close();
+				this.aLong1821 = arg0;
 				return;
 			}
-			method227(i);
-			int i_0_ = anInt1828 * 3 / 512 - anInt1822 * 2;
+			this.method227(i);
+			int i_0_ = this.anInt1828 * 3 / 512 - this.anInt1822 * 2;
 			if (i_0_ < 0)
 				i_0_ = 0;
-			else if (i_0_ > anInt1824)
-				i_0_ = anInt1824;
-			anInt1827 = anInt1831 - 256 - i_0_;
-			if (anInt1827 < 256)
-				anInt1827 = 256;
-			if (anInt1831 < 16384) {
-				if (i >= anInt1831) {
-					anInt1823 += 5;
-					if (anInt1823 >= 100) {
-						close();
-						anInt1831 += 2048;
-						aLong1821 = arg0;
+			else if (i_0_ > this.anInt1824)
+				i_0_ = this.anInt1824;
+			this.anInt1827 = this.capacity - 256 - i_0_;
+			if (this.anInt1827 < 256)
+				this.anInt1827 = 256;
+			if (this.capacity < 16384) {
+				if (i >= this.capacity) {
+					this.anInt1823 += 5;
+					if (this.anInt1823 >= 100) {
+						this.close();
+						this.capacity += 2048;
+						this.aLong1821 = arg0;
 						return;
 					}
-				} else if (i != anInt1830 && anInt1823 > 0)
-					anInt1823--;
+				} else if (i != this.anInt1830 && this.anInt1823 > 0)
+					this.anInt1823--;
 			}
-			anInt1830 = i;
-			if (i < anInt1827)
+			this.anInt1830 = i;
+			if (i < this.anInt1827)
 				break;
-			method215(samples, 256);
+			fill(PcmPlayer.samples, 256);
 			try {
-				write();
+				this.write();
 			} catch (Exception exception) {
-				close();
-				aLong1821 = arg0;
+				this.close();
+				this.aLong1821 = arg0;
 				return;
 			}
-			aLong1826 = arg0;
-			anInt1830 -= 256;
+			this.aLong1826 = arg0;
+			this.anInt1830 -= 256;
 		}
-		if (arg0 >= aLong1826 + 5000L) {
-			close();
-			aLong1821 = arg0;
+		if (arg0 >= this.aLong1826 + 5000L) {
+			this.close();
+			this.aLong1821 = arg0;
 			for (int i = 0; i < 512; i++)
-				anIntArray1833[i] = 0;
-			anInt1822 = anInt1824 = anInt1828 = 0;
+				this.anIntArray1833[i] = 0;
+			this.anInt1822 = this.anInt1824 = this.anInt1828 = 0;
 		}
 	}
 
 	public void method222(Signlink arg0, int arg1) throws Exception {
-		anInt1831 = arg1;
-		method219(System.currentTimeMillis());
+		this.capacity = arg1;
+		this.method219(System.currentTimeMillis());
 		arg0.createThreadNode(10, this);
 	}
 
 	public void stop() {
 		synchronized (this) {
-			aBoolean1820 = true;
+			this.aBoolean1820 = true;
 		}
 		for (;;) {
 			synchronized (this) {
-				if (!aBoolean1820)
+				if (!this.aBoolean1820)
 					break;
 			}
 			Class43.threadSleep(50L);
@@ -150,23 +160,24 @@ public class PcmPlayer implements Runnable {
 			int ampl = PcmPlayer.samples[i];
 			if ((ampl + 8388608 & ~0xffffff) != 0)
 				ampl = 0x7fffff ^ ampl >> 31;
-			byteSamples[i * 2] = (byte) (ampl >> 8);
-			byteSamples[i * 2 + 1] = (byte) (ampl >> 16);
+			this.byteSamples[i * 2] = (byte) (ampl >> 8);
+			this.byteSamples[i * 2 + 1] = (byte) (ampl >> 16);
 		}
-		line.write(byteSamples, 0, 512);
+		this.line.write(this.byteSamples, 0, 512);
 	}
 
+	@Override
 	public void run() {
 
 		for (;;) {
 			synchronized (this) {
-				if (aBoolean1820) {
-					if (aLong1821 == 0L)
-						close();
-					aBoolean1820 = false;
+				if (this.aBoolean1820) {
+					if (this.aLong1821 == 0L)
+						this.close();
+					this.aBoolean1820 = false;
 					break;
 				}
-				method212(System.currentTimeMillis());
+				this.method212(System.currentTimeMillis());
 			}
 			Class43.threadSleep(5L);
 		}
@@ -175,7 +186,7 @@ public class PcmPlayer implements Runnable {
 	private int avail() {
 		int i;
 		try {
-			i = line.available() >> 1;
+			i = this.line.available() >> 1;
 		} catch (RuntimeException runtimeexception) {
 			throw runtimeexception;
 		}
@@ -183,62 +194,62 @@ public class PcmPlayer implements Runnable {
 	}
 
 	private void close() {
-		if (line != null) {
-			line.close();
-			line = null;
+		if (this.line != null) {
+			this.line.close();
+			this.line = null;
 		}
 	}
 
-	private void open(int arg0) throws LineUnavailableException {
+	private void open(int capacity) throws LineUnavailableException {
 		try {
-			DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioFormat, arg0 * 2);
-			line = (SourceDataLine) AudioSystem.getLine(info);
-			line.open();
-			line.start();
+			DataLine.Info info = new DataLine.Info(SourceDataLine.class, this.audioFormat, capacity * BYTES_PER_SAMPLE);
+			this.line = (SourceDataLine) AudioSystem.getLine(info);
+			this.line.open();
+			this.line.start();
 		} catch (LineUnavailableException lineunavailableexception) {
-			line = null;
+			this.line = null;
 			throw lineunavailableexception;
 		}
 	}
 
 	public synchronized void method212(long arg0) {
-		method221(arg0);
-		if (aLong1832 < arg0)
-			aLong1832 = arg0;
+		this.method221(arg0);
+		if (this.aLong1832 < arg0)
+			this.aLong1832 = arg0;
 	}
 
 	private void method227(int arg0) {
-		int i = arg0 - anInt1827;
-		int i_1_ = anIntArray1833[anInt1825];
-		anIntArray1833[anInt1825] = i;
-		anInt1828 += i - i_1_;
-		int i_2_ = anInt1825 + 1 & 0x1ff;
-		if (i > anInt1824)
-			anInt1824 = i;
-		if (i < anInt1822)
-			anInt1822 = i;
-		if (i_1_ == anInt1824) {
+		int i = arg0 - this.anInt1827;
+		int i_1_ = this.anIntArray1833[this.anInt1825];
+		this.anIntArray1833[this.anInt1825] = i;
+		this.anInt1828 += i - i_1_;
+		int i_2_ = this.anInt1825 + 1 & 0x1ff;
+		if (i > this.anInt1824)
+			this.anInt1824 = i;
+		if (i < this.anInt1822)
+			this.anInt1822 = i;
+		if (i_1_ == this.anInt1824) {
 			int i_3_ = i;
-			for (int i_4_ = i_2_; i_4_ != anInt1825 && i_3_ < anInt1824; i_4_ = i_4_ + 1 & 0x1ff) {
-				int i_5_ = anIntArray1833[i_4_];
+			for (int i_4_ = i_2_; i_4_ != this.anInt1825 && i_3_ < this.anInt1824; i_4_ = i_4_ + 1 & 0x1ff) {
+				int i_5_ = this.anIntArray1833[i_4_];
 				if (i_5_ > i_3_)
 					i_3_ = i_5_;
 			}
-			anInt1824 = i_3_;
+			this.anInt1824 = i_3_;
 		}
-		if (i_1_ == anInt1822) {
+		if (i_1_ == this.anInt1822) {
 			int i_6_ = i;
-			for (int i_7_ = i_2_; i_7_ != anInt1825 && i_6_ > anInt1822; i_7_ = i_7_ + 1 & 0x1ff) {
-				int i_8_ = anIntArray1833[i_7_];
+			for (int i_7_ = i_2_; i_7_ != this.anInt1825 && i_6_ > this.anInt1822; i_7_ = i_7_ + 1 & 0x1ff) {
+				int i_8_ = this.anIntArray1833[i_7_];
 				if (i_8_ < i_6_)
 					i_6_ = i_8_;
 			}
-			anInt1822 = i_6_;
+			this.anInt1822 = i_6_;
 		}
-		anInt1825 = i_2_;
+		this.anInt1825 = i_2_;
 	}
 
-	private static synchronized void method215(int[] arg0, int arg1) {
+	private static synchronized void fill(int[] arg0, int arg1) {
 		int i = 0;
 		arg1 -= 7;
 		while (i < arg1) {
