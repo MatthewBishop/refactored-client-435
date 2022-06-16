@@ -1,7 +1,7 @@
 package org.runejs.client.audio;
 
 import org.runejs.client.audiocore.Buffer;
-import org.runejs.client.cache.CacheArchive;
+import org.runejs.client.audiocore.ICacheArchive;
 import org.runejs.client.sound.RawSound;
 
 public class Effect {
@@ -27,7 +27,7 @@ public class Effect {
         instruments = new Instrument[10];
     }
 
-    public static Effect readSoundEffect(CacheArchive arg0, int arg1, int arg2) {
+    public static Effect readSoundEffect(ICacheArchive arg0, int arg1, int arg2) {
         byte[] is = arg0.getFile(arg1, arg2);
         if(is == null)
             return null;

@@ -1,9 +1,9 @@
 package org.runejs.client.sound;
 
 import org.runejs.client.audio.Effect;
+import org.runejs.client.audiocore.ICacheArchive;
 import org.runejs.client.audiocore.LinkedList;
 import org.runejs.client.audiocore.Node;
-import org.runejs.client.cache.CacheArchive;
 import org.runejs.client.cache.def.GameObjectDefinition;
 import org.runejs.client.media.renderable.actor.Player;
 
@@ -27,6 +27,8 @@ public class SoundSystem {
 	private static int areaSoundEffectVolume = 127;
 	private static int soundEffectVolume = 127;
 
+	private static ICacheArchive soundEffectCacheArchive;
+	
 	/*
 	 * This is an added method. This helps add easier modularity since it is
 	 * easier to plug in.
@@ -39,7 +41,8 @@ public class SoundSystem {
 	 * This is an added method. This helps add easier modularity since it is
 	 * easier to plug in.
 	 */
-	public static void initialiseSound() {
+	public static void initialiseSound(ICacheArchive soundEffectCacheArchive) {
+		SoundSystem.soundEffectCacheArchive = soundEffectCacheArchive;
 		try {
 			PcmPlayer player = new PcmPlayer();
 			player.method222(2048);
@@ -128,7 +131,7 @@ public class SoundSystem {
 			} else {
 				Effect effect = SoundSystem.effects[index];
 				if (effect == null) {
-					effect = Effect.readSoundEffect(CacheArchive.soundEffectCacheArchive, SoundSystem.sound[index], 0);
+					effect = Effect.readSoundEffect(SoundSystem.soundEffectCacheArchive, SoundSystem.sound[index], 0);
 					if (effect == null)
 						continue;
 					SoundSystem.soundDelay[index] += effect.delay();
@@ -280,7 +283,7 @@ public class SoundSystem {
 					int volume = (-distance + class40_sub2.hearDistance) * SoundSystem.areaSoundEffectVolume / class40_sub2.hearDistance;
 					if (class40_sub2.stream1 == null) {
 						if (class40_sub2.soundEffectId >= 0) {
-							Effect effect = Effect.readSoundEffect(CacheArchive.soundEffectCacheArchive, class40_sub2.soundEffectId, 0);
+							Effect effect = Effect.readSoundEffect(SoundSystem.soundEffectCacheArchive, class40_sub2.soundEffectId, 0);
 							if (effect != null) {
 								RawSound class40_sub12_sub1 = effect.method428();
 								RawPcmStream class40_sub9_sub2 = RawPcmStream.create(class40_sub12_sub1, 100, volume);
@@ -294,7 +297,7 @@ public class SoundSystem {
 					if (class40_sub2.stream2 == null) {
 						if (class40_sub2.soundEffectIds != null && (class40_sub2.anInt2014 -= redrawRate) <= 0) {
 							int i_50_ = (int) (class40_sub2.soundEffectIds.length * Math.random());
-							Effect effect = Effect.readSoundEffect(CacheArchive.soundEffectCacheArchive, class40_sub2.soundEffectIds[i_50_], 0);
+							Effect effect = Effect.readSoundEffect(SoundSystem.soundEffectCacheArchive, class40_sub2.soundEffectIds[i_50_], 0);
 							if (effect != null) {
 								RawSound class40_sub12_sub1 = effect.method428();
 								RawPcmStream class40_sub9_sub2 = RawPcmStream.create(class40_sub12_sub1, 100, volume);

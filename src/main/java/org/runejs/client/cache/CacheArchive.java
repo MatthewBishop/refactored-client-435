@@ -1,6 +1,7 @@
 package org.runejs.client.cache;
 
 import org.runejs.client.*;
+import org.runejs.client.audiocore.ICacheArchive;
 import org.runejs.client.cache.bzip.BZip;
 import org.runejs.client.cache.def.GameObjectDefinition;
 import org.runejs.client.io.Buffer;
@@ -16,7 +17,7 @@ import java.io.IOException;
 import java.util.zip.CRC32;
 import java.util.zip.GZIPInputStream;
 
-public class CacheArchive {
+public class CacheArchive implements ICacheArchive {
 
     public static CRC32 crc32 = new CRC32();
     public static CacheArchive gameInterfaceCacheArchive;

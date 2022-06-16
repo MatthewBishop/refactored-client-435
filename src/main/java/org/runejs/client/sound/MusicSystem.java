@@ -1,11 +1,12 @@
 package org.runejs.client.sound;
 
-import org.runejs.client.audiocore.CachedNode;
-import org.runejs.client.audiocore.NodeCache;
-import org.runejs.client.cache.CacheArchive;
+import org.runejs.client.audiocore.ICacheArchive;
 
 public class MusicSystem {
 
+	private static ICacheArchive musicCacheArchive;
+	private static ICacheArchive jingleCacheArchive;
+	
 	private static int currentSongId = -1;
 	private static int musicVolume = 255;
 	private static int songTimeout = 0;
@@ -21,8 +22,7 @@ public class MusicSystem {
 	private static boolean fetchMusic = false;
 	private static boolean loop_;
 	private static MidiPlayer midi;
-	private static NodeCache musicCache;
-	private static CacheArchive musicFetcher;
+	private static ICacheArchive musicFetcher;
 	private static int timer = 0;
 	private static int velocity = 0;
 	private static int velocity_increment = 0;
@@ -55,11 +55,11 @@ public class MusicSystem {
 		}
 	}
 
-	public static boolean initialiseMusic(int size) {
+	public static boolean initialiseMusic(ICacheArchive musicCacheArchive, ICacheArchive jingleCacheArchive) {
+		MusicSystem.musicCacheArchive = musicCacheArchive;
+		MusicSystem.jingleCacheArchive = jingleCacheArchive;
 		if (!musicPlayerStarted())
 			return false;
-		if (size > 0)
-			MusicSystem.musicCache = new NodeCache(size);
 		return true;
 	}
 	
@@ -75,7 +75,7 @@ public class MusicSystem {
 		stop_();
 	}
 
-	public static synchronized void playMusicTrack(boolean arg0, int arg1, int songid, int volume, int childId, CacheArchive arg5) {
+	public static synchronized void playMusicTrack(boolean arg0, int arg1, int songid, int volume, int childId, ICacheArchive arg5) {
 		if (musicIsntNull()) {
 			MusicSystem.fetchMusic = true;
 			MusicSystem.anInt1806 = -1;
@@ -93,13 +93,13 @@ public class MusicSystem {
 		if (songId == -1 && MusicSystem.songTimeout == 0)
 			method402(false);
 		else if (songId != -1 && songId != MusicSystem.currentSongId && MusicSystem.musicVolume != 0 && MusicSystem.songTimeout == 0)
-			method403(MusicSystem.musicVolume, true, 10, songId, CacheArchive.musicCacheArchive, 0, 0, false);
+			method403(MusicSystem.musicVolume, true, 10, songId, MusicSystem.musicCacheArchive, 0, 0, false);
 		MusicSystem.currentSongId = songId;
 	}
 
 	public static void playSoundJingle(int songTimeout, int songId) {
 		if (MusicSystem.musicVolume != 0 && songId != -1) {
-			MusicSystem.playMusicTrack(false, 1, songId, MusicSystem.musicVolume, 0, CacheArchive.jingleCacheArchive);
+			MusicSystem.playMusicTrack(false, 1, songId, MusicSystem.musicVolume, 0, MusicSystem.jingleCacheArchive);
 			MusicSystem.songTimeout = songTimeout;
 		}
 	}
@@ -110,7 +110,7 @@ public class MusicSystem {
 			if (MusicSystem.songTimeout < 0)
 				MusicSystem.songTimeout = 0;
 			if (MusicSystem.songTimeout == 0 && MusicSystem.musicVolume != 0 && MusicSystem.currentSongId != -1)
-				MusicSystem.playMusicTrack(false, 0, MusicSystem.currentSongId, MusicSystem.musicVolume, 0, CacheArchive.musicCacheArchive);
+				MusicSystem.playMusicTrack(false, 0, MusicSystem.currentSongId, MusicSystem.musicVolume, 0, MusicSystem.musicCacheArchive);
 		}
 	}
 
@@ -134,7 +134,7 @@ public class MusicSystem {
                 } else
                     MusicSystem.method456(i_22_);
             } else {
-                MusicSystem.playMusicTrack(false, 0, MusicSystem.currentSongId, i_22_, 0, CacheArchive.musicCacheArchive);
+                MusicSystem.playMusicTrack(false, 0, MusicSystem.currentSongId, i_22_, 0, MusicSystem.musicCacheArchive);
                 MusicSystem.songTimeout = 0;
             }
             MusicSystem.musicVolume = i_22_;
@@ -143,7 +143,7 @@ public class MusicSystem {
 
 	public static void loginScreen(String titleSong, boolean highmem) {
         if (MusicSystem.musicVolume != 0 && highmem)
-            MusicSystem.method412(false, CacheArchive.musicCacheArchive, 0, titleSong, 10, "", MusicSystem.musicVolume);
+            MusicSystem.method412(false, MusicSystem.musicCacheArchive, 0, titleSong, 10, "", MusicSystem.musicVolume);
         else
             MusicSystem.method405(10);
 	}
@@ -162,11 +162,11 @@ public class MusicSystem {
                 MusicSystem.method402(false);
                 MusicSystem.songTimeout = 0;
             } else {
-                MusicSystem.method412(false, CacheArchive.musicCacheArchive, 0, titleSong, 10, "", MusicSystem.musicVolume);
+                MusicSystem.method412(false, MusicSystem.musicCacheArchive, 0, titleSong, 10, "", MusicSystem.musicVolume);
                 MusicSystem.method456(newVolume);
             }
         } else {
-            MusicSystem.playMusicTrack(false, 0, MusicSystem.currentSongId, newVolume, 0, CacheArchive.musicCacheArchive);
+            MusicSystem.playMusicTrack(false, 0, MusicSystem.currentSongId, newVolume, 0, MusicSystem.musicCacheArchive);
             MusicSystem.songTimeout = 0;
         }
 
@@ -196,7 +196,7 @@ public class MusicSystem {
 		}
 	}
 
-	private static synchronized void method412(boolean arg0, CacheArchive arg1, int arg2, String name, int arg5, String child, int arg7) {
+	private static synchronized void method412(boolean arg0, ICacheArchive arg1, int arg2, String name, int arg5, String child, int arg7) {
 		if (musicIsntNull()) {
 			int hash = arg1.getHash(name);
 			int i_16_ = arg1.getFileId(hash, child);
@@ -213,18 +213,18 @@ public class MusicSystem {
 		}
 	}
 	
-	private static byte[] fetchMusic(int childId, CacheArchive musicArchive, int fileId, int arg4) {
-		long hash = (childId + 37 * fileId & 0xffff) + ((long) arg4 << 32) + (fileId << 16);
-		if (MusicSystem.musicCache != null) {
-			MusicData data = (MusicData) MusicSystem.musicCache.get(hash);
-			if (data != null)
-				return data.data;
-		}
+	private static byte[] fetchMusic(int childId, ICacheArchive musicArchive, int fileId, int arg4) {
+//		long hash = (childId + 37 * fileId & 0xffff) + ((long) arg4 << 32) + (fileId << 16);
+//		if (MusicSystem.musicCache != null) {
+//			MusicData data = (MusicData) MusicSystem.musicCache.get(hash);
+//			if (data != null)
+//				return data.data;
+//		}
 		byte[] is = musicArchive.getFile(fileId, childId);
 		if (is == null)
 			return null;
-		if (MusicSystem.musicCache != null)
-			MusicSystem.musicCache.put(hash, new MusicData(is));
+//		if (MusicSystem.musicCache != null)
+//			MusicSystem.musicCache.put(hash, new MusicData(is));
 		return is;
 	}
 
@@ -236,7 +236,7 @@ public class MusicSystem {
 		return (int) (0.5 + Math.log(0.00390625 * arg1) * 868.5889638065036);
 	}
 
-	private static synchronized void method403(int arg0, boolean arg1, int arg2, int songId, CacheArchive cacheArchive, int arg5, int arg6, boolean arg7) {
+	private static synchronized void method403(int arg0, boolean arg1, int arg2, int songId, ICacheArchive cacheArchive, int arg5, int arg6, boolean arg7) {
 		if (musicIsntNull()) {
 			MusicSystem.aBoolean1790 = arg7;
 			MusicSystem.anInt255 = arg2;
@@ -386,11 +386,4 @@ public class MusicSystem {
 		}
 	}
 	
-	private static class MusicData extends CachedNode {
-		private byte[] data;
-		private MusicData(byte[] data) {
-	        this.data = data;
-	    }
-	}
-
 }

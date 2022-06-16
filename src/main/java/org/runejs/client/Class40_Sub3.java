@@ -110,8 +110,8 @@ public class Class40_Sub3 extends Node {
                 MovedStatics.anInt1607 = 30;
             }
         } else if (MovedStatics.loadingPercent == 45) {
-            MusicSystem.initialiseMusic(0);
-            SoundSystem.initialiseSound();
+            MusicSystem.initialiseMusic(CacheArchive.musicCacheArchive, CacheArchive.jingleCacheArchive);
+            SoundSystem.initialiseSound(CacheArchive.soundEffectCacheArchive);
             MovedStatics.loadingPercent = 50;
             Native.currentLoadingText = English.preparedSoundEngine;
             MovedStatics.anInt1607 = 35;
