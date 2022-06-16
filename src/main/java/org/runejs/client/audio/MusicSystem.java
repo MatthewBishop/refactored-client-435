@@ -213,6 +213,9 @@ public class MusicSystem {
 		}
 	}
 	
+	/*
+	 * musicCache was always null.
+	 */
 	private static byte[] fetchMusic(int childId, ICacheArchive musicArchive, int fileId, int arg4) {
 //		long hash = (childId + 37 * fileId & 0xffff) + ((long) arg4 << 32) + (fileId << 16);
 //		if (MusicSystem.musicCache != null) {
