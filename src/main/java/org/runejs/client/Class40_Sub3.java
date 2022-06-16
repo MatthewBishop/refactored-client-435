@@ -111,7 +111,7 @@ public class Class40_Sub3 extends Node {
             }
         } else if (MovedStatics.loadingPercent == 45) {
             MusicSystem.initialiseMusic(0);
-            SoundSystem.initialiseSound(Main.signlink);
+            SoundSystem.initialiseSound();
             MovedStatics.loadingPercent = 50;
             Native.currentLoadingText = English.preparedSoundEngine;
             MovedStatics.anInt1607 = 35;

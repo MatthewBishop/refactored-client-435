@@ -218,10 +218,7 @@ public class Item extends Renderable {
             Native.password = Configuration.getPassword();
             MovedStatics.anIntArray178 = new int[32768];
             Class26.loginScreenState = 0;
-            if (MusicSystem.musicVolume != 0 && !VertexNormal.lowMemory)
-                MusicSystem.method412(false, CacheArchive.musicCacheArchive, 0, Native.titleSong, 10, "", MusicSystem.musicVolume);
-            else
-                MusicSystem.method405(10);
+            MusicSystem.loginScreen(Native.titleSong, !VertexNormal.lowMemory);
             GameShell.method19(false);
             MovedStatics.clearScreen = true;
             ISAAC.aBoolean512 = true;

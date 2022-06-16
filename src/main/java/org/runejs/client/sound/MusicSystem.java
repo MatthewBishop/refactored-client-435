@@ -1,16 +1,15 @@
 package org.runejs.client.sound;
 
+import org.runejs.client.audiocore.CachedNode;
+import org.runejs.client.audiocore.NodeCache;
 import org.runejs.client.cache.CacheArchive;
-import org.runejs.client.node.CachedNode;
-import org.runejs.client.node.NodeCache;
 
 public class MusicSystem {
 
-	public static int currentSongId = -1;
-	public static int musicVolume = 255;
-	public static int songTimeout = 0;
+	private static int currentSongId = -1;
+	private static int musicVolume = 255;
+	private static int songTimeout = 0;
 	
-
 	private static boolean aBoolean1790;
 	private static int anInt1806;
 	private static int anInt2110;
@@ -30,6 +29,12 @@ public class MusicSystem {
 	private static int volume1;
 	private static int volume2 = -1;
 
+	public static void logout() {
+		MusicSystem.method405(10);
+	    MusicSystem.songTimeout = 0;
+	    MusicSystem.currentSongId = -1;
+	}
+	
 	public static synchronized void handleMusic() {
 		if (musicIsntNull()) {
 			if (MusicSystem.fetchMusic) {
@@ -57,18 +62,7 @@ public class MusicSystem {
 			MusicSystem.musicCache = new NodeCache(size);
 		return true;
 	}
-
-	/**
-	 * Called when setting volume to 0 or receiving a song of -1 via packet.
-	 */
-	public static synchronized void method402(boolean arg0) {
-		if (musicIsntNull()) {
-			MusicSystem.method308();
-			MusicSystem.fetchMusic = arg0;
-			MusicSystem.musicFetcher = null;
-		}
-	}
-
+	
 	public static synchronized void method405(int arg1) {
 		if (musicIsntNull()) {
 			MusicSystem.method557(arg1);
@@ -79,23 +73,6 @@ public class MusicSystem {
 
 	public static synchronized void syncedStop(boolean arg0) {
 		stop_();
-	}
-
-	public static synchronized void method412(boolean arg0, CacheArchive arg1, int arg2, String arg4, int arg5, String arg6, int arg7) {
-		if (musicIsntNull()) {
-			int i = arg1.getHash(arg4);
-			int i_16_ = arg1.method179(i, arg6);
-			method403(arg7, true, arg5, i, arg1, i_16_, arg2, arg0);
-		}
-	}
-
-	public static void method456(int volume) {
-		if (MusicSystem.musicIsntNull()) {
-			if (MusicSystem.fetchMusic)
-				MusicSystem.volume3 = volume;
-			else
-				MusicSystem.method651(volume);
-		}
 	}
 
 	public static synchronized void playMusicTrack(boolean arg0, int arg1, int songid, int volume, int childId, CacheArchive arg5) {
@@ -137,6 +114,65 @@ public class MusicSystem {
 		}
 	}
 
+	public static void updateVolume(int varPlayerValue) {
+        int i_22_ = 0;
+        if(varPlayerValue == 0)
+            i_22_ = 255;
+        if(varPlayerValue == 1)
+            i_22_ = 192;
+        if(varPlayerValue == 2)
+            i_22_ = 128;
+        if(varPlayerValue == 3)
+            i_22_ = 64;
+        if(varPlayerValue == 4)
+            i_22_ = 0;
+        if(i_22_ != MusicSystem.musicVolume) {
+            if(MusicSystem.musicVolume != 0 || MusicSystem.currentSongId == -1) {
+                if(i_22_ == 0) {
+                    MusicSystem.method402(false);
+                    MusicSystem.songTimeout = 0;
+                } else
+                    MusicSystem.method456(i_22_);
+            } else {
+                MusicSystem.playMusicTrack(false, 0, MusicSystem.currentSongId, i_22_, 0, CacheArchive.musicCacheArchive);
+                MusicSystem.songTimeout = 0;
+            }
+            MusicSystem.musicVolume = i_22_;
+        }
+	}
+
+	public static void loginScreen(String titleSong, boolean highmem) {
+        if (MusicSystem.musicVolume != 0 && highmem)
+            MusicSystem.method412(false, CacheArchive.musicCacheArchive, 0, titleSong, 10, "", MusicSystem.musicVolume);
+        else
+            MusicSystem.method405(10);
+	}
+
+	public static boolean muted() {
+		return MusicSystem.musicVolume == 0;
+	}
+	
+	public static void loginScreenButton(String titleSong) {
+        int newVolume = 0;
+        if(MusicSystem.musicVolume == 0) {
+            newVolume = 255;
+        }
+        if(MusicSystem.musicVolume != 0 || MusicSystem.currentSongId == -1) {
+            if(newVolume == 0) {
+                MusicSystem.method402(false);
+                MusicSystem.songTimeout = 0;
+            } else {
+                MusicSystem.method412(false, CacheArchive.musicCacheArchive, 0, titleSong, 10, "", MusicSystem.musicVolume);
+                MusicSystem.method456(newVolume);
+            }
+        } else {
+            MusicSystem.playMusicTrack(false, 0, MusicSystem.currentSongId, newVolume, 0, CacheArchive.musicCacheArchive);
+            MusicSystem.songTimeout = 0;
+        }
+
+        MusicSystem.musicVolume = newVolume;
+	}
+	
 	static void stop_() {
 		if (MusicSystem.midi != null) {
 			method308();
@@ -146,6 +182,34 @@ public class MusicSystem {
 			}
 			MusicSystem.midi.close0((byte) 101);
 			MusicSystem.midi = null;
+		}
+	}
+	
+	/**
+	 * Called when setting volume to 0 or receiving a song of -1 via packet.
+	 */
+	private static synchronized void method402(boolean arg0) {
+		if (musicIsntNull()) {
+			MusicSystem.method308();
+			MusicSystem.fetchMusic = arg0;
+			MusicSystem.musicFetcher = null;
+		}
+	}
+
+	private static synchronized void method412(boolean arg0, CacheArchive arg1, int arg2, String name, int arg5, String child, int arg7) {
+		if (musicIsntNull()) {
+			int hash = arg1.getHash(name);
+			int i_16_ = arg1.getFileId(hash, child);
+			method403(arg7, true, arg5, hash, arg1, i_16_, arg2, arg0);
+		}
+	}
+
+	private static void method456(int volume) {
+		if (MusicSystem.musicIsntNull()) {
+			if (MusicSystem.fetchMusic)
+				MusicSystem.volume3 = volume;
+			else
+				MusicSystem.method651(volume);
 		}
 	}
 	
@@ -328,4 +392,5 @@ public class MusicSystem {
 	        this.data = data;
 	    }
 	}
+
 }

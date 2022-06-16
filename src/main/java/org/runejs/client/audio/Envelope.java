@@ -1,6 +1,6 @@
 package org.runejs.client.audio;
 
-import org.runejs.client.io.Buffer;
+import org.runejs.client.audiocore.Buffer;
 
 public class Envelope {
     public int num_phases = 2;

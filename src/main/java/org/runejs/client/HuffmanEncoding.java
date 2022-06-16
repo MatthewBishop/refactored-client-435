@@ -214,7 +214,7 @@ public class HuffmanEncoding {
 
     public static ImageRGB method1028(CacheArchive arg0, String arg1, byte arg2, String arg3) {
         int i = arg0.getHash(arg1);
-        int i_13_ = arg0.method179(i, arg3);
+        int i_13_ = arg0.getFileId(i, arg3);
         if (arg2 != 21) {
             ChatBox.chatTypes = null;
         }

@@ -889,7 +889,7 @@ public class Main extends GameShell {
 
     public static IndexedImage method359(String arg0, String arg1, CacheArchive arg2) {
         int i = arg2.getHash(arg0);
-        int i_23_ = arg2.method179(i, arg1);
+        int i_23_ = arg2.getFileId(i, arg1);
         return method363(arg2, (byte) -42, i_23_, i);
     }
 

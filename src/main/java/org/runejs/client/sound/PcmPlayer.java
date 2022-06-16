@@ -6,9 +6,6 @@ import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 
-import org.runejs.client.Class43;
-import org.runejs.client.util.Signlink;
-
 public class PcmPlayer implements Runnable {
 
 	private static int[] samples = new int[256];
@@ -126,10 +123,14 @@ public class PcmPlayer implements Runnable {
 		}
 	}
 
-	public void method222(Signlink arg0, int arg1) throws Exception {
-		anInt1831 = arg1;
-		method219(System.currentTimeMillis());
-		arg0.createThreadNode(10, this);
+	public void method222(int arg1) throws Exception {
+		this.anInt1831 = arg1;
+		this.method219(System.currentTimeMillis());
+        // Start thread
+        Thread thread = new Thread(this);
+        thread.setDaemon(true);
+        thread.start();
+        thread.setPriority(10);
 	}
 
 	public void stop() {
@@ -141,7 +142,11 @@ public class PcmPlayer implements Runnable {
 				if (!aBoolean1820)
 					break;
 			}
-			Class43.threadSleep(50L);
+	        try {
+	            Thread.sleep(50L);
+	        } catch(InterruptedException interruptedexception) {
+	            /* empty */
+	        }
 		}
 	}
 
@@ -168,7 +173,11 @@ public class PcmPlayer implements Runnable {
 				}
 				method212(System.currentTimeMillis());
 			}
-			Class43.threadSleep(5L);
+	        try {
+	            Thread.sleep(5L);
+	        } catch(InterruptedException interruptedexception) {
+	            /* empty */
+	        }
 		}
 	}
 

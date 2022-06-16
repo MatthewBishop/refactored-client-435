@@ -391,9 +391,9 @@ public class CacheArchive {
         }
     }
 
-    public int method179(int arg1, String arg2) {
-        arg2 = arg2.toLowerCase();
-        return aNameHashCollectionArray217[arg1].method882(RSString.stringHash(arg2));
+    public int getFileId(int hash, String name) {
+        name = name.toLowerCase();
+        return aNameHashCollectionArray217[hash].method882(RSString.stringHash(name));
     }
 
     public boolean method181(int arg0, int[] arg2) {

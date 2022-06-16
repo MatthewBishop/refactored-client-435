@@ -116,7 +116,7 @@ public class TypeFace extends Rasterizer {
 
     public static TypeFace loadTypeFace(CacheArchive arg0, String arg2, String arg3) {
         int i = arg0.getHash(arg3);
-        int i_50_ = arg0.method179(i, arg2);
+        int i_50_ = arg0.getFileId(i, arg2);
         return getFont(arg0, i_50_, i);
     }
 

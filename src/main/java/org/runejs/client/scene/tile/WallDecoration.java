@@ -148,7 +148,7 @@ public class WallDecoration {
         Rasterizer.drawUnfilledRectangle(0, 0, 42, 42, 0x242017);
         musicIcon.drawImage(4, 3);
 
-        if(MusicSystem.musicVolume == 0) {
+        if(MusicSystem.muted()) {
             Rasterizer.drawDiagonalLine(0,0, 42,42, 0xFF0000);
         }
 

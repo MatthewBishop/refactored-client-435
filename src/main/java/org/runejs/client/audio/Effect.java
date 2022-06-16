@@ -1,7 +1,7 @@
 package org.runejs.client.audio;
 
+import org.runejs.client.audiocore.Buffer;
 import org.runejs.client.cache.CacheArchive;
-import org.runejs.client.io.Buffer;
 import org.runejs.client.sound.RawSound;
 
 public class Effect {

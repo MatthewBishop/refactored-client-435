@@ -668,7 +668,7 @@ public class MovedStatics {
 
     public static ImageRGB[] method526(CacheArchive arg0, String arg2, String arg3) {
         int i = arg0.getHash(arg2);
-        int i_4_ = arg0.method179(i, arg3);
+        int i_4_ = arg0.getFileId(i, arg3);
         return GenericTile.method944((byte) -3, i, arg0, i_4_);
     }
 
@@ -1158,9 +1158,7 @@ public class MovedStatics {
 	    for(/**/; i < 4; i++)
 	        Landscape.currentCollisionMap[i].reset();
 	    System.gc();
-	    MusicSystem.method405(10);
-	    MusicSystem.songTimeout = 0;
-	    MusicSystem.currentSongId = -1;
+	    MusicSystem.logout();
 	    SoundSystem.clearObjectSounds();
 	    processGameStatus(10);
 	}
@@ -1787,30 +1785,7 @@ public class MovedStatics {
 	                clearScreen = true;
 	            }
 	            if(varPlayerType == 3) {
-	                int i_22_ = 0;
-	                if(varPlayerValue == 0)
-	                    i_22_ = 255;
-	                if(varPlayerValue == 1)
-	                    i_22_ = 192;
-	                if(varPlayerValue == 2)
-	                    i_22_ = 128;
-	                if(varPlayerValue == 3)
-	                    i_22_ = 64;
-	                if(varPlayerValue == 4)
-	                    i_22_ = 0;
-	                if(i_22_ != MusicSystem.musicVolume) {
-	                    if(MusicSystem.musicVolume != 0 || MusicSystem.currentSongId == -1) {
-	                        if(i_22_ == 0) {
-	                            MusicSystem.method402(false);
-	                            MusicSystem.songTimeout = 0;
-	                        } else
-	                            MusicSystem.method456(i_22_);
-	                    } else {
-	                        MusicSystem.playMusicTrack(false, 0, MusicSystem.currentSongId, i_22_, 0, CacheArchive.musicCacheArchive);
-	                        MusicSystem.songTimeout = 0;
-	                    }
-	                    MusicSystem.musicVolume = i_22_;
-	                }
+	                MusicSystem.updateVolume(varPlayerValue);
 	            }
 	            if(varPlayerType == 9)
 	                Class43.bankInsertMode = varPlayerValue;

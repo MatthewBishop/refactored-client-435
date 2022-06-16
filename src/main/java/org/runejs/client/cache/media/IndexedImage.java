@@ -28,7 +28,7 @@ public class IndexedImage extends Rasterizer {
 
     public static IndexedImage[] getMultipleIndexedImages(CacheArchive arg0, String arg2, String arg3) {
         int i = arg0.getHash(arg2);
-        int i_1_ = arg0.method179(i, arg3);
+        int i_1_ = arg0.getFileId(i, arg3);
         return Class24.method337(arg0, i_1_, i);
     }
 

@@ -184,24 +184,7 @@ public class Class60 {
         MovedStatics.method836(1);
 
         if(MouseHandler.clickType == 1 && RSString.clickY >= ScreenController.drawHeight-42 && Class57.clickX>=ScreenController.drawWidth-42 ){
-            int newVolume = 0;
-            if(MusicSystem.musicVolume == 0) {
-                newVolume = 255;
-            }
-            if(MusicSystem.musicVolume != 0 || MusicSystem.currentSongId == -1) {
-                if(newVolume == 0) {
-                    MusicSystem.method402(false);
-                    MusicSystem.songTimeout = 0;
-                } else {
-                    MusicSystem.method412(false, CacheArchive.musicCacheArchive, 0, Native.titleSong, 10, "", MusicSystem.musicVolume);
-                    MusicSystem.method456(newVolume);
-                }
-            } else {
-                MusicSystem.playMusicTrack(false, 0, MusicSystem.currentSongId, newVolume, 0, CacheArchive.musicCacheArchive);
-                MusicSystem.songTimeout = 0;
-            }
-
-            MusicSystem.musicVolume = newVolume;
+            MusicSystem.loginScreenButton(Native.titleSong);
         }
 
         if(Class51.gameStatusCode == 10) {

@@ -1,12 +1,11 @@
 package org.runejs.client.sound;
 
-import org.runejs.client.LinkedList;
 import org.runejs.client.audio.Effect;
+import org.runejs.client.audiocore.LinkedList;
+import org.runejs.client.audiocore.Node;
 import org.runejs.client.cache.CacheArchive;
 import org.runejs.client.cache.def.GameObjectDefinition;
 import org.runejs.client.media.renderable.actor.Player;
-import org.runejs.client.node.Node;
-import org.runejs.client.util.Signlink;
 
 public class SoundSystem {
 
@@ -40,10 +39,10 @@ public class SoundSystem {
 	 * This is an added method. This helps add easier modularity since it is
 	 * easier to plug in.
 	 */
-	public static void initialiseSound(Signlink signlink) {
+	public static void initialiseSound() {
 		try {
 			PcmPlayer player = new PcmPlayer();
-			player.method222(signlink, 2048);
+			player.method222(2048);
 			SoundSystem.pcmPlayer = player;
 		} catch (Throwable throwable) {
 			/*
@@ -96,7 +95,7 @@ public class SoundSystem {
 			SoundSystem.soundVolume[SoundSystem.currentSound] = volume;
 			SoundSystem.soundDelay[SoundSystem.currentSound] = delay;
 			SoundSystem.effects[SoundSystem.currentSound] = null;
-			SoundSystem.soundLocations[SoundSystem.currentSound] = 0;
+			SoundSystem.soundLocations[SoundSystem.currentSound] = location;
 			SoundSystem.currentSound++;
 		}
 	}
@@ -225,13 +224,13 @@ public class SoundSystem {
 			class40_sub2.gameObjectDefinition = arg5;
 			class40_sub2.set();
 		}
-		SoundSystem.objectSounds.pushBack(class40_sub2, -126);
+		SoundSystem.objectSounds.pushBack(class40_sub2);
 		if (class40_sub2.soundEffectIds != null)
 			class40_sub2.anInt2014 = (int) ((class40_sub2.unkn2 - class40_sub2.unkn1) * Math.random()) + class40_sub2.unkn1;
 	}
 
 	public static void clearObjectSounds() {
-		for (ObjectSound class40_sub2 = (ObjectSound) SoundSystem.objectSounds.method902((byte) -90); class40_sub2 != null; class40_sub2 = (ObjectSound) SoundSystem.objectSounds.method909(-4)) {
+		for (ObjectSound class40_sub2 = (ObjectSound) SoundSystem.objectSounds.first(); class40_sub2 != null; class40_sub2 = (ObjectSound) SoundSystem.objectSounds.next()) {
 			if (class40_sub2.stream1 != null) {
 				SoundSystem.pcmStreamMixer.removeSubStream(class40_sub2.stream1);
 				class40_sub2.stream1 = null;
@@ -241,11 +240,11 @@ public class SoundSystem {
 				class40_sub2.stream2 = null;
 			}
 		}
-		SoundSystem.objectSounds.clear(0);
+		SoundSystem.objectSounds.clear();
 	}
 
 	public static void setObjectSounds() {
-		for (ObjectSound class40_sub2 = (ObjectSound) SoundSystem.objectSounds.method902((byte) -90); class40_sub2 != null; class40_sub2 = (ObjectSound) SoundSystem.objectSounds.method909(-4)) {
+		for (ObjectSound class40_sub2 = (ObjectSound) SoundSystem.objectSounds.first(); class40_sub2 != null; class40_sub2 = (ObjectSound) SoundSystem.objectSounds.next()) {
 			if (class40_sub2.gameObjectDefinition != null) {
 				class40_sub2.set();
 			}
@@ -253,7 +252,7 @@ public class SoundSystem {
 	}
 
 	public static void updateObjectSounds(int pwx, int pwl, int redrawRate, int pwy) {
-		for (ObjectSound class40_sub2 = (ObjectSound) SoundSystem.objectSounds.method902((byte) -90); class40_sub2 != null; class40_sub2 = (ObjectSound) SoundSystem.objectSounds.method909(-4)) {
+		for (ObjectSound class40_sub2 = (ObjectSound) SoundSystem.objectSounds.first(); class40_sub2 != null; class40_sub2 = (ObjectSound) SoundSystem.objectSounds.next()) {
 			if (class40_sub2.soundEffectId != -1 || class40_sub2.soundEffectIds != null) {
 				int distance = 0;
 				if (pwx <= class40_sub2.maxX) {
