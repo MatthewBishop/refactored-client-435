@@ -23,10 +23,10 @@ import org.runejs.client.scene.tile.FloorDecoration;
 import org.runejs.client.scene.tile.GenericTile;
 import org.runejs.client.scene.tile.Wall;
 import org.runejs.client.scene.tile.WallDecoration;
-import org.runejs.client.sound.MusicSystem;
-import org.runejs.client.sound.SoundSystem;
 import org.runejs.client.util.TextUtils;
 import org.runejs.client.*;
+import org.runejs.client.audio.MusicSystem;
+import org.runejs.client.audio.SoundSystem;
 import org.runejs.client.cache.def.*;
 
 public class IncomingPackets {

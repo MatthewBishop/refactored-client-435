@@ -1,8 +1,6 @@
-package org.runejs.client.audio;
+package org.runejs.client.audio.core;
 
-import org.runejs.client.audiocore.Buffer;
-import org.runejs.client.audiocore.ICacheArchive;
-import org.runejs.client.sound.RawSound;
+import org.runejs.client.audio.RawSound;
 
 public class Effect {
     public Instrument[] instruments;

@@ -1,4 +1,4 @@
-package org.runejs.client.sound;
+package org.runejs.client.audio;
 
 import java.io.ByteArrayInputStream;
 

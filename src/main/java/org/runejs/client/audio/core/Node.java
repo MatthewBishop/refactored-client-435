@@ -1,4 +1,4 @@
-package org.runejs.client.audiocore;
+package org.runejs.client.audio.core;
 
 public class Node {
 

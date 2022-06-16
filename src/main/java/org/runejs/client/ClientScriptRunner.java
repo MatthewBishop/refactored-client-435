@@ -1,5 +1,7 @@
 package org.runejs.client;
 
+import org.runejs.client.audio.MusicSystem;
+import org.runejs.client.audio.SoundSystem;
 import org.runejs.client.cache.CacheArchive;
 import org.runejs.client.cache.cs.InvokedScript;
 import org.runejs.client.cache.cs.ClientScript;
@@ -13,8 +15,6 @@ import org.runejs.client.media.renderable.actor.Player;
 import org.runejs.client.net.PacketBuffer;
 import org.runejs.client.scene.InteractiveObject;
 import org.runejs.client.scene.util.CollisionMap;
-import org.runejs.client.sound.MusicSystem;
-import org.runejs.client.sound.SoundSystem;
 import org.runejs.client.util.BitUtils;
 import org.runejs.client.util.Signlink;
 import org.runejs.client.util.SignlinkNode;

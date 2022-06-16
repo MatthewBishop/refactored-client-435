@@ -1,5 +1,6 @@
 package org.runejs.client;
 
+import org.runejs.client.audio.SoundSystem;
 import org.runejs.client.cache.CacheArchive;
 import org.runejs.client.cache.FileOperations;
 import org.runejs.client.cache.media.AnimationSequence;
@@ -16,7 +17,6 @@ import org.runejs.client.scene.GroundItemTile;
 import org.runejs.client.scene.SceneCluster;
 import org.runejs.client.scene.tile.GenericTile;
 import org.runejs.client.scene.util.CollisionMap;
-import org.runejs.client.sound.SoundSystem;
 import org.runejs.client.util.BitUtils;
 import org.runejs.client.cache.def.FramemapDefinition;
 import org.runejs.client.cache.def.GameObjectDefinition;

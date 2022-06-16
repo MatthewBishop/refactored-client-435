@@ -1,4 +1,4 @@
-package org.runejs.client.sound;
+package org.runejs.client.audio;
 
 public class RawSound extends AbstractSound {
     public byte[] samples;

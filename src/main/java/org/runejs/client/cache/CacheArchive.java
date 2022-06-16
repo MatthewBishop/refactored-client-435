@@ -1,7 +1,7 @@
 package org.runejs.client.cache;
 
 import org.runejs.client.*;
-import org.runejs.client.audiocore.ICacheArchive;
+import org.runejs.client.audio.core.ICacheArchive;
 import org.runejs.client.cache.bzip.BZip;
 import org.runejs.client.cache.def.GameObjectDefinition;
 import org.runejs.client.io.Buffer;

@@ -1,4 +1,4 @@
-package org.runejs.client.sound;
+package org.runejs.client.audio;
 
 public class RawPcmStream extends PcmStream {
     private int anInt2878;

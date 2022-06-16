@@ -1,7 +1,7 @@
-package org.runejs.client.sound;
+package org.runejs.client.audio;
 
-import org.runejs.client.audiocore.LinkedList;
-import org.runejs.client.audiocore.Node;
+import org.runejs.client.audio.core.LinkedList;
+import org.runejs.client.audio.core.Node;
 
 public class PcmStreamMixer extends PcmStream {
     private int anInt2872 = 16;

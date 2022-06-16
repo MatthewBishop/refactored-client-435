@@ -1,4 +1,4 @@
-package org.runejs.client.sound;
+package org.runejs.client.audio;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;

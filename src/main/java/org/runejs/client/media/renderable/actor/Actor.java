@@ -10,9 +10,9 @@ import org.runejs.client.media.VertexNormal;
 import org.runejs.client.media.renderable.Renderable;
 import org.runejs.client.scene.tile.Wall;
 import org.runejs.client.scene.tile.WallDecoration;
-import org.runejs.client.sound.SoundSystem;
 import org.runejs.client.util.Signlink;
 import org.runejs.client.*;
+import org.runejs.client.audio.SoundSystem;
 
 public abstract class Actor extends Renderable {
 

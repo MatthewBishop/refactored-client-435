@@ -6,7 +6,6 @@ import org.runejs.client.frame.ScreenController;
 import org.runejs.client.frame.ScreenMode;
 import org.runejs.client.frame.tab.parts.TabParts;
 import org.runejs.client.node.NodeCache;
-import org.runejs.client.sound.MusicSystem;
 import org.runejs.client.cache.media.IndexedImage;
 import org.runejs.client.cache.media.TypeFace;
 import org.runejs.client.input.KeyFocusListener;
@@ -17,6 +16,7 @@ import org.runejs.client.media.Rasterizer;
 import org.runejs.client.media.renderable.GameObject;
 import org.runejs.client.media.renderable.Renderable;
 import org.runejs.client.*;
+import org.runejs.client.audio.MusicSystem;
 
 import java.awt.*;
 

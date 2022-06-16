@@ -1,6 +1,6 @@
-package org.runejs.client.sound;
+package org.runejs.client.audio;
 
-import org.runejs.client.audiocore.Node;
+import org.runejs.client.audio.core.Node;
 
 public abstract class PcmStreamMixerListener extends Node {
     public int anInt2133;

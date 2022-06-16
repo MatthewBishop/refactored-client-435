@@ -1,9 +1,9 @@
-package org.runejs.client.sound;
+package org.runejs.client.audio;
 
-import org.runejs.client.audio.Effect;
-import org.runejs.client.audiocore.ICacheArchive;
-import org.runejs.client.audiocore.LinkedList;
-import org.runejs.client.audiocore.Node;
+import org.runejs.client.audio.core.Effect;
+import org.runejs.client.audio.core.ICacheArchive;
+import org.runejs.client.audio.core.LinkedList;
+import org.runejs.client.audio.core.Node;
 import org.runejs.client.cache.def.GameObjectDefinition;
 import org.runejs.client.media.renderable.actor.Player;
 

@@ -1,8 +1,6 @@
-package org.runejs.client.audio;
+package org.runejs.client.audio.core;
 
 import java.util.Random;
-
-import org.runejs.client.audiocore.Buffer;
 
 public class Instrument {
     public static int[] sine;

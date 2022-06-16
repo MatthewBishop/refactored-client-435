@@ -1,6 +1,4 @@
-package org.runejs.client.audio;
-
-import org.runejs.client.audiocore.Buffer;
+package org.runejs.client.audio.core;
 
 public class Filter {
     public static float _inv_unity;

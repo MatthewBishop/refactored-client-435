@@ -16,8 +16,8 @@ import org.runejs.client.net.ISAAC;
 import org.runejs.client.scene.GroundItemTile;
 import org.runejs.client.scene.tile.SceneTile;
 import org.runejs.client.scene.tile.Wall;
-import org.runejs.client.sound.MusicSystem;
 import org.runejs.client.*;
+import org.runejs.client.audio.MusicSystem;
 import org.runejs.Configuration;
 import org.runejs.whitelabel.Images;
 

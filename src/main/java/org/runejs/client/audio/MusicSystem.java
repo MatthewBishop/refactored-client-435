@@ -1,6 +1,6 @@
-package org.runejs.client.sound;
+package org.runejs.client.audio;
 
-import org.runejs.client.audiocore.ICacheArchive;
+import org.runejs.client.audio.core.ICacheArchive;
 
 public class MusicSystem {
 
