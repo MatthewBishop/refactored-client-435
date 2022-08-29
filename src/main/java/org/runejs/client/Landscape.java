@@ -1,5 +1,6 @@
 package org.runejs.client;
 
+import org.runejs.client.audio.AreaSounds;
 import org.runejs.client.audio.SoundSystem;
 import org.runejs.client.cache.CacheArchive;
 import org.runejs.client.cache.FileOperations;
@@ -89,7 +90,7 @@ public class Landscape {
                 }
                 Class65.method1020();
                 int dataLength = RSString.terrainData.length;
-                SoundSystem.clearObjectSounds();
+                AreaSounds.clearObjectSounds();
                 Main.method364(true);
                 if(!GroundItemTile.loadGeneratedMap) {
                     for(int pointer = 0; dataLength > pointer; pointer++) {

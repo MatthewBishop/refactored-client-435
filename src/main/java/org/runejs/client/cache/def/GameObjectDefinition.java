@@ -27,10 +27,14 @@ public class GameObjectDefinition extends CachedNode implements EntityDefinition
     public static NodeCache terrainObjectModelCache = new NodeCache(10);
     public static NodeCache animatedObjectModelCache = new NodeCache(30);
 
-    public int unkn1;
+public int unkn1;
+public int[] soundEffectIds;
+public int unkn2;
+public int ambientSoundId;
+public int ambientSoundHearDistance;
+
     public int offsetX;
     public boolean solid;
-    public int ambientSoundHearDistance;
     public int sizeX;
     public int offsetY;
     public int setDecorDisplacement;
@@ -40,7 +44,6 @@ public class GameObjectDefinition extends CachedNode implements EntityDefinition
     public int[] recolorToReplace;
     public int icon = -1;
     public int blockingMask;
-    public int ambientSoundId;
     public int sizeY;
     public int[] recolorToFind;
     public int modelSizeY;
@@ -49,7 +52,6 @@ public class GameObjectDefinition extends CachedNode implements EntityDefinition
     public boolean nonFlatShading;
     public boolean wall;
     public int[] objectTypes;
-    public int[] soundEffectIds;
     public int[] objectModels;
     public int ambient;
     public boolean walkable;
@@ -61,7 +63,6 @@ public class GameObjectDefinition extends CachedNode implements EntityDefinition
     public int id;
     public int modelSizeHeight;
     public boolean castsShadow;
-    public int unkn2;
     public int contrast;
     public int hasActions;
     public boolean obstructsGround;
@@ -71,9 +72,10 @@ public class GameObjectDefinition extends CachedNode implements EntityDefinition
 
     public GameObjectDefinition() {
         ambientSoundHearDistance = 0;
-        blockingMask = 0;
         ambientSoundId = -1;
         unkn1 = 0;
+        unkn2 = 0;
+        blockingMask = 0;
         offsetX = 0;
         modelSizeX = 128;
         hollow = false;
@@ -86,7 +88,6 @@ public class GameObjectDefinition extends CachedNode implements EntityDefinition
         offsetHeight = 0;
         solid = true;
         sizeY = 1;
-        unkn2 = 0;
         offsetY = 0;
         nonFlatShading = false;
         mapSceneID = -1;

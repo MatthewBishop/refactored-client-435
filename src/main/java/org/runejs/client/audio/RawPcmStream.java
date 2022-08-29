@@ -6,9 +6,9 @@ public class RawPcmStream extends PcmStream {
     private int start;
     private int anInt2881;
     private int anInt2882;
-    private int anInt2883;
+    private int volume2;
     private int numLoops;
-    private int anInt2885;
+    private int volume;
     private int end;
     private boolean aBoolean2887;
     private int anInt2888;
@@ -18,18 +18,18 @@ public class RawPcmStream extends PcmStream {
         this.start = rawSound.start;
         this.end = rawSound.end;
         this.anInt2882 = rate;
-        this.anInt2885 = volume;
+        this.volume = volume;
         this.anInt2888 = 0;
     }
 
-    private static int method855(int arg0, int arg1, byte[] arg2, int[] arg3, int arg4, int arg5, int arg6, int arg7, int arg8, int arg9, int arg10, int arg11, RawPcmStream arg12, int arg13, int arg14) {
+    private static int method855(int arg0, int arg1, byte[] arg2, int[] arg3, int arg4, int arg5, int volume, int arg7, int arg8, int arg9, int arg10, int arg11, RawPcmStream arg12, int arg13, int arg14) {
         if(arg13 == 0 || (arg9 = arg5 + (arg11 - arg4 + arg13 - 257) / arg13) > arg10)
             arg9 = arg10;
         while(arg5 < arg9) {
             arg1 = arg4 >> 8;
             arg0 = arg2[arg1];
-            arg3[arg5++] += ((arg0 << 8) + (arg2[arg1 + 1] - arg0) * (arg4 & 0xff)) * arg6 >> arg7;
-            arg6 += arg8;
+            arg3[arg5++] += ((arg0 << 8) + (arg2[arg1 + 1] - arg0) * (arg4 & 0xff)) * volume >> arg7;
+            volume += arg8;
             arg4 += arg13;
         }
         if(arg13 == 0 || (arg9 = arg5 + (arg11 - arg4 + arg13 - 1) / arg13) > arg10)
@@ -37,23 +37,23 @@ public class RawPcmStream extends PcmStream {
         arg1 = arg14;
         while(arg5 < arg9) {
             arg0 = arg2[arg4 >> 8];
-            arg3[arg5++] += ((arg0 << 8) + (arg1 - arg0) * (arg4 & 0xff)) * arg6 >> arg7;
-            arg6 += arg8;
+            arg3[arg5++] += ((arg0 << 8) + (arg1 - arg0) * (arg4 & 0xff)) * volume >> arg7;
+            volume += arg8;
             arg4 += arg13;
         }
-        arg12.anInt2885 = arg6;
+        arg12.volume = volume;
         arg12.anInt2888 = arg4;
         return arg5;
     }
 
-    private static int method856(int arg0, int arg1, byte[] arg2, int[] arg3, int arg4, int arg5, int arg6, int arg7, int arg8, int arg9, int arg10, int arg11, RawPcmStream arg12, int arg13, int arg14) {
+    private static int method856(int arg0, int arg1, byte[] arg2, int[] arg3, int arg4, int arg5, int volume, int arg7, int arg8, int arg9, int arg10, int arg11, RawPcmStream arg12, int arg13, int arg14) {
         if(arg13 == 0 || (arg9 = arg5 + (arg11 + 256 - arg4 + arg13) / arg13) > arg10)
             arg9 = arg10;
         while(arg5 < arg9) {
             arg1 = arg4 >> 8;
             arg0 = arg2[arg1 - 1];
-            arg3[arg5++] += ((arg0 << 8) + (arg2[arg1] - arg0) * (arg4 & 0xff)) * arg6 >> arg7;
-            arg6 += arg8;
+            arg3[arg5++] += ((arg0 << 8) + (arg2[arg1] - arg0) * (arg4 & 0xff)) * volume >> arg7;
+            volume += arg8;
             arg4 += arg13;
         }
         if(arg13 == 0 || (arg9 = arg5 + (arg11 - arg4 + arg13) / arg13) > arg10)
@@ -61,11 +61,11 @@ public class RawPcmStream extends PcmStream {
         arg0 = arg14;
         arg1 = arg13;
         while(arg5 < arg9) {
-            arg3[arg5++] += ((arg0 << 8) + (arg2[arg4 >> 8] - arg0) * (arg4 & 0xff)) * arg6 >> arg7;
-            arg6 += arg8;
+            arg3[arg5++] += ((arg0 << 8) + (arg2[arg4 >> 8] - arg0) * (arg4 & 0xff)) * volume >> arg7;
+            volume += arg8;
             arg4 += arg1;
         }
-        arg12.anInt2885 = arg6;
+        arg12.volume = volume;
         arg12.anInt2888 = arg4;
         return arg5;
     }
@@ -91,30 +91,30 @@ public class RawPcmStream extends PcmStream {
         return arg5;
     }
 
-    private static int method859(byte[] arg0, int[] arg1, int arg2, int arg3, int arg4, int arg5, int arg6, int arg7, int arg8, int arg9, RawPcmStream arg10) {
+    private static int method859(byte[] arg0, int[] arg1, int arg2, int arg3, int volume, int arg5, int arg6, int arg7, int arg8, int arg9, RawPcmStream arg10) {
         arg2 >>= 8;
         arg9 >>= 8;
-        arg4 <<= 8;
+        volume <<= 8;
         arg6 <<= 8;
         if((arg7 = arg3 + arg2 - (arg9 - 1)) > arg8)
             arg7 = arg8;
         arg7 -= 3;
         while(arg3 < arg7) {
-            arg1[arg3++] += arg0[arg2--] * arg4 >> arg5;
-            arg4 += arg6;
-            arg1[arg3++] += arg0[arg2--] * arg4 >> arg5;
-            arg4 += arg6;
-            arg1[arg3++] += arg0[arg2--] * arg4 >> arg5;
-            arg4 += arg6;
-            arg1[arg3++] += arg0[arg2--] * arg4 >> arg5;
-            arg4 += arg6;
+            arg1[arg3++] += arg0[arg2--] * volume >> arg5;
+            volume += arg6;
+            arg1[arg3++] += arg0[arg2--] * volume >> arg5;
+            volume += arg6;
+            arg1[arg3++] += arg0[arg2--] * volume >> arg5;
+            volume += arg6;
+            arg1[arg3++] += arg0[arg2--] * volume >> arg5;
+            volume += arg6;
         }
         arg7 += 3;
         while(arg3 < arg7) {
-            arg1[arg3++] += arg0[arg2--] * arg4 >> arg5;
-            arg4 += arg6;
+            arg1[arg3++] += arg0[arg2--] * volume >> arg5;
+            volume += arg6;
         }
-        arg10.anInt2885 = arg4 >> 8;
+        arg10.volume = volume >> 8;
         arg10.anInt2888 = arg2 << 8;
         return arg3;
     }
@@ -139,30 +139,30 @@ public class RawPcmStream extends PcmStream {
         return arg3;
     }
 
-    private static int method862(byte[] arg0, int[] arg1, int arg2, int arg3, int arg4, int arg5, int arg6, int arg7, int arg8, int arg9, RawPcmStream arg10) {
+    private static int method862(byte[] arg0, int[] arg1, int arg2, int arg3, int volume, int arg5, int arg6, int arg7, int arg8, int arg9, RawPcmStream arg10) {
         arg2 >>= 8;
         arg9 >>= 8;
-        arg4 <<= 8;
+        volume <<= 8;
         arg6 <<= 8;
         if((arg7 = arg3 + arg9 - arg2) > arg8)
             arg7 = arg8;
         arg7 -= 3;
         while(arg3 < arg7) {
-            arg1[arg3++] += arg0[arg2++] * arg4 >> arg5;
-            arg4 += arg6;
-            arg1[arg3++] += arg0[arg2++] * arg4 >> arg5;
-            arg4 += arg6;
-            arg1[arg3++] += arg0[arg2++] * arg4 >> arg5;
-            arg4 += arg6;
-            arg1[arg3++] += arg0[arg2++] * arg4 >> arg5;
-            arg4 += arg6;
+            arg1[arg3++] += arg0[arg2++] * volume >> arg5;
+            volume += arg6;
+            arg1[arg3++] += arg0[arg2++] * volume >> arg5;
+            volume += arg6;
+            arg1[arg3++] += arg0[arg2++] * volume >> arg5;
+            volume += arg6;
+            arg1[arg3++] += arg0[arg2++] * volume >> arg5;
+            volume += arg6;
         }
         arg7 += 3;
         while(arg3 < arg7) {
-            arg1[arg3++] += arg0[arg2++] * arg4 >> arg5;
-            arg4 += arg6;
+            arg1[arg3++] += arg0[arg2++] * volume >> arg5;
+            volume += arg6;
         }
-        arg10.anInt2885 = arg4 >> 8;
+        arg10.volume = volume >> 8;
         arg10.anInt2888 = arg2 << 8;
         return arg3;
     }
@@ -221,26 +221,26 @@ public class RawPcmStream extends PcmStream {
                 i = arg3;
             this.anInt2881 += arg1;
             if(this.anInt2882 == -256 && (this.anInt2888 & 0xff) == 0)
-                arg1 = method859(((RawSound) this.sound).samples, arg0, this.anInt2888, arg1, this.anInt2885, this.anInt2878, this.anInt2879, 0, i, arg2, this);
+                arg1 = method859(((RawSound) this.sound).samples, arg0, this.anInt2888, arg1, this.volume, this.anInt2878, this.anInt2879, 0, i, arg2, this);
             else
-                arg1 = method856(0, 0, ((RawSound) this.sound).samples, arg0, this.anInt2888, arg1, this.anInt2885, this.anInt2878, this.anInt2879, 0, i, arg2, this, this.anInt2882, arg4);
+                arg1 = method856(0, 0, ((RawSound) this.sound).samples, arg0, this.anInt2888, arg1, this.volume, this.anInt2878, this.anInt2879, 0, i, arg2, this, this.anInt2882, arg4);
             this.anInt2881 -= arg1;
             if(this.anInt2881 != 0)
                 return arg1;
-            if(this.anInt2883 == -2147483648) {
+            if(this.volume2 == -2147483648) {
                 this.remove();
                 return arg3;
             }
-            this.anInt2885 = this.anInt2883;
+            this.volume = this.volume2;
         }
         if(this.anInt2882 == -256 && (this.anInt2888 & 0xff) == 0)
-            return method861(((RawSound) this.sound).samples, arg0, this.anInt2888, arg1, this.anInt2885, 0, arg3, arg2, this);
-        return method858(0, 0, ((RawSound) this.sound).samples, arg0, this.anInt2888, arg1, this.anInt2885, 0, arg3, arg2, this, this.anInt2882, arg4);
+            return method861(((RawSound) this.sound).samples, arg0, this.anInt2888, arg1, this.volume, 0, arg3, arg2, this);
+        return method858(0, 0, ((RawSound) this.sound).samples, arg0, this.anInt2888, arg1, this.volume, 0, arg3, arg2, this, this.anInt2882, arg4);
     }
 
     @Override
     public synchronized int fill(int[] arg0, int arg1, int arg2) {
-        if(this.anInt2885 == 0 && (this.anInt2881 == 0 || this.anInt2883 == 0 || this.anInt2883 == -2147483648)) {
+        if(this.volume == 0 && (this.anInt2881 == 0 || this.volume2 == 0 || this.volume2 == -2147483648)) {
             this.skip(arg2);
             return 0;
         }
@@ -363,8 +363,8 @@ public class RawPcmStream extends PcmStream {
         return 1;
     }
 
-    public synchronized void method857(int arg0) {
-        this.anInt2885 = arg0;
+    public synchronized void setVolume(int arg0) {
+        this.volume = arg0;
         this.anInt2881 = 0;
     }
 
@@ -374,7 +374,7 @@ public class RawPcmStream extends PcmStream {
 
     @Override
     public int method845() {
-        int i = this.anInt2885 * 3;
+        int i = this.volume * 3;
         i = (i ^ i >> 31) + (i >>> 31);
         if(this.numLoops == 0)
             i -= i * this.anInt2888 / (((RawSound) this.sound).samples.length << 8);
@@ -393,14 +393,14 @@ public class RawPcmStream extends PcmStream {
 	public synchronized void skip(int arg0) {
         if(this.anInt2881 > 0) {
             if(arg0 >= this.anInt2881) {
-                if(this.anInt2883 == -2147483648) {
+                if(this.volume2 == -2147483648) {
                     this.remove();
                     arg0 = this.anInt2881;
                 } else
-                    this.anInt2885 = this.anInt2883;
+                    this.volume = this.volume2;
                 this.anInt2881 = 0;
             } else {
-                this.anInt2885 += this.anInt2879 * arg0;
+                this.volume += this.anInt2879 * arg0;
                 this.anInt2881 -= arg0;
             }
         }
@@ -503,20 +503,20 @@ public class RawPcmStream extends PcmStream {
                 i = arg3;
             this.anInt2881 += arg1;
             if(this.anInt2882 == 256 && (this.anInt2888 & 0xff) == 0)
-                arg1 = method862(((RawSound) this.sound).samples, arg0, this.anInt2888, arg1, this.anInt2885, this.anInt2878, this.anInt2879, 0, i, arg2, this);
+                arg1 = method862(((RawSound) this.sound).samples, arg0, this.anInt2888, arg1, this.volume, this.anInt2878, this.anInt2879, 0, i, arg2, this);
             else
-                arg1 = method855(0, 0, ((RawSound) this.sound).samples, arg0, this.anInt2888, arg1, this.anInt2885, this.anInt2878, this.anInt2879, 0, i, arg2, this, this.anInt2882, arg4);
+                arg1 = method855(0, 0, ((RawSound) this.sound).samples, arg0, this.anInt2888, arg1, this.volume, this.anInt2878, this.anInt2879, 0, i, arg2, this, this.anInt2882, arg4);
             this.anInt2881 -= arg1;
             if(this.anInt2881 != 0)
                 return arg1;
-            if(this.anInt2883 == -2147483648) {
+            if(this.volume2 == -2147483648) {
                 this.remove();
                 return arg3;
             }
-            this.anInt2885 = this.anInt2883;
+            this.volume = this.volume2;
         }
         if(this.anInt2882 == 256 && (this.anInt2888 & 0xff) == 0)
-            return method867(((RawSound) this.sound).samples, arg0, this.anInt2888, arg1, this.anInt2885, 0, arg3, arg2, this);
-        return method865(0, 0, ((RawSound) this.sound).samples, arg0, this.anInt2888, arg1, this.anInt2885, 0, arg3, arg2, this, this.anInt2882, arg4);
+            return method867(((RawSound) this.sound).samples, arg0, this.anInt2888, arg1, this.volume, 0, arg3, arg2, this);
+        return method865(0, 0, ((RawSound) this.sound).samples, arg0, this.anInt2888, arg1, this.volume, 0, arg3, arg2, this, this.anInt2882, arg4);
     }
 }

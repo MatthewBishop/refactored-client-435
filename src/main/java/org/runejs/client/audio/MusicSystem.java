@@ -199,8 +199,8 @@ public class MusicSystem {
 	private static synchronized void method412(boolean arg0, ICacheArchive arg1, int arg2, String name, int arg5, String child, int arg7) {
 		if (musicIsntNull()) {
 			int hash = arg1.getHash(name);
-			int i_16_ = arg1.getFileId(hash, child);
-			method403(arg7, true, arg5, hash, arg1, i_16_, arg2, arg0);
+			int childId = arg1.getFileId(hash, child);
+			method403(arg7, true, arg5, hash, arg1, childId, arg2, arg0);
 		}
 	}
 
@@ -239,11 +239,11 @@ public class MusicSystem {
 		return (int) (0.5 + Math.log(0.00390625 * arg1) * 868.5889638065036);
 	}
 
-	private static synchronized void method403(int arg0, boolean arg1, int arg2, int songId, ICacheArchive cacheArchive, int arg5, int arg6, boolean arg7) {
+	private static synchronized void method403(int arg0, boolean arg1, int arg2, int songId, ICacheArchive cacheArchive, int childId, int arg6, boolean arg7) {
 		if (musicIsntNull()) {
 			MusicSystem.aBoolean1790 = arg7;
 			MusicSystem.anInt255 = arg2;
-			MusicSystem.childId = arg5;
+			MusicSystem.childId = childId;
 			MusicSystem.fetchMusic = arg1;
 			MusicSystem.musicFetcher = cacheArchive;
 			MusicSystem.anInt1806 = -1;

@@ -1,5 +1,6 @@
 package org.runejs.client;
 
+import org.runejs.client.audio.AreaSounds;
 import org.runejs.client.audio.SoundSystem;
 import org.runejs.client.cache.CacheArchive;
 import org.runejs.client.cache.def.GameObjectDefinition;
@@ -375,7 +376,7 @@ public class Projectile extends Renderable {
             if(gameObjectDefinition.hasActions == 0)
                 hash += -2147483648;
             if(gameObjectDefinition.hasSounds())
-                SoundSystem.addObjectSounds(localY, plane, face, localX, gameObjectDefinition);
+            	AreaSounds.addObjectSounds(localY, plane, face, localX, gameObjectDefinition);
             if(type == 22) {
                 if(!VertexNormal.lowMemory || gameObjectDefinition.hasActions != 0 || gameObjectDefinition.obstructsGround) {
                     Renderable renderable;

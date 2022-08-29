@@ -1,6 +1,7 @@
 package org.runejs.client;
 
 import org.runejs.client.cache.CacheIndex;
+import org.runejs.client.audio.AreaSounds;
 import org.runejs.client.audio.MusicSystem;
 import org.runejs.client.audio.SoundSystem;
 import org.runejs.client.cache.CacheArchive;
@@ -1037,7 +1038,7 @@ public class Main extends GameShell {
                 GenericTile.method943(ChatBox.tradeMode, WallDecoration.fontNormal, ChatBox.privateChatMode, ChatBox.publicChatMode);
             }
 
-            SoundSystem.updateObjectSounds(Player.localPlayer.worldX, Player.worldLevel, MovedStatics.anInt199, Player.localPlayer.worldY);
+            AreaSounds.updateObjectSounds(Player.localPlayer.worldX, Player.worldLevel, MovedStatics.anInt199, Player.localPlayer.worldY);
             MovedStatics.anInt199 = 0;
 
         } else {
@@ -1081,7 +1082,7 @@ public class Main extends GameShell {
                 GenericTile.method943(ChatBox.tradeMode, WallDecoration.fontNormal, ChatBox.privateChatMode, ChatBox.publicChatMode);
             }
 
-            SoundSystem.updateObjectSounds(Player.localPlayer.worldX, Player.worldLevel, MovedStatics.anInt199, Player.localPlayer.worldY);
+            AreaSounds.updateObjectSounds(Player.localPlayer.worldX, Player.worldLevel, MovedStatics.anInt199, Player.localPlayer.worldY);
             MovedStatics.anInt199 = 0;
         }
 
@@ -1390,7 +1391,7 @@ public class Main extends GameShell {
                 LinkedList.method910(-32322);
                 if(Class51.gameStatusCode == 30 || Class51.gameStatusCode == 35) {
                     MovedStatics.method652();
-                    SoundSystem.processSounds();
+                    SoundSystem.processSounds(Player.localPlayer.worldX, Player.localPlayer.worldY);
                     MusicSystem.processMusic();
                     IncomingPackets.cyclesSinceLastPacket++;
                     if (IncomingPackets.cyclesSinceLastPacket > 750) {

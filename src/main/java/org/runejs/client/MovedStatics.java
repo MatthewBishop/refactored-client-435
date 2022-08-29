@@ -16,6 +16,7 @@ import org.runejs.client.net.UpdateServer;
 import org.runejs.client.net.UpdateServerNode;
 import org.runejs.client.node.HashTable;
 import org.runejs.client.node.NodeCache;
+import org.runejs.client.audio.AreaSounds;
 import org.runejs.client.audio.MusicSystem;
 import org.runejs.client.audio.SoundSystem;
 import org.runejs.client.cache.CacheArchive;
@@ -1159,7 +1160,7 @@ public class MovedStatics {
 	        Landscape.currentCollisionMap[i].reset();
 	    System.gc();
 	    MusicSystem.logout();
-	    SoundSystem.clearObjectSounds();
+	    AreaSounds.clearObjectSounds();
 	    processGameStatus(10);
 	}
 
@@ -1760,7 +1761,7 @@ public class MovedStatics {
 	public static void method309(int varPlayerIndex) {
 	    do {
 	        AnimationSequence.anInt2480 = pulseCycle;
-	        SoundSystem.setObjectSounds();
+	        AreaSounds.setObjectSounds();
 	        int varPlayerType = VarPlayerDefinition.getDefinition(varPlayerIndex).type;
 	        if(varPlayerType != 0) {
 	            int varPlayerValue = VarPlayerDefinition.varPlayers[varPlayerIndex];

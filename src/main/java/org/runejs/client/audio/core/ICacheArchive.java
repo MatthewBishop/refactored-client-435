@@ -2,10 +2,10 @@ package org.runejs.client.audio.core;
 
 public interface ICacheArchive {
 
-	public byte[] getFile(int arg1, int arg2);
+	public byte[] getFile(int fileId, int childId);
 
-	public int getFileId(int i, String arg6);
+	public int getFileId(int hash, String child);
 
-	public int getHash(String arg4);
+	public int getHash(String string);
 
 }
