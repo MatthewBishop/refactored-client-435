@@ -1,33 +1,33 @@
 package org.runejs.client.audio;
 
 import org.runejs.client.audio.core.Effect;
+import org.runejs.client.audio.core.IGameObjectDefinition;
 import org.runejs.client.audio.core.LinkedList;
 import org.runejs.client.audio.core.Node;
-import org.runejs.client.cache.def.GameObjectDefinition;
 
 public class AreaSounds {
 	
 	private static LinkedList objectSounds = new LinkedList();
 
-	public static void addObjectSounds(int arg0, int arg2, int arg3, int arg4, GameObjectDefinition def) {
+	public static void addObjectSounds(int arg0, int arg2, int arg3, int arg4, IGameObjectDefinition def) {
 		ObjectSound objectSound = new ObjectSound();
-		objectSound.hearDistance = 128 * def.ambientSoundHearDistance;
-		objectSound.unkn2 = def.unkn2;
-		objectSound.soundEffectIds = def.soundEffectIds;
-		objectSound.unkn1 = def.unkn1;
-		int size1 = def.sizeX;
-		int size2 = def.sizeY;
+		objectSound.hearDistance = 128 * def.soundRange();
+		objectSound.unkn2 = def.soundMax();
+		objectSound.soundEffectIds = def.soundIds();
+		objectSound.unkn1 = def.soundMin();
+		int size1 = def.sizeX();
+		int size2 = def.sizeY();
 		objectSound.plane = arg2;
 		objectSound.minX = arg4 * 128;
 		if (arg3 == 1 || arg3 == 3) {
-			size1 = def.sizeY;
-			size2 = def.sizeX;
+			size1 = def.sizeY();
+			size2 = def.sizeX();
 		}
 		objectSound.minY = 128 * arg0;
 		objectSound.maxY = (size2 + arg0) * 128;
 		objectSound.maxX = (arg4 + size1) * 128;
-		objectSound.soundEffectId = def.ambientSoundId;
-		if (def.childIds != null) {
+		objectSound.soundEffectId = def.soundId();
+		if (def.getTransforms() != null) {
 			objectSound.def = def;
 			objectSound.set();
 		}
@@ -125,14 +125,14 @@ public class AreaSounds {
 		private int[] soundEffectIds;
 		private int maxY;
 		private RawPcmStream stream2;
-		private GameObjectDefinition def;
+		private IGameObjectDefinition def;
 		private int unkn1;
 		private int maxX;
 		private int anInt2014;
 
 		private void set() {
 			int i = soundEffectId;
-			GameObjectDefinition gameObjectDefinition = this.def.getChildDefinition();
+			IGameObjectDefinition gameObjectDefinition = this.def.transform();
 			if (gameObjectDefinition == null) {
 				hearDistance = 0;
 				unkn1 = 0;
@@ -140,11 +140,11 @@ public class AreaSounds {
 				soundEffectIds = null;
 				soundEffectId = -1;
 			} else {
-				hearDistance = 128 * gameObjectDefinition.ambientSoundHearDistance;
-				unkn1 = gameObjectDefinition.unkn1;
-				unkn2 = gameObjectDefinition.unkn2;
-				soundEffectId = gameObjectDefinition.ambientSoundId;
-				soundEffectIds = gameObjectDefinition.soundEffectIds;
+				hearDistance = 128 * gameObjectDefinition.soundRange();
+				unkn1 = gameObjectDefinition.soundMin();
+				unkn2 = gameObjectDefinition.soundMax();
+				soundEffectId = gameObjectDefinition.soundId();
+				soundEffectIds = gameObjectDefinition.soundIds();
 			}
 			if (i != soundEffectId && stream1 != null) {
 				SoundSystem.removeSubStream(stream1);

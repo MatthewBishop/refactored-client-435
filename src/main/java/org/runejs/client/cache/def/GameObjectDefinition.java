@@ -1,6 +1,7 @@
 package org.runejs.client.cache.def;
 
 import org.runejs.client.*;
+import org.runejs.client.audio.core.IGameObjectDefinition;
 import org.runejs.client.cache.CacheIndex;
 import org.runejs.client.cache.CacheArchive;
 import org.runejs.client.node.Class40_Sub6;
@@ -15,7 +16,7 @@ import org.runejs.OldEngine.ObjectDecompressor;
 
 import java.io.IOException;
 
-public class GameObjectDefinition extends CachedNode implements EntityDefinition {
+public class GameObjectDefinition extends CachedNode implements EntityDefinition, IGameObjectDefinition {
     public static ProducingGraphicsBuffer aProducingGraphicsBuffer_2524;
     public static int anInt2543 = 0;
     public static int lastClickY = 0;
@@ -575,4 +576,49 @@ public int ambientSoundHearDistance;
     public String getName() {
         return name;
     }
+
+	@Override
+	public int soundMax() {
+		return unkn2;
+	}
+
+	@Override
+	public int soundMin() {
+		return unkn1;
+	}
+
+	@Override
+	public int soundRange() {
+		return ambientSoundHearDistance;
+	}
+
+	@Override
+	public int soundId() {
+		return ambientSoundId;
+	}
+
+	@Override
+	public int sizeY() {
+		return sizeY;
+	}
+
+	@Override
+	public int sizeX() {
+		return sizeX;
+	}
+
+	@Override
+	public int[] soundIds() {
+		return soundEffectIds;
+	}
+
+	@Override
+	public Object getTransforms() {
+		return childIds;
+	}
+
+	@Override
+	public IGameObjectDefinition transform() {
+		return getChildDefinition();
+	}
 }
