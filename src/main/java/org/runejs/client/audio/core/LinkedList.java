@@ -1,5 +1,9 @@
 package org.runejs.client.audio.core;
 
+/**
+ * This is a duplicate class that was created so the audio engine will be standalone.
+ *
+ */
 public class LinkedList {
 
 	public Node aClass40_1056 = new Node();
