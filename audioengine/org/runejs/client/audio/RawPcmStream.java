@@ -1,6 +1,6 @@
 package org.runejs.client.audio;
 
-public class RawPcmStream extends PcmStream {
+class RawPcmStream extends PcmStream {
     private int anInt2878;
     private int anInt2879;
     private int start;
@@ -167,7 +167,7 @@ public class RawPcmStream extends PcmStream {
         return arg3;
     }
 
-    public static RawPcmStream create(RawSound sound, int factor, int volume) {
+    static RawPcmStream create(RawSound sound, int factor, int volume) {
         if(sound.samples == null || sound.samples.length == 0)
             return null;
         return new RawPcmStream(sound, (int) (sound.sampleRate * 256L * factor / (100 * SoundSystem.SAMPLE_RATE)), volume);
@@ -239,7 +239,7 @@ public class RawPcmStream extends PcmStream {
     }
 
     @Override
-    public synchronized int fill(int[] arg0, int arg1, int arg2) {
+    synchronized int fill(int[] arg0, int arg1, int arg2) {
         if(this.volume == 0 && (this.anInt2881 == 0 || this.volume2 == 0 || this.volume2 == -2147483648)) {
             this.skip(arg2);
             return 0;
@@ -363,17 +363,17 @@ public class RawPcmStream extends PcmStream {
         return 1;
     }
 
-    public synchronized void setVolume(int arg0) {
+    synchronized void setVolume(int arg0) {
         this.volume = arg0;
         this.anInt2881 = 0;
     }
 
-    public synchronized void setNumLoops(int arg0) {
+    synchronized void setNumLoops(int arg0) {
         this.numLoops = arg0;
     }
 
     @Override
-    public int method845() {
+    int method845() {
         int i = this.volume * 3;
         i = (i ^ i >> 31) + (i >>> 31);
         if(this.numLoops == 0)
@@ -385,12 +385,12 @@ public class RawPcmStream extends PcmStream {
         return i;
     }
 
-    public boolean hasNext() {
+    boolean hasNext() {
         return this.hasPrevious();
     }
 
     @Override
-	public synchronized void skip(int arg0) {
+	synchronized void skip(int arg0) {
         if(this.anInt2881 > 0) {
             if(arg0 >= this.anInt2881) {
                 if(this.volume2 == -2147483648) {

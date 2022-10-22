@@ -1,15 +1,20 @@
 package org.runejs.client.audio;
 
-import org.runejs.client.audio.core.Effect;
-import org.runejs.client.audio.core.IGameObjectDefinition;
-import org.runejs.client.audio.core.LinkedList;
-import org.runejs.client.audio.core.Node;
+import org.runejs.client.adapter.IGameObjectDefinition;
 
 public class AreaSounds {
 	
-	private static LinkedList objectSounds = new LinkedList();
+	private static _LinkedList objectSounds = new _LinkedList();
 
-	public static void addObjectSounds(int arg0, int arg2, int arg3, int arg4, IGameObjectDefinition def) {
+	/**
+	 * Called when adding a object to a map region. This is called either on spawn, map load, or construct packet
+	 * @param localY local Y coordinate of the object on the map
+	 * @param plane the object's plane on the map
+	 * @param rotation the object's rotation
+	 * @param localX local Y coordinate of the object on the map
+	 * @param def the object definition for the object.
+	 */
+	public static void addObjectSounds(int localY, int plane, int rotation, int localX, IGameObjectDefinition def) {
 		ObjectSound objectSound = new ObjectSound();
 		objectSound.hearDistance = 128 * def.soundRange();
 		objectSound.unkn2 = def.soundMax();
@@ -17,15 +22,15 @@ public class AreaSounds {
 		objectSound.unkn1 = def.soundMin();
 		int size1 = def.sizeX();
 		int size2 = def.sizeY();
-		objectSound.plane = arg2;
-		objectSound.minX = arg4 * 128;
-		if (arg3 == 1 || arg3 == 3) {
+		objectSound.plane = plane;
+		objectSound.minX = localX * 128;
+		if (rotation == 1 || rotation == 3) {
 			size1 = def.sizeY();
 			size2 = def.sizeX();
 		}
-		objectSound.minY = 128 * arg0;
-		objectSound.maxY = (size2 + arg0) * 128;
-		objectSound.maxX = (arg4 + size1) * 128;
+		objectSound.minY = 128 * localY;
+		objectSound.maxY = (size2 + localY) * 128;
+		objectSound.maxX = (localX + size1) * 128;
 		objectSound.soundEffectId = def.soundId();
 		if (def.getTransforms() != null) {
 			objectSound.def = def;
@@ -36,8 +41,11 @@ public class AreaSounds {
 			objectSound.anInt2014 = (int) ((objectSound.unkn2 - objectSound.unkn1) * Math.random()) + objectSound.unkn1;
 	}
 
+	/**
+	 * Called when logging out and also when loading a new map region.
+	 */
 	public static void clearObjectSounds() {
-		for (ObjectSound objectSound = (ObjectSound) AreaSounds.objectSounds.first(); objectSound != null; objectSound = (ObjectSound) AreaSounds.objectSounds.next()) {
+		for (ObjectSound objectSound = (ObjectSound) AreaSounds.objectSounds.peek(); objectSound != null; objectSound = (ObjectSound) AreaSounds.objectSounds.next()) {
 			if (objectSound.stream1 != null) {
 				SoundSystem.removeSubStream(objectSound.stream1);
 				objectSound.stream1 = null;
@@ -50,16 +58,26 @@ public class AreaSounds {
 		AreaSounds.objectSounds.clear();
 	}
 
+	/**
+	 * Called whenever the game options are updated. This is when the music/sound effect volume is changed and also brightness. 
+	 */
 	public static void setObjectSounds() {
-		for (ObjectSound objectSound = (ObjectSound) AreaSounds.objectSounds.first(); objectSound != null; objectSound = (ObjectSound) AreaSounds.objectSounds.next()) {
+		for (ObjectSound objectSound = (ObjectSound) AreaSounds.objectSounds.peek(); objectSound != null; objectSound = (ObjectSound) AreaSounds.objectSounds.next()) {
 			if (objectSound.def != null) {
 				objectSound.set();
 			}
 		}
 	}
 
+	/**
+	 * Called when drawing the game screen.
+	 * @param pwx Player world X
+	 * @param pwl Player world level
+	 * @param redrawRate Whatever value that is passed in when animating a texture like water or firecape.
+	 * @param pwy Player world Y
+	 */
 	public static void updateObjectSounds(int pwx, int pwl, int redrawRate, int pwy) {
-		for (ObjectSound objectSound = (ObjectSound) AreaSounds.objectSounds.first(); objectSound != null; objectSound = (ObjectSound) AreaSounds.objectSounds.next()) {
+		for (ObjectSound objectSound = (ObjectSound) AreaSounds.objectSounds.peek(); objectSound != null; objectSound = (ObjectSound) AreaSounds.objectSounds.next()) {
 			if (objectSound.soundEffectId != -1 || objectSound.soundEffectIds != null) {
 				int distance = 0;
 				if (pwx <= objectSound.maxX) {
@@ -113,7 +131,7 @@ public class AreaSounds {
 		}
 	}
 	
-	private static class ObjectSound extends Node {
+	private static class ObjectSound extends _Node {
 
 		private int plane;
 		private int minX;

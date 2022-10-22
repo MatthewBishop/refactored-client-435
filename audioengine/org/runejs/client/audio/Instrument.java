@@ -1,16 +1,16 @@
-package org.runejs.client.audio.core;
+package org.runejs.client.audio;
 
 import java.util.Random;
 
-public class Instrument {
-    public static int[] sine;
-    public static int[] output;
-    public static int[] noise = new int[32768];
-    public static int[] vol_step = new int[5];
-    public static int[] pitch_step = new int[5];
-    public static int[] delays = new int[5];
-    public static int[] pitch_base_step = new int[5];
-    public static int[] phases = new int[5];
+class Instrument {
+    static int[] sine;
+    static int[] output;
+    static int[] noise = new int[32768];
+    static int[] vol_step = new int[5];
+    static int[] pitch_step = new int[5];
+    static int[] delays = new int[5];
+    static int[] pitch_base_step = new int[5];
+    static int[] phases = new int[5];
 
     static {
         Random random = new Random(0L);
@@ -22,25 +22,25 @@ public class Instrument {
         output = new int[220500];
     }
 
-    public Filter filter;
-    public int begin;
-    public int delay_time = 0;
-    public int[] oscill_pitch_delta;
-    public Envelope gating_attack_env;
-    public Envelope vol_mod_amp_env;
-    public int[] oscill_delay;
-    public Envelope pitch_mod_env;
-    public int[] oscill_vol;
-    public int delay_feedback;
-    public Envelope filter_env;
-    public Envelope pitch_env;
-    public Envelope vol_mod_env;
-    public Envelope vol_env;
-    public int duration;
-    public Envelope gating_release_env;
-    public Envelope pitch_mod_amp_env;
+    Filter filter;
+    int begin;
+    int delay_time = 0;
+    int[] oscill_pitch_delta;
+    Envelope gating_attack_env;
+    Envelope vol_mod_amp_env;
+    int[] oscill_delay;
+    Envelope pitch_mod_env;
+    int[] oscill_vol;
+    int delay_feedback;
+    Envelope filter_env;
+    Envelope pitch_env;
+    Envelope vol_mod_env;
+    Envelope vol_env;
+    int duration;
+    Envelope gating_release_env;
+    Envelope pitch_mod_amp_env;
 
-    public Instrument() {
+    Instrument() {
         oscill_vol = new int[5];
         duration = 500;
         oscill_delay = new int[5];
@@ -49,7 +49,7 @@ public class Instrument {
         delay_feedback = 100;
     }
 
-    public static void initialize() {
+    static void initialize() {
         output = null;
         noise = null;
         sine = null;
@@ -60,7 +60,7 @@ public class Instrument {
         pitch_base_step = null;
     }
 
-    public void decode(Buffer buffer) {
+    void decode(_Buffer buffer) {
         pitch_env = new Envelope();
         pitch_env.decode(buffer);
         vol_env = new Envelope();
@@ -107,7 +107,7 @@ public class Instrument {
         filter.decode(buffer, filter_env);
     }
 
-    public int evaluateWave(int phase, int amplitude, int table) {
+    int evaluateWave(int phase, int amplitude, int table) {
         if(table == 1) {
             if((phase & 0x7fff) < 16384) {
                 return amplitude;
@@ -126,7 +126,7 @@ public class Instrument {
         return 0;
     }
 
-    public static void method776(int[] arg0, int arg1, int arg2) {
+    static void method776(int[] arg0, int arg1, int arg2) {
         arg2 = arg1 + arg2 - 7;
         while(arg1 < arg2) {
             arg0[arg1++] = 0;
@@ -143,7 +143,7 @@ public class Instrument {
             arg0[arg1++] = 0;
     }
 
-    public int[] synthesize(int n_s, int dt) {
+    int[] synthesize(int n_s, int dt) {
         method776(output, 0, n_s);
         if(dt < 10) {
             return output;

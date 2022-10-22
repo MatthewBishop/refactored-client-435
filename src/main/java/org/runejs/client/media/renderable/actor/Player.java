@@ -22,6 +22,10 @@ import java.awt.*;
 
 public class Player extends Actor {
 
+    static {
+        Player.npcs = new Npc[32768];
+    }
+    
     public static int anInt3264 = 0;
     public static int worldLevel;
     public static int[] viewportOffsets;

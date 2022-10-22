@@ -1,0 +1,35 @@
+Implementation Information
+
+3 public classes
+
+MusicSystem
+	loginScreen
+	playSong
+	playSoundJingle
+	muted
+	initializeMusic
+	loginScreenButton
+	processMusic
+	handleMusic
+	syncedStop
+	method405
+	logout
+	updateVolume
+
+
+AreaSounds
+	updateObjectSounds
+	clearObjectSounds
+	setObjectSounds
+	addObjectSounds
+
+SoundSystem
+	reset
+	play
+	play
+	initializeSound
+	processSounds
+	handleSounds
+	stop
+	updateAreaSoundEffectVolume
+	updateSoundEffectVolume

@@ -1,6 +1,6 @@
 package org.runejs.client.audio;
 
-import org.runejs.client.audio.core.ICacheArchive;
+import org.runejs.client.adapter.ICacheArchive;
 
 public class MusicSystem {
 
@@ -30,7 +30,7 @@ public class MusicSystem {
 	private static int volume2 = -1;
 
 	public static void logout() {
-		MusicSystem.method405(10);
+		MusicSystem.reset(10);
 	    MusicSystem.songTimeout = 0;
 	    MusicSystem.currentSongId = -1;
 	}
@@ -63,7 +63,7 @@ public class MusicSystem {
 		return true;
 	}
 	
-	public static synchronized void method405(int arg1) {
+	public static synchronized void reset(int arg1) {
 		if (musicIsntNull()) {
 			MusicSystem.method557(arg1);
 			MusicSystem.musicFetcher = null;
@@ -75,7 +75,7 @@ public class MusicSystem {
 		stop_();
 	}
 
-	public static synchronized void playMusicTrack(boolean arg0, int arg1, int songid, int volume, int childId, ICacheArchive arg5) {
+	static synchronized void playMusicTrack(boolean arg0, int arg1, int songid, int volume, int childId, ICacheArchive arg5) {
 		if (musicIsntNull()) {
 			MusicSystem.fetchMusic = true;
 			MusicSystem.anInt1806 = -1;
@@ -145,7 +145,7 @@ public class MusicSystem {
         if (MusicSystem.musicVolume != 0 && highmem)
             MusicSystem.method412(false, MusicSystem.musicCacheArchive, 0, titleSong, 10, "", MusicSystem.musicVolume);
         else
-            MusicSystem.method405(10);
+            MusicSystem.reset(10);
 	}
 
 	public static boolean muted() {

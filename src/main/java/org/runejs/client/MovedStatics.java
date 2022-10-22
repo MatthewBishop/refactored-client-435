@@ -13,7 +13,6 @@ import org.runejs.client.media.Rasterizer;
 import org.runejs.client.media.renderable.Item;
 import org.runejs.client.media.renderable.Model;
 import org.runejs.client.net.UpdateServer;
-import org.runejs.client.net.UpdateServerNode;
 import org.runejs.client.node.HashTable;
 import org.runejs.client.node.NodeCache;
 import org.runejs.client.audio.AreaSounds;
@@ -117,7 +116,6 @@ public class MovedStatics {
     public static int onBuildTimePlane = 0;
     public static int anInt1996 = 0;
     public static HashTable aClass23_805;
-    public static int anInt813 = 0;
     public static int anInt848 = 0;
     public static int currentCameraPositionV;
     public static int[] anIntArray852;
@@ -150,10 +148,7 @@ public class MovedStatics {
     public static IndexedImage[] moderatorIcon;
     public static int[] anIntArray2764 = new int[128];
     public static ImageRGB minimapImage;
-    public static int msSinceLastUpdate = 0;
-    public static long lastUpdateInMillis;
-
-    public static void method440() {
+    public static void resetTitleScreen() {
         if (ISAAC.aBoolean512) {
             Class51.anIntArray1198 = null;
             GameObject.flameRightBackground = null;
@@ -177,8 +172,8 @@ public class MovedStatics {
             KeyFocusListener.aProducingGraphicsBuffer_1285 = null;
             Class17.aProducingGraphicsBuffer_463 = null;
             anIntArray1013 = null;
-            MusicSystem.method405(10);
-            GameShell.method19(true);
+            MusicSystem.reset(10);
+            UpdateServer.method19(true);
             ISAAC.aBoolean512 = false;
         }
     }
@@ -417,14 +412,6 @@ public class MovedStatics {
         KeyFocusListener.aLinkedList_1278 = new LinkedList();
     }
 
-    public static void method332(int arg0) {
-        synchronized (CollisionMap.anObject162) {
-            if (Buffer.anInt1987 == 0)
-                Main.signlink.createThreadNode(5, new Class44());
-            Buffer.anInt1987 = arg0;
-        }
-    }
-
     public static RSString intToStr(int arg0) {
         return PacketBuffer.method521(false, 10, arg0);
     }
@@ -471,16 +458,6 @@ public class MovedStatics {
         int i_7_ = GameShell.method32(i_3_, arg2, i_4_, true, i);
         int i_8_ = GameShell.method32(i_5_, arg2, i_6_, true, i);
         return GameShell.method32(i_7_, arg2, i_8_, true, i_1_);
-    }
-
-    public static int calculateCrc8(int offset, int size, byte[] data) {
-        int crc = -1;
-        for (int currentByte = offset; currentByte < size; currentByte++) {
-            int tableIndex = 0xff & (crc ^ data[currentByte]);
-            crc = KeyFocusListener.crc8LookupTable[tableIndex] ^ crc >>> 8;
-        }
-        crc ^= 0xffffffff;
-        return crc;
     }
 
     public static String[] method968(String[] arg0) {
@@ -587,14 +564,6 @@ public class MovedStatics {
     public static void method188() {
         MovedStatics.aClass9_2439.clear();
         aClass9_998.clear();
-    }
-
-    public static void method399(int arg0, int arg2) {
-        long l = (arg0 << 16) + arg2;
-        UpdateServerNode updateServerNode = (UpdateServerNode) UpdateServer.aClass23_2545.getNode(l);
-        if (updateServerNode != null) {
-            InteractiveObject.aNodeQueue_485.unshift(updateServerNode);
-        }
     }
 
     public static String method204(int arg0) {
@@ -753,13 +722,6 @@ public class MovedStatics {
         }
     }
 
-    public static int calculateDataLoaded(int arg1, int arg2) {
-        long l = (long) ((arg1 << 16) + arg2);
-        if (UpdateServer.aUpdateServerNode_2250 == null || UpdateServer.aUpdateServerNode_2250.key != l)
-            return 0;
-        return 1 + UpdateServer.aClass40_Sub1_2752.currentPosition * 99 / (UpdateServer.aClass40_Sub1_2752.buffer.length + -UpdateServer.aUpdateServerNode_2250.aByte2758);
-    }
-
     public static boolean method416(byte arg0) {
         synchronized (Class59.keyFocusListener) {
             if (Class59.anInt1389 == GenericTile.anInt1214)
@@ -784,8 +746,6 @@ public class MovedStatics {
             arg1 = -arg1 + 127;
             return arg1;
         }
-        if (!arg2)
-            calculateDataLoaded(-124, -88);
         arg1 = arg1 * (arg0 & 0x7f) / 128;
         if (arg1 < 2)
             arg1 = 2;
@@ -1048,7 +1008,7 @@ public class MovedStatics {
             }
             if (statusCode == 0 || statusCode == 35) {
                 FloorDecoration.method344(-40);
-                method440();
+                resetTitleScreen();
                 if (ProducingGraphicsBuffer_Sub1.aProducingGraphicsBuffer_2213 == null)
                     ProducingGraphicsBuffer_Sub1.aProducingGraphicsBuffer_2213 = createGraphicsBuffer(765, 503, MouseHandler.gameCanvas);
             }
@@ -1059,7 +1019,7 @@ public class MovedStatics {
             }
             if (statusCode == 25 || statusCode == 30 || statusCode == 40) {
                 ProducingGraphicsBuffer_Sub1.aProducingGraphicsBuffer_2213 = null;
-                method440();
+                resetTitleScreen();
                 Projectile.method763(MouseHandler.gameCanvas, CacheArchive.gameImageCacheArchive);
             }
             Class51.gameStatusCode = statusCode;
@@ -1758,7 +1718,7 @@ public class MovedStatics {
 	public static int loadingPercent = 0;
 	public static int cameraY;
 
-	public static void method309(int varPlayerIndex) {
+	public static void handleGameOptions(int varPlayerIndex) {
 	    do {
 	        AnimationSequence.anInt2480 = pulseCycle;
 	        AreaSounds.setObjectSounds();

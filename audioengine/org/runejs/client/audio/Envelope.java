@@ -1,19 +1,19 @@
-package org.runejs.client.audio.core;
+package org.runejs.client.audio;
 
-public class Envelope {
-    public int num_phases = 2;
-    public int[] phase_dur;
-    public int start;
-    public int form;
-    public int end;
-    public int[] phase_peak;
-    public int ticks;
-    public int step;
-    public int critical;
-    public int phase_idx;
-    public int amp;
+class Envelope {
+    int num_phases = 2;
+    int[] phase_dur;
+    int start;
+    int form;
+    int end;
+    int[] phase_peak;
+    int ticks;
+    int step;
+    int critical;
+    int phase_idx;
+    int amp;
 
-    public Envelope() {
+    Envelope() {
         phase_dur = new int[2];
         phase_peak = new int[2];
         phase_dur[0] = 0;
@@ -22,7 +22,7 @@ public class Envelope {
         phase_peak[1] = 65535;
     }
 
-    public void reset() {
+    void reset() {
         critical = 0;
         phase_idx = 0;
         step = 0;
@@ -30,14 +30,14 @@ public class Envelope {
         ticks = 0;
     }
 
-    public void decode(Buffer buffer) {
+    void decode(_Buffer buffer) {
         form = buffer.getUnsignedByte();
         start = buffer.getIntBE();
         end = buffer.getIntBE();
         decode_shape(buffer);
     }
 
-    public void decode_shape(Buffer buffer) {
+    void decode_shape(_Buffer buffer) {
         num_phases = buffer.getUnsignedByte();
         phase_dur = new int[num_phases];
         phase_peak = new int[num_phases];
@@ -47,7 +47,7 @@ public class Envelope {
         }
     }
 
-    public int step(int period) {
+    int step(int period) {
         if(ticks >= critical) {
             amp = phase_peak[phase_idx++] << 15;
             if(phase_idx >= num_phases)

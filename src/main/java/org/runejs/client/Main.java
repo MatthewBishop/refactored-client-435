@@ -1,9 +1,11 @@
 package org.runejs.client;
 
 import org.runejs.client.cache.CacheIndex;
+import org.runejs.client.cache._Dup;
 import org.runejs.client.audio.AreaSounds;
 import org.runejs.client.audio.MusicSystem;
 import org.runejs.client.audio.SoundSystem;
+import org.runejs.client.cache.AdStatic;
 import org.runejs.client.cache.CacheArchive;
 import org.runejs.client.cache.CacheFileChannel;
 import org.runejs.client.frame.ChatBox;
@@ -59,10 +61,6 @@ public class Main extends GameShell {
     public static int widgetSelected = 0;
     public static String[] playerActions = new String[5];
     public static Signlink signlink;
-    public static CacheIndex metaIndex;
-    public static CacheFileChannel dataChannel;
-    public static CacheFileChannel metaChannel;
-    public static CacheFileChannel[] indexChannels = new CacheFileChannel[13];
     public static int currentPort;
     private static int drawCount = 0;
 
@@ -544,17 +542,6 @@ public class Main extends GameShell {
             }
         }
         return result;
-    }
-
-    public static void method37(CacheArchive cacheArchive, int arg2) {
-        if (UpdateServer.crcTableBuffer == null) {
-            UpdateServer.method327(true, null, 255, 255, (byte) 0, 0);
-            Class24.aClass6_Sub1Array580[arg2] = cacheArchive;
-        } else {
-            UpdateServer.crcTableBuffer.currentPosition = 5 + arg2 * 4;
-            int i = UpdateServer.crcTableBuffer.getIntBE();
-            cacheArchive.requestLatestVersion(i);
-        }
     }
 
     public static void renderFlames() {
@@ -1702,7 +1689,7 @@ public class Main extends GameShell {
                 SceneCluster.packetBuffer.putIntBE(seeds[1]);
                 SceneCluster.packetBuffer.putIntBE(seeds[2]);
                 SceneCluster.packetBuffer.putIntBE(seeds[3]);
-                SceneCluster.packetBuffer.putIntBE(signlink.uid);
+                SceneCluster.packetBuffer.putIntBE(_Dup.uid);
                 SceneCluster.packetBuffer.putLongBE(RSString.nameToLong(Native.username.toString()));
                 SceneCluster.packetBuffer.method505(Native.password);
                 if (Configuration.RSA_ENABLED) {
@@ -1873,7 +1860,7 @@ public class Main extends GameShell {
     public void processGameLoop() {
         MovedStatics.pulseCycle++;
         handleUpdateServer();
-        Class13.handleRequests((byte) -91);
+        AdStatic.handleRequests((byte) -91);
         MusicSystem.handleMusic();
         SoundSystem.handleSounds();
         GameInterface.method639(122);
@@ -1955,7 +1942,7 @@ public class Main extends GameShell {
     }
 
     public void method40() {
-        if (MovedStatics.anInt813 >= 4) {
+        if (UpdateServer.anInt813 >= 4) {
             this.openErrorPage("js5crc");
             Class51.gameStatusCode = 1000;
         } else {
@@ -2041,20 +2028,20 @@ public class Main extends GameShell {
         MusicSystem.syncedStop(false);
         SoundSystem.stop();
         ActorDefinition.killUpdateServerSocket();
-        GenericTile.method947(-1);
+        AdStatic.method947(-1);
         do {
             try {
-                if (dataChannel != null)
-                    dataChannel.close();
-                if (indexChannels != null) {
-                    for (int i = 0; i < indexChannels.length; i++) {
-                        if (indexChannels[i] != null)
-                            indexChannels[i].close();
+                if (_Dup.dataChannel != null)
+                    _Dup.dataChannel.close();
+                if (_Dup.indexChannels != null) {
+                    for (int i = 0; i < _Dup.indexChannels.length; i++) {
+                        if (_Dup.indexChannels[i] != null)
+                            _Dup.indexChannels[i].close();
                     }
                 }
-                if (metaChannel == null)
+                if (_Dup.metaChannel == null)
                     break;
-                metaChannel.close();
+                _Dup.metaChannel.close();
             } catch (java.io.IOException ioexception) {
                 break;
             }
@@ -2073,22 +2060,7 @@ public class Main extends GameShell {
         GameInterface.method642(MouseHandler.gameCanvas, -10);
         RSRuntimeException.method1056(MouseHandler.gameCanvas, (byte) 70);
         RSCanvas.anInt57 = Signlink.anInt737;
-        try {
-            if (signlink.cacheDataAccessFile != null) {
-                dataChannel = new CacheFileChannel(signlink.cacheDataAccessFile, 5200);
-                for (int i = 0; i < 13; i++)
-                    indexChannels[i] = new CacheFileChannel(signlink.dataIndexAccessFiles[i], 6000);
-                metaChannel = new CacheFileChannel(signlink.metaIndexAccessFile, 6000);
-                metaIndex = new CacheIndex(255, dataChannel, metaChannel, 500000);
-                signlink.dataIndexAccessFiles = null;
-                signlink.metaIndexAccessFile = null;
-                signlink.cacheDataAccessFile = null;
-            }
-        } catch (java.io.IOException ioexception) {
-            metaIndex = null;
-            dataChannel = null;
-            metaChannel = null;
-        }
+        _Dup.startup();
         if (Class44.modewhere != 0)
             InteractiveObject.showFps = true;
         Class12.chatboxInterface = new GameInterface();

@@ -14,7 +14,7 @@ import javax.sound.midi.ShortMessage;
  * An implementation of a MidiPlayer. This is the code from Revision #435 which has been cleaned up, combined into a class and uses some comments from Dane who released a standalone MIDI player for 317..
  *
  */
-public class MidiPlayer implements Receiver {
+class MidiPlayer implements Receiver {
 
 	private static volatile boolean active = false;
 	private static int[] anIntArray889 = new int[128];
@@ -59,7 +59,7 @@ public class MidiPlayer implements Receiver {
 	/**
 	 * Creates a new {@link MidiPlayer}.
 	 */
-	public MidiPlayer() {
+	MidiPlayer() {
 		try {
 			receiver = MidiSystem.getReceiver();
 			sequencer = MidiSystem.getSequencer(false);
@@ -76,7 +76,7 @@ public class MidiPlayer implements Receiver {
 		/* empty */
 	}
 
-	public void play(byte[] arg0, boolean loop, int volume) {
+	void play(byte[] arg0, boolean loop, int volume) {
 		if (sequencer != null) {
 			try {
 				Sequence sequence = MidiSystem.getSequence(new ByteArrayInputStream(arg0));
@@ -91,13 +91,13 @@ public class MidiPlayer implements Receiver {
 		}
 	}
 
-	public void resetVolume(int volume) {
+	void resetVolume(int volume) {
 		if (null != sequencer) {
 			resetVolume(-1L, volume);
 		}
 	}
 
-	public void stop0() {
+	void stop0() {
 		if (sequencer != null) {
 			active = false;
 			sequencer.stop();
@@ -105,13 +105,13 @@ public class MidiPlayer implements Receiver {
 		}
 	}
 
-	public synchronized void setVolume(int volume, int velocity) {
+	synchronized void setVolume(int volume, int velocity) {
 		if (sequencer != null) {
 			setVolume(volume, velocity, -1L);
 		}
 	}
 
-	public void close0(byte arg0) {
+	void close0(byte arg0) {
 		if (null != sequencer) {
 			sequencer.close();
 			sequencer = null;
@@ -130,7 +130,7 @@ public class MidiPlayer implements Receiver {
 	 * @param data2 the data2
 	 * @param timeStamp
 	 */
-	public void send(int status, int data1, int data2, long timeStamp) {
+	void send(int status, int data1, int data2, long timeStamp) {
 		try {
 			ShortMessage shortmessage = new ShortMessage();
 			shortmessage.setMessage(status, data1, data2);
@@ -140,7 +140,7 @@ public class MidiPlayer implements Receiver {
 		}
 	}
 
-	public void setVolume(int volume, int velocity, long timeStamp) {
+	void setVolume(int volume, int velocity, long timeStamp) {
 		volume = (int) (volume * Math.pow(0.1, velocity * 5.0E-4) + 0.5);
 		if (volume != MidiPlayer.volume) {
 			MidiPlayer.volume = volume;
@@ -152,7 +152,7 @@ public class MidiPlayer implements Receiver {
 		}
 	}
 
-	public void resetVolume(long timeStamp, int volume) {
+	void resetVolume(long timeStamp, int volume) {
 		MidiPlayer.volume = volume;
 		for (int i = 0; i < 16; i++)
 			MidiPlayer.volumes[i] = 12800;
@@ -163,7 +163,7 @@ public class MidiPlayer implements Receiver {
 		}
 	}
 
-	public void reset(long timeStamp) {
+	void reset(long timeStamp) {
 		for (int i = 0; i < 128; i++) {
 			int i_6_ = MidiPlayer.anIntArray889[i];
 			MidiPlayer.anIntArray889[i] = 0;
@@ -195,7 +195,7 @@ public class MidiPlayer implements Receiver {
 	 * @param timeStamp
 	 * @return <code>true</code> if overriden, else <code>false</code>.
 	 */
-	public boolean send0(int status, int data1, int data2, long timeStamp) {
+	boolean send0(int status, int data1, int data2, long timeStamp) {
 		if ((status & 0xe0) == ShortMessage.NOTE_OFF) {
 			int i = 1 << (status & 0xf);
 			int i_8_ = MidiPlayer.anIntArray889[data1];

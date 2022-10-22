@@ -1,20 +1,20 @@
-package org.runejs.client.audio.core;
+package org.runejs.client.audio;
 
 /**
  * This is a duplicate class that was created so the audio engine will be standalone.
  *
  */
-public class Node {
+class _Node {
 
-    public long key;
-    public Node next;
-    public Node previous;
+   long key;
+   _Node next;
+   _Node previous;
 
-    public boolean hasPrevious() {
+   boolean hasPrevious() {
         return previous != null;
     }
 
-    public void remove() {
+   void remove() {
         if(previous != null) {
             previous.next = next;
             next.previous = previous;

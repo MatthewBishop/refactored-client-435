@@ -1,22 +1,22 @@
-package org.runejs.client.audio.core;
+package org.runejs.client.audio;
 
-public class Filter {
-    public static float _inv_unity;
-    public static int[][] coef = new int[2][8];
-    public static float[][] _coef = new float[2][8];
-    public static int inv_unity;
-    public int[][][] pair_phase = new int[2][2][4];
-    public int[] unity = new int[2];
-    public int[] num_pairs = new int[2];
-    public int[][][] pair_mag = new int[2][2][4];
+class Filter {
+    static float _inv_unity;
+    static int[][] coef = new int[2][8];
+    static float[][] _coef = new float[2][8];
+    static int inv_unity;
+    int[][][] pair_phase = new int[2][2][4];
+    int[] unity = new int[2];
+    int[] num_pairs = new int[2];
+    int[][][] pair_mag = new int[2][2][4];
 
 
-    public static float normalize(float F) {
+    static float normalize(float F) {
         float _f = 32.703197F * (float) Math.pow(2.0, F);
         return _f * 3.1415927F / 11025.0F;
     }
 
-    public void decode(Buffer buffer, Envelope envelope) {
+    void decode(_Buffer buffer, Envelope envelope) {
         int i = buffer.getUnsignedByte();
         num_pairs[0] = i >> 4;
         num_pairs[1] = i & 0xf;
@@ -47,13 +47,13 @@ public class Filter {
             unity[0] = unity[1] = 0;
     }
 
-    public float adapt_mag(int dir, int k, float t) {
+    float adapt_mag(int dir, int k, float t) {
         float f = pair_mag[dir][0][k] + t * (pair_mag[dir][1][k] - pair_mag[dir][0][k]);
         f *= 0.0015258789F;
         return 1.0F - (float) Math.pow(10.0, -f / 20.0F);
     }
 
-    public int compute(int dir, float arg1) {
+    int compute(int dir, float arg1) {
         if(dir == 0) {
             float _a0 = unity[0] + (unity[1] - unity[0]) * arg1;
             _a0 *= 0.0030517578F;
@@ -85,7 +85,7 @@ public class Filter {
         return num_pairs[dir] * 2;
     }
 
-    public float adapt_phase(int dir, int i, float t) {
+    float adapt_phase(int dir, int i, float t) {
         float f = pair_phase[dir][0][i] + t * (pair_phase[dir][1][i] - pair_phase[dir][0][i]);
         f *= 1.2207031E-4F;
         return normalize(f);

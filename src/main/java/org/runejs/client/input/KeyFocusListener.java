@@ -1,6 +1,7 @@
 package org.runejs.client.input;
 
 import org.runejs.client.cache.CacheArchive;
+import org.runejs.client.cache.JagCRC;
 import org.runejs.client.cache.media.gameInterface.GameInterface;
 import org.runejs.client.frame.ScreenController;
 import org.runejs.client.frame.ScreenMode;
@@ -31,22 +32,7 @@ import java.awt.event.KeyListener;
 
 public class KeyFocusListener implements KeyListener, FocusListener {
     public static LinkedList aLinkedList_1278 = new LinkedList();
-    public static int[] crc8LookupTable = new int[256];
     public static ProducingGraphicsBuffer aProducingGraphicsBuffer_1285;
-
-    static {
-        for (int divident = 0; divident < 256; divident++) {
-            int currentByte = divident;
-            for (int bit = 0; bit < 8; bit++) {
-                if ((currentByte & 0x1) != 1) {
-                    currentByte >>>= 1;
-                } else {
-                    currentByte = -306674912 ^ currentByte >>> 1;
-                }
-            }
-            crc8LookupTable[divident] = currentByte;
-        }
-    }
 
     public static void draw3dScreen() {
         Wall.renderSplitPrivateMessages();

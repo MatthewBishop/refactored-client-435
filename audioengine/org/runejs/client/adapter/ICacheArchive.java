@@ -1,4 +1,4 @@
-package org.runejs.client.audio.core;
+package org.runejs.client.adapter;
 
 public interface ICacheArchive {
 

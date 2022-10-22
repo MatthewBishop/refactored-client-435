@@ -1,7 +1,8 @@
 package org.runejs.client.util;
 
-import org.runejs.client.SizedAccessFile;
 import org.runejs.client.GameShell;
+import org.runejs.client.cache.SizedAccessFile;
+import org.runejs.client.cache._Dup;
 import org.runejs.Configuration;
 
 import java.io.*;
@@ -12,26 +13,21 @@ import java.net.URL;
 
 public class Signlink implements Runnable {
     public static Method aMethod724;
-    private static String homeDirectory;
+    public static String homeDirectory;
     public static Method aMethod729;
     public static String javaVendor;
     public static int anInt737 = 3;
     public static String javaVersion;
     public boolean killed;
-    public int uid = 0;
-    public SizedAccessFile[] dataIndexAccessFiles;
     public SignlinkNode current = null;
-    public SizedAccessFile metaIndexAccessFile;
     public InetAddress netAddress;
     public SignlinkNode next = null;
     public Thread signLinkThread;
-    public String cachePath = null;
-    public SizedAccessFile cacheDataAccessFile;
     public GameShell gameShell;
 
     public Signlink(boolean loadCache, GameShell gameShell, InetAddress netAddress, int fileStoreId, String cacheFolder, int cacheIndexes) throws IOException {
-        metaIndexAccessFile = null;
-        cacheDataAccessFile = null;
+        _Dup.metaIndexAccessFile = null;
+        _Dup.cacheDataAccessFile = null;
         this.gameShell = gameShell;
         this.netAddress = netAddress;
         javaVersion = "1.1";
@@ -62,13 +58,7 @@ public class Signlink implements Runnable {
             /* empty */
         }
         if(loadCache) {
-            findCachePath();
-            cacheDataAccessFile = new SizedAccessFile(new File(cachePath + "main_file_cache.dat2"), "rw", 52428800L);
-            dataIndexAccessFiles = new SizedAccessFile[cacheIndexes];
-            for(int currentIndex = 0; currentIndex < cacheIndexes; currentIndex++)
-                dataIndexAccessFiles[currentIndex] = new SizedAccessFile(new File(cachePath + "main_file_cache.idx" + currentIndex), "rw", 1048576L);
-            metaIndexAccessFile = new SizedAccessFile(new File(cachePath + "main_file_cache.idx255"), "rw", 1048576L);
-            initializeUniqueIdentifier();
+        	_Dup.loadCache(cacheIndexes);
         }
         killed = false;
         signLinkThread = new Thread(this);
@@ -77,7 +67,7 @@ public class Signlink implements Runnable {
         signLinkThread.start();
 
     }
-
+    
     public void killSignlinkThread() {
         synchronized(this) {
             killed = true;
@@ -88,31 +78,7 @@ public class Signlink implements Runnable {
         } catch(InterruptedException interruptedexception) {
             /* empty */
         }
-        if(cacheDataAccessFile != null) {
-            try {
-                cacheDataAccessFile.close();
-            } catch(IOException ioexception) {
-                /* empty */
-            }
-        }
-        if(metaIndexAccessFile != null) {
-            try {
-                metaIndexAccessFile.close();
-            } catch(IOException ioexception) {
-                /* empty */
-            }
-        }
-        if(dataIndexAccessFiles != null) {
-            for(int i = 0; i < dataIndexAccessFiles.length; i++) {
-                if(dataIndexAccessFiles[i] != null) {
-                    try {
-                        dataIndexAccessFiles[i].close();
-                    } catch(IOException ioexception) {
-                        /* empty */
-                    }
-                }
-            }
-        }
+        _Dup.kill();
     }
 
     public SignlinkNode method386(Class[] argumentTypes, String functionName, Class functionType) {
@@ -139,26 +105,6 @@ public class Signlink implements Runnable {
             this.notify();
         }
         return signlinkNode;
-    }
-
-    public void initializeUniqueIdentifier() {
-        try {
-            File file = new File(cachePath + "uid.dat");
-            if(!file.exists() || file.length() < 4) {
-                DataOutputStream dataoutputstream = new DataOutputStream(new FileOutputStream(cachePath + "uid.dat"));
-                dataoutputstream.writeInt((int) (9.9999999E7 * Math.random()));
-                dataoutputstream.close();
-            }
-        } catch(Exception exception) {
-            /* empty */
-        }
-        try {
-            DataInputStream datainputstream = new DataInputStream(new FileInputStream(cachePath + "uid.dat"));
-            uid = 1 + datainputstream.readInt();
-            datainputstream.close();
-        } catch(Exception exception) {
-            /* empty */
-        }
     }
 
     public void run() {
@@ -236,47 +182,6 @@ public class Signlink implements Runnable {
         if(arg0 < 81)
             return null;
         return null;
-
-    }
-
-    public void findCachePath() {
-        if (homeDirectory == null) {
-            homeDirectory = "~/";
-        }
-
-        String[] cacheLocations = {
-                "c:/rsrcache/",
-                "/rsrcache/",
-                "c:/windows/",
-                "c:/winnt/",
-                "d:/windows/",
-                "d:/winnt/",
-                "e:/windows/",
-                "e:/winnt/",
-                "f:/windows/",
-                "f:/winnt/",
-                "c:/",
-                homeDirectory,
-                "/tmp/",
-                ""
-        };
-
-        for (String cacheLocation : cacheLocations) {
-            try {
-                if (cacheLocation.length() > 0) {
-                    File file = new File(cacheLocation);
-                    if (!file.exists()) {
-                        continue;
-                    }
-                }
-                File file = new File(cacheLocation + Configuration.CACHE_NAME);
-                if (file.exists() || file.mkdir()) {
-                    cachePath = file.getPath() + "/";
-                    return;
-                }
-            } catch (Exception exception) { }
-        }
-        throw new RuntimeException();
 
     }
 }

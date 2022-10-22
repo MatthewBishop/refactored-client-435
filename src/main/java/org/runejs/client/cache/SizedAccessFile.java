@@ -1,4 +1,4 @@
-package org.runejs.client;
+package org.runejs.client.cache;
 
 import java.io.EOFException;
 import java.io.File;

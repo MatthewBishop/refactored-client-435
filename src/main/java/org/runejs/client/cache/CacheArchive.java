@@ -1,15 +1,9 @@
 package org.runejs.client.cache;
 
-import org.runejs.client.*;
-import org.runejs.client.audio.core.ICacheArchive;
+import org.runejs.client.adapter.ICacheArchive;
 import org.runejs.client.cache.bzip.BZip;
-import org.runejs.client.cache.def.GameObjectDefinition;
 import org.runejs.client.io.Buffer;
-import org.runejs.client.media.renderable.actor.Npc;
-import org.runejs.client.media.renderable.actor.Player;
-import org.runejs.client.net.PacketBuffer;
 import org.runejs.client.net.UpdateServer;
-import org.runejs.client.node.Class40_Sub6;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
@@ -58,10 +52,7 @@ public class CacheArchive implements ICacheArchive {
     public int archiveCrcValue;
     public boolean aBoolean1811;
     public CacheIndex dataIndex;
-
-    static {
-        Player.npcs = new Npc[32768];
-    }
+	public static int anInt1195 = 0;
 
     public CacheArchive(CacheIndex dataIndex, CacheIndex metaIndex, int cacheIndexId, boolean arg3, boolean arg4, boolean arg5) {
         aBoolean220 = arg4;
@@ -70,15 +61,15 @@ public class CacheArchive implements ICacheArchive {
         aBoolean1811 = arg5;
         this.metaIndex = metaIndex;
         this.cacheIndexId = cacheIndexId;
-        Main.method37(this, this.cacheIndexId);
+        UpdateServer.method37(this, this.cacheIndexId);
     }
 
     public static CacheArchive loadArchive(int cacheIndexId, boolean arg1, boolean arg2, boolean arg4) {
         CacheIndex dataIndex = null;
-        if(Main.dataChannel != null) {
-            dataIndex = new CacheIndex(cacheIndexId, Main.dataChannel, Main.indexChannels[cacheIndexId], 1000000);
+        if(_Dup.dataChannel != null) {
+            dataIndex = new CacheIndex(cacheIndexId, _Dup.dataChannel, _Dup.indexChannels[cacheIndexId], 1000000);
         }
-        return new CacheArchive(dataIndex, Main.metaIndex, cacheIndexId, arg2, arg4, arg1);
+        return new CacheArchive(dataIndex, _Dup.metaIndex, cacheIndexId, arg2, arg4, arg1);
     }
 
     public static byte[] decompress(byte[] cacheData) {
@@ -86,13 +77,13 @@ public class CacheArchive implements ICacheArchive {
         int type = buffer.getUnsignedByte();
         int length = buffer.getIntBE();
 
-        if(length < 0 || Class51.anInt1195 != 0 && Class51.anInt1195 < length) {
+        if(length < 0 || CacheArchive.anInt1195 != 0 && CacheArchive.anInt1195 < length) {
             throw new RuntimeException();
         }
 
         if(type != 0) {
             int decompressedLength = buffer.getIntBE();
-            if(decompressedLength < 0 || Class51.anInt1195 != 0 && decompressedLength > Class51.anInt1195) {
+            if(decompressedLength < 0 || CacheArchive.anInt1195 != 0 && decompressedLength > CacheArchive.anInt1195) {
                 return new byte[100];
                 //throw new RuntimeException();
             }
@@ -125,7 +116,7 @@ public class CacheArchive implements ICacheArchive {
     }
 
     public static int calculateFullCrc8(byte[] data, int size) {
-        return MovedStatics.calculateCrc8(0, size, data);
+        return JagCRC.calculateCrc8(0, size, data);
     }
 
     public void method196(boolean arg0, int arg2, boolean arg3, byte[] data) {
@@ -134,7 +125,7 @@ public class CacheArchive implements ICacheArchive {
                 throw new RuntimeException();
             }
             if(metaIndex != null) {
-                Class40_Sub6.method1055(data, metaIndex, cacheIndexId);
+                AdStatic.method1055(data, metaIndex, cacheIndexId);
             }
             decodeArchive(data);
             method199();
@@ -142,7 +133,7 @@ public class CacheArchive implements ICacheArchive {
             data[data.length - 2] = (byte) (anIntArray224[arg2] >> 8);
             data[data.length + -1] = (byte) anIntArray224[arg2];
             if(dataIndex != null) {
-                Class40_Sub6.method1055(data, dataIndex, arg2);
+                AdStatic.method1055(data, dataIndex, arg2);
                 aBooleanArray1796[arg2] = true;
             }
             if(arg3) {
@@ -156,7 +147,7 @@ public class CacheArchive implements ICacheArchive {
             return 100;
         if(aByteArrayArray212 != null)
             return 99;
-        int i = MovedStatics.calculateDataLoaded(255, cacheIndexId);
+        int i = CacheArchive.calculateDataLoaded(255, cacheIndexId);
         if(i >= 100)
             i = 99;
         return i;
@@ -210,13 +201,13 @@ public class CacheArchive implements ICacheArchive {
 
     public void method177(int arg1) {
         if(dataIndex != null && aBooleanArray1796 != null && aBooleanArray1796[arg1])
-            GameObjectDefinition.method602(this, arg1, dataIndex);
+            AdStatic.method602(this, arg1, dataIndex);
         else
             UpdateServer.method327(true, this, cacheIndexId, arg1, (byte) 2, anIntArray252[arg1]);
     }
 
     public void method174(int arg0) {
-        MovedStatics.method399(cacheIndexId, arg0);
+        UpdateServer.method399(cacheIndexId, arg0);
     }
 
     public void method199() {
@@ -229,7 +220,7 @@ public class CacheArchive implements ICacheArchive {
             anInt1797 = -1;
             for(int i_2_ = 0; aBooleanArray1796.length > i_2_; i_2_++) {
                 if(anIntArray261[i_2_] > 0) {
-                    PacketBuffer.method513(i_2_, this, dataIndex, (byte) -28);
+                    AdStatic.method513(i_2_, this, dataIndex, (byte) -28);
                     anInt1797 = i_2_;
                 }
             }
@@ -243,7 +234,7 @@ public class CacheArchive implements ICacheArchive {
         if(metaIndex == null)
             UpdateServer.method327(true, this, 255, cacheIndexId, (byte) 0, archiveCrcValue);
         else
-            GameObjectDefinition.method602(this, cacheIndexId, metaIndex);
+            AdStatic.method602(this, cacheIndexId, metaIndex);
     }
 
     public int method201(int arg0) {
@@ -251,7 +242,7 @@ public class CacheArchive implements ICacheArchive {
             return 100;
         if(aBooleanArray1796[arg0])
             return 100;
-        return MovedStatics.calculateDataLoaded(cacheIndexId, arg0);
+        return CacheArchive.calculateDataLoaded(cacheIndexId, arg0);
     }
 
     public int method202() {
@@ -271,8 +262,8 @@ public class CacheArchive implements ICacheArchive {
     public byte[] method170(String arg0, String arg1) {
         arg1 = arg1.toLowerCase();
         arg0 = arg0.toLowerCase();
-        int i = nameHashCollection.method882(RSString.stringHash(arg1));
-        int i_0_ = aNameHashCollectionArray217[i].method882(RSString.stringHash(arg0));
+        int i = nameHashCollection.method882(_Dup.stringHash(arg1));
+        int i_0_ = aNameHashCollectionArray217[i].method882(_Dup.stringHash(arg0));
 
         return getFile(i, i_0_);
     }
@@ -394,7 +385,7 @@ public class CacheArchive implements ICacheArchive {
 
     public int getFileId(int hash, String name) {
         name = name.toLowerCase();
-        return aNameHashCollectionArray217[hash].method882(RSString.stringHash(name));
+        return aNameHashCollectionArray217[hash].method882(_Dup.stringHash(name));
     }
 
     public boolean method181(int arg0, int[] arg2) {
@@ -417,7 +408,7 @@ public class CacheArchive implements ICacheArchive {
             is_21_ = aByteArrayArray212[arg0];
         else {
             is_21_ = new byte[aByteArrayArray212[arg0].length];
-            Class18.method278(aByteArrayArray212[arg0], 0, is_21_, 0, is_21_.length);
+            _Dup.method278(aByteArrayArray212[arg0], 0, is_21_, 0, is_21_.length);
             Buffer class40_sub1 = new Buffer(is_21_);
             class40_sub1.method483(arg2, class40_sub1.buffer.length, 5);
         }
@@ -450,7 +441,7 @@ public class CacheArchive implements ICacheArchive {
                 int i_32_ = 0;
                 for(int i_33_ = 0; i_33_ < i; i_33_++) {
                     i_32_ += class40_sub1.getIntBE();
-                    Class18.method278(is_22_, i_30_, is[is_19_[i_33_]], is_25_[i_33_], i_32_);
+                    _Dup.method278(is_22_, i_30_, is[is_19_[i_33_]], is_25_[i_33_], i_32_);
                     is_25_[i_33_] += i_32_;
                     i_30_ += i_32_;
                 }
@@ -478,7 +469,7 @@ public class CacheArchive implements ICacheArchive {
 
     public int getHash(String arg1) {
         arg1 = arg1.toLowerCase();
-        return nameHashCollection.method882(RSString.stringHash(arg1));
+        return nameHashCollection.method882(_Dup.stringHash(arg1));
     }
 
     public boolean method185(byte arg0) {
@@ -543,15 +534,22 @@ public class CacheArchive implements ICacheArchive {
     public boolean method194(String arg0, String arg1) {
         arg0 = arg0.toLowerCase();
         arg1 = arg1.toLowerCase();
-        int i = nameHashCollection.method882(RSString.stringHash(arg0));
-        int i_49_ = aNameHashCollectionArray217[i].method882(RSString.stringHash(arg1));
+        int i = nameHashCollection.method882(_Dup.stringHash(arg0));
+        int i_49_ = aNameHashCollectionArray217[i].method882(_Dup.stringHash(arg1));
         return loaded(i, i_49_);
     }
 
     public void method195(int arg0, String arg1) {
         arg1 = arg1.toLowerCase();
-        int i = nameHashCollection.method882(RSString.stringHash(arg1));
+        int i = nameHashCollection.method882(_Dup.stringHash(arg1));
         if(arg0 == 0 && i >= 0)
             method174(i);
     }
+
+	public static int calculateDataLoaded(int arg1, int arg2) {
+	    long l = (long) ((arg1 << 16) + arg2);
+	    if (UpdateServer.aUpdateServerNode_2250 == null || UpdateServer.aUpdateServerNode_2250.key != l)
+	        return 0;
+	    return 1 + UpdateServer.aClass40_Sub1_2752.currentPosition * 99 / (UpdateServer.aClass40_Sub1_2752.buffer.length + -UpdateServer.aUpdateServerNode_2250.aByte2758);
+	}
 }

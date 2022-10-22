@@ -9,7 +9,6 @@ public class IdentityKit extends CachedNode {
     public static HuffmanEncoding aHuffmanEncoding_2590;
     public static int anInt2591 = 0;
     public static int anInt2598 = 0;
-    public static LinkedList aLinkedList_2604 = new LinkedList();
     public static int height;
     public static int anInt2613 = 0;
     public static boolean membersServer;

@@ -9,7 +9,6 @@ import org.runejs.client.scene.SceneCluster;
 import org.runejs.client.util.BitUtils;
 
 public class CollisionMap {
-    public static Object anObject162 = new Object();
     public static int currentHoveredWidgetChildId = -1;
     public static int anInt165 = 0;
     public static int menuHeight;

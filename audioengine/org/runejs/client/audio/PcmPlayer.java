@@ -6,7 +6,7 @@ import javax.sound.sampled.DataLine;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 
-public class PcmPlayer implements Runnable {
+class PcmPlayer implements Runnable {
 
 	private static int[] samples = new int[256];
 	private boolean aBoolean1820;
@@ -27,7 +27,7 @@ public class PcmPlayer implements Runnable {
 	private AudioFormat audioFormat;
 	private byte[] byteSamples = new byte[512];
 
-	public PcmPlayer() throws Exception {
+	PcmPlayer() throws Exception {
 		SoundSystem.timeMs = System.currentTimeMillis();
 		aLong1821 = 0L;
 		anInt1827 = 256;
@@ -123,7 +123,7 @@ public class PcmPlayer implements Runnable {
 		}
 	}
 
-	public void method222(int arg1) throws Exception {
+	void method222(int arg1) throws Exception {
 		this.anInt1831 = arg1;
 		this.method219(System.currentTimeMillis());
         // Start thread
@@ -133,7 +133,7 @@ public class PcmPlayer implements Runnable {
         thread.setPriority(10);
 	}
 
-	public void stop() {
+	void stop() {
 		synchronized (this) {
 			aBoolean1820 = true;
 		}
@@ -210,7 +210,7 @@ public class PcmPlayer implements Runnable {
 		}
 	}
 
-	public synchronized void method212(long arg0) {
+	synchronized void method212(long arg0) {
 		method221(arg0);
 		if (aLong1832 < arg0)
 			aLong1832 = arg0;
@@ -287,7 +287,7 @@ public class PcmPlayer implements Runnable {
 	private static int anInt2866;
 	private static int anInt2081;
 
-	public static void handle(int elapsed) {
+	static void handle(int elapsed) {
 		PcmPlayer.anInt2081 += SoundSystem.SAMPLE_RATE * elapsed;
 		int i_0_ = (-(2000 * SoundSystem.SAMPLE_RATE) + PcmPlayer.anInt2081) / 1000;
 		if (i_0_ > 0) {

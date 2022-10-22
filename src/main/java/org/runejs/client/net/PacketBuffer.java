@@ -1,14 +1,10 @@
 package org.runejs.client.net;
 
 import org.runejs.client.MovedStatics;
-import org.runejs.client.RSCanvas;
 import org.runejs.client.RSString;
-import org.runejs.client.cache.CacheIndex;
-import org.runejs.client.cache.CacheArchive;
 import org.runejs.client.cache.media.gameInterface.GameInterface;
 import org.runejs.client.frame.ChatBox;
 import org.runejs.client.io.Buffer;
-import org.runejs.client.node.Class40_Sub6;
 import org.runejs.client.scene.SceneCluster;
 
 public class PacketBuffer extends Buffer {
@@ -24,21 +20,6 @@ public class PacketBuffer extends Buffer {
     public PacketBuffer(int arg0) {
         super(arg0);
     }
-
-    public static void method513(int arg0, CacheArchive arg1, CacheIndex arg2, byte arg3) {
-        Class40_Sub6 class40_sub6 = new Class40_Sub6();
-        class40_sub6.anInt2112 = 1;
-        class40_sub6.key = (long) arg0;
-        class40_sub6.cacheIndex = arg2;
-        class40_sub6.cacheArchive = arg1;
-        synchronized(RSCanvas.aLinkedList_53) {
-            if(arg3 != -28)
-                method521(false, -84, -120);
-            RSCanvas.aLinkedList_53.pushBack(class40_sub6, -72);
-        }
-        MovedStatics.method332(600);
-    }
-
 
     public static void closeAllWidgets() {
         SceneCluster.packetBuffer.putPacket(176);

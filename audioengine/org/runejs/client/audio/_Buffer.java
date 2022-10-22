@@ -1,30 +1,30 @@
-package org.runejs.client.audio.core;
+package org.runejs.client.audio;
 
 /**
  * This is a duplicate class that was created so the audio engine will be standalone.
  *
  */
-public class Buffer {
+class _Buffer {
 
-    public int currentPosition;
-    public byte[] buffer;
+   int currentPosition;
+   byte[] buffer;
 
-    public Buffer(byte[] buffer) {
+   _Buffer(byte[] buffer) {
         currentPosition = 0;
         this.buffer = buffer;
 
     }
 
-    public int getUnsignedByte() {
+   int getUnsignedByte() {
         return 0xff & buffer[currentPosition++];
     }
 
-    public int getUnsignedShortBE() {
+   int getUnsignedShortBE() {
         currentPosition += 2;
         return ((0xff & buffer[currentPosition - 2]) << 8) + (buffer[currentPosition - 1] & 0xff);
     }
 
-    public int getUnsignedSmart() {
+   int getUnsignedSmart() {
         int peek = buffer[currentPosition] & 0xff;
         if(peek >= 128) {
             return -49152 + getUnsignedShortBE();
@@ -32,7 +32,7 @@ public class Buffer {
         return getUnsignedByte() + -64;
     }
 
-    public int getSmart() {
+   int getSmart() {
         int i = buffer[currentPosition] & 0xff;
         if(i >= 128) {
             return getUnsignedShortBE() + -32768;
@@ -40,7 +40,7 @@ public class Buffer {
         return getUnsignedByte();
     }
 
-    public int getIntBE() {
+   int getIntBE() {
         currentPosition += 4;
         return (0xff & buffer[currentPosition - 1]) + (buffer[currentPosition - 2] << 8 & 0xff00) + (buffer[currentPosition - 3] << 16 & 0xff0000) + (~0xffffff & buffer[currentPosition - 4] << 24);
     }

@@ -1,13 +1,13 @@
-package org.runejs.client.audio.core;
+package org.runejs.client.audio;
 
-import org.runejs.client.audio.RawSound;
+import org.runejs.client.adapter.ICacheArchive;
 
-public class Effect {
-    public Instrument[] instruments;
-    public int loop_begin;
-    public int loop_end;
+class Effect {
+    Instrument[] instruments;
+    int loop_begin;
+    int loop_end;
 
-    public Effect(Buffer arg0) {
+    Effect(_Buffer arg0) {
         instruments = new Instrument[10];
         for(int i = 0; i < 10; i++) {
             int i_10_ = arg0.getUnsignedByte();
@@ -21,18 +21,18 @@ public class Effect {
         loop_end = arg0.getUnsignedShortBE();
     }
 
-    public Effect() {
+    Effect() {
         instruments = new Instrument[10];
     }
 
-    public static Effect readSoundEffect(ICacheArchive arg0, int arg1, int arg2) {
+    static Effect readSoundEffect(ICacheArchive arg0, int arg1, int arg2) {
         byte[] is = arg0.getFile(arg1, arg2);
         if(is == null)
             return null;
-        return new Effect(new Buffer(is));
+        return new Effect(new _Buffer(is));
     }
 
-    public byte[] method426() {
+    byte[] method426() {
         int i = 0;
         for(int i_2_ = 0; i_2_ < 10; i_2_++) {
             if(instruments[i_2_] != null && instruments[i_2_].duration + instruments[i_2_].begin > i)
@@ -58,7 +58,7 @@ public class Effect {
         return is;
     }
 
-    public int delay() {
+    int delay() {
         int offset = 0x98967f;
         for(int k = 0; k < 10; k++) {
             if(instruments[k] != null && instruments[k].begin / 20 < offset)
@@ -79,7 +79,7 @@ public class Effect {
         return offset;
     }
 
-    public RawSound method428() {
+    RawSound method428() {
         byte[] is = method426();
         return new RawSound(22050, is, 22050 * loop_begin / 1000, 22050 * loop_end / 1000);
     }

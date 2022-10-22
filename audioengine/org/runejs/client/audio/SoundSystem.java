@@ -1,7 +1,6 @@
 package org.runejs.client.audio;
 
-import org.runejs.client.audio.core.Effect;
-import org.runejs.client.audio.core.ICacheArchive;
+import org.runejs.client.adapter.ICacheArchive;
 
 public class SoundSystem {
 
@@ -21,7 +20,7 @@ public class SoundSystem {
 	private static int[] soundVolume = new int[50];
 
 	private static int areaSoundEffectVolume = 127;
-	public static int getAreaSoundEffectVolume() {
+	static int getAreaSoundEffectVolume() {
 		return areaSoundEffectVolume;
 	}
 
@@ -207,15 +206,15 @@ public class SoundSystem {
 			SoundSystem.areaSoundEffectVolume = 0;
 	}
 
-	public static Effect readSoundEffect(int soundEffectId) {
+	static Effect readSoundEffect(int soundEffectId) {
 		return Effect.readSoundEffect(SoundSystem.soundEffectCacheArchive, soundEffectId, 0);
 	}
 
-	public static void removeSubStream(RawPcmStream stream) {
+	static void removeSubStream(RawPcmStream stream) {
 		SoundSystem.pcmStreamMixer.removeSubStream(stream);		
 	}
 
-	public static RawPcmStream addEffect(Effect effect, int volume, int numLoops) {
+	static RawPcmStream addEffect(Effect effect, int volume, int numLoops) {
 		RawSound sound = effect.method428();
 		RawPcmStream stream = RawPcmStream.create(sound, 100, volume);
 		stream.setNumLoops(numLoops);
