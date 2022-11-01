@@ -3,8 +3,8 @@ package org.runejs.client.io;
 import org.runejs.client.MovedStatics;
 import org.runejs.client.RSString;
 import org.runejs.client.node.NodeCache;
-import org.runejs.client.cache.CRC32;
 import org.runejs.client.cache.CacheArchive;
+import org.runejs.client.cache.JCRC32;
 import org.runejs.client.cache.media.IndexedImage;
 import org.runejs.client.node.Node;
 import org.runejs.client.scene.InteractiveObject;
@@ -131,7 +131,7 @@ public class Buffer extends Node {
     }
 
     public int putCrc8(int value) {
-        int crc = CRC32.calculateCrc8(value, currentPosition, buffer);
+        int crc = JCRC32.calculateCrc8(value, currentPosition, buffer);
         putIntBE(crc);
         return crc;
     }

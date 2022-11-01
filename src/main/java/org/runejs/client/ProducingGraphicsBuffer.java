@@ -2,7 +2,6 @@ package org.runejs.client;
 
 import org.runejs.client.node.NodeCache;
 import org.runejs.client.media.Rasterizer;
-import org.runejs.client.util.SignlinkNode;
 
 import java.awt.*;
 
@@ -11,7 +10,6 @@ public abstract class ProducingGraphicsBuffer {
     public static int anInt1623 = 0;
     public static int oneMouseButton = 0;
     public static ProducingGraphicsBuffer aProducingGraphicsBuffer_1631;
-    public static SignlinkNode updateServerSignlinkNode;
     public static int anInt1634 = 0;
     public static int anInt1637 = 0;
     public static ProducingGraphicsBuffer muteButton;

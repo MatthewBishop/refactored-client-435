@@ -23,7 +23,6 @@ public class ISAAC {
      */
     private static final int GOLDEN_RATIO = 0x9e3779b9;
 
-    public static int nextAttempt = 0;
     public static NodeCache cachedActorDefinitions = new NodeCache(64);
     public static boolean aBoolean512;
     public static NodeCache aClass9_516 = new NodeCache(64);

@@ -3,18 +3,15 @@ package org.runejs.client.cache;
 import java.io.IOException;
 import java.net.Socket;
 
-import org.runejs.client.Class29;
 import org.runejs.client.Class51;
 import org.runejs.client.GameShell;
 import org.runejs.client.GameSocket;
 import org.runejs.client.Main;
-import org.runejs.client.MovedStatics;
-import org.runejs.client.ProducingGraphicsBuffer;
 import org.runejs.client.cache.def.OverlayDefinition;
 import org.runejs.client.io.Buffer;
-import org.runejs.client.net.ISAAC;
 import org.runejs.client.net.UpdateServer;
 import org.runejs.client.scene.util.CollisionMap;
+import org.runejs.client.util.SignlinkNode;
 
 public class CacheArchiveSystem {
 
@@ -26,61 +23,61 @@ public class CacheArchiveSystem {
 	        if (UpdateServer.ioExceptions >= 4) {
 	            if (Class51.gameStatusCode > 5) {
 	                UpdateServer.ioExceptions = 3;
-	                ISAAC.nextAttempt = 3000;
+	                CacheArchiveSystem.nextAttempt = 3000;
 	            } else {
 	            	GameShell.openErrorPage("js5io");
 	                Class51.gameStatusCode = 1000;
 	                return;
 	            }
 	        }
-	        if (ISAAC.nextAttempt-- <= 0) {
+	        if (CacheArchiveSystem.nextAttempt-- <= 0) {
 	            do {
 	                try {
-	                    if (MovedStatics.connectionStage == 0) {
-	                        ProducingGraphicsBuffer.updateServerSignlinkNode = Main.signlink.createSocketNode(Main.currentPort);
-	                        MovedStatics.connectionStage++;
+	                    if (CacheArchiveSystem.connectionStage == 0) {
+	                        CacheArchiveSystem.updateServerSignlinkNode = Main.signlink.createSocketNode(Main.currentPort);
+	                        CacheArchiveSystem.connectionStage++;
 	                    }
-	                    if (MovedStatics.connectionStage == 1) {
-	                        if (ProducingGraphicsBuffer.updateServerSignlinkNode.status == 2) {
+	                    if (CacheArchiveSystem.connectionStage == 1) {
+	                        if (CacheArchiveSystem.updateServerSignlinkNode.status == 2) {
 	                            CacheArchiveSystem.js5error(-1);
 	                            break;
 	                        }
-	                        if (ProducingGraphicsBuffer.updateServerSignlinkNode.status == 1)
-	                            MovedStatics.connectionStage++;
+	                        if (CacheArchiveSystem.updateServerSignlinkNode.status == 1)
+	                            CacheArchiveSystem.connectionStage++;
 	                    }
-	                    if (MovedStatics.connectionStage == 2) {
-	                        Class29.updateServerSocket = new GameSocket((Socket) ProducingGraphicsBuffer.updateServerSignlinkNode.value, Main.signlink);
+	                    if (CacheArchiveSystem.connectionStage == 2) {
+	                        CacheArchiveSystem.updateServerSocket = new GameSocket((Socket) CacheArchiveSystem.updateServerSignlinkNode.value, Main.signlink);
 	                        Buffer buffer = new Buffer(5);
 	                        buffer.putByte(15);
 	                        buffer.putIntBE(435); // Cache revision
-	                        Class29.updateServerSocket.sendDataFromBuffer(5, 0, buffer.buffer);
-	                        MovedStatics.connectionStage++;
-	                        MovedStatics.handShakeTime = System.currentTimeMillis();
+	                        CacheArchiveSystem.updateServerSocket.sendDataFromBuffer(5, 0, buffer.buffer);
+	                        CacheArchiveSystem.connectionStage++;
+	                        CacheArchiveSystem.handShakeTime = System.currentTimeMillis();
 	                    }
-	                    if (MovedStatics.connectionStage == 3) {
-	                        if (Class51.gameStatusCode > 5 && Class29.updateServerSocket.inputStreamAvailable() <= 0) {
-	                            if (System.currentTimeMillis() + -MovedStatics.handShakeTime > 30000L) {
+	                    if (CacheArchiveSystem.connectionStage == 3) {
+	                        if (Class51.gameStatusCode > 5 && CacheArchiveSystem.updateServerSocket.inputStreamAvailable() <= 0) {
+	                            if (System.currentTimeMillis() + -CacheArchiveSystem.handShakeTime > 30000L) {
 	                                CacheArchiveSystem.js5error(-2);
 	                                break;
 	                            }
 	                        } else {
-	                            int i = Class29.updateServerSocket.read();
+	                            int i = CacheArchiveSystem.updateServerSocket.read();
 	                            if (i != 0) {
 	                                CacheArchiveSystem.js5error(i);
 	                                break;
 	                            }
-	                            MovedStatics.connectionStage++;
+	                            CacheArchiveSystem.connectionStage++;
 	                        }
 	                    }
-	                    if (MovedStatics.connectionStage != 4)
+	                    if (CacheArchiveSystem.connectionStage != 4)
 	                        break;
 	
-	                    UpdateServer.handleUpdateServerConnection(Class29.updateServerSocket, Class51.gameStatusCode > 20);
+	                    UpdateServer.handleUpdateServerConnection(CacheArchiveSystem.updateServerSocket, Class51.gameStatusCode > 20);
 	
-	                    ProducingGraphicsBuffer.updateServerSignlinkNode = null;
-	                    MovedStatics.connectionStage = 0;
-	                    Class29.updateServerSocket = null;
-	                    MovedStatics.js5Errors = 0;
+	                    CacheArchiveSystem.updateServerSignlinkNode = null;
+	                    CacheArchiveSystem.connectionStage = 0;
+	                    CacheArchiveSystem.updateServerSocket = null;
+	                    CacheArchiveSystem.js5Errors = 0;
 	                } catch (java.io.IOException ioexception) {
 	                    ioexception.printStackTrace();
 	                    CacheArchiveSystem.js5error(-3);
@@ -92,34 +89,41 @@ public class CacheArchiveSystem {
 	    }
 	}
 
-	public static void js5error(int arg1) {
+	private static void js5error(int arg1) {
 	    if (Main.currentPort != OverlayDefinition.gameServerPort)
 	        Main.currentPort = OverlayDefinition.gameServerPort;
 	    else
 	        Main.currentPort = CollisionMap.someOtherPort;
-	    Class29.updateServerSocket = null;
-	    ProducingGraphicsBuffer.updateServerSignlinkNode = null;
-	    MovedStatics.js5Errors++;
-	    MovedStatics.connectionStage = 0;
-	    if (MovedStatics.js5Errors < 2 || arg1 != 7 && arg1 != 9) {
-	        if (MovedStatics.js5Errors < 2 || arg1 != 6) {
-	            if (MovedStatics.js5Errors >= 4) {
+	    CacheArchiveSystem.updateServerSocket = null;
+	    CacheArchiveSystem.updateServerSignlinkNode = null;
+	    CacheArchiveSystem.js5Errors++;
+	    CacheArchiveSystem.connectionStage = 0;
+	    if (CacheArchiveSystem.js5Errors < 2 || arg1 != 7 && arg1 != 9) {
+	        if (CacheArchiveSystem.js5Errors < 2 || arg1 != 6) {
+	            if (CacheArchiveSystem.js5Errors >= 4) {
 	                if (Class51.gameStatusCode <= 5) {
 	                    GameShell.openErrorPage("js5connect");
-	                    ISAAC.nextAttempt = 3000;
+	                    CacheArchiveSystem.nextAttempt = 3000;
 	                } else
-	                    ISAAC.nextAttempt = 3000;
+	                    CacheArchiveSystem.nextAttempt = 3000;
 	            }
 	        } else {
 	        	GameShell.openErrorPage("js5connect_outofdate");
 	            Class51.gameStatusCode = 1000;
 	        }
 	    } else if (Class51.gameStatusCode > 5)
-	        ISAAC.nextAttempt = 3000;
+	        CacheArchiveSystem.nextAttempt = 3000;
 	    else {
 	    	GameShell.openErrorPage("js5connect_full");
 	        Class51.gameStatusCode = 1000;
 	    }
 	}
+
+	private static int nextAttempt = 0;
+	private static int connectionStage = 0;
+	private static int js5Errors = 0;
+	private static GameSocket updateServerSocket;
+	private static SignlinkNode updateServerSignlinkNode;
+	private static long handShakeTime;
 
 }

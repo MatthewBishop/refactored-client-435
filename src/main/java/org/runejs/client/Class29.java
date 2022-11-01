@@ -4,7 +4,6 @@ import org.runejs.client.cache.def.ItemDefinition;
 import org.runejs.client.scene.util.CollisionMap;
 
 public class Class29 {
-    public static GameSocket updateServerSocket;
 
     public static boolean isHovering(int areaId, int widgetChildId) {
         if(areaId == 0 && ItemDefinition.anInt2850 == widgetChildId)
