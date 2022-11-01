@@ -2,11 +2,12 @@ package org.runejs.client.sound;
 
 import org.runejs.client.LinkedList;
 import org.runejs.client.audio.Effect;
-import org.runejs.client.cache.CacheArchive;
 import org.runejs.client.cache.def.GameObjectDefinition;
 import org.runejs.client.media.renderable.actor.Player;
 import org.runejs.client.node.Node;
 import org.runejs.client.util.Signlink;
+
+import jagfs.CacheArchive;
 
 public class SoundSystem {
 

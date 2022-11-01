@@ -75,6 +75,7 @@ public class Player extends Actor {
     public int anInt3291;
 
     static {
+        Player.npcs = new Npc[32768];
         int i = 0;
         for(int idx = 0; idx < 99; idx++) {
             int skillLevel = idx + 1;

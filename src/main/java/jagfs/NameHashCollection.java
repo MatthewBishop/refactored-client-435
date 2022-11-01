@@ -1,4 +1,4 @@
-package org.runejs.client.cache;
+package jagfs;
 
 public class NameHashCollection {
     public int[] anIntArray996;

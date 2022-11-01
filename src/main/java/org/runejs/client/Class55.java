@@ -1,9 +1,10 @@
 package org.runejs.client;
 
-import org.runejs.client.cache.CacheArchive;
 import org.runejs.client.cache.def.SpotAnimDefinition;
 import org.runejs.client.input.MouseHandler;
 import org.runejs.client.media.renderable.GameObject;
+
+import jagfs.CacheArchive;
 
 import java.awt.*;
 import java.io.*;

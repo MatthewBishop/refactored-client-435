@@ -1,6 +1,5 @@
-package org.runejs.client.net;
+package jagfs;
 
-import org.runejs.client.cache.CacheArchive;
 import org.runejs.client.node.CachedNode;
 
 

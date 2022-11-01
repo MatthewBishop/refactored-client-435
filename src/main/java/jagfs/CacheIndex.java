@@ -1,4 +1,4 @@
-package org.runejs.client.cache;
+package jagfs;
 
 import java.io.IOException;
 

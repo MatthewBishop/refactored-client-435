@@ -1,4 +1,4 @@
-package org.runejs.client;
+package jagfs;
 
 import java.io.EOFException;
 import java.io.File;

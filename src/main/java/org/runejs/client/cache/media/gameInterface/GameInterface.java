@@ -1,6 +1,5 @@
 package org.runejs.client.cache.media.gameInterface;
 
-import org.runejs.client.cache.CacheArchive;
 import org.runejs.client.cache.def.*;
 import org.runejs.client.cache.media.AnimationSequence;
 import org.runejs.client.cache.media.ImageRGB;
@@ -27,6 +26,9 @@ import org.runejs.client.scene.tile.Wall;
 import org.runejs.client.scene.tile.WallDecoration;
 import org.runejs.client.util.Signlink;
 import org.runejs.client.util.TextUtils;
+
+import jagfs.CacheArchive;
+
 import org.runejs.client.*;
 import org.runejs.Configuration;
 

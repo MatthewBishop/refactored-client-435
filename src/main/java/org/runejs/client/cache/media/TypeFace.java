@@ -3,7 +3,6 @@ package org.runejs.client.cache.media;
 import org.runejs.client.Class17;
 import org.runejs.client.MovedStatics;
 import org.runejs.client.RSString;
-import org.runejs.client.cache.CacheArchive;
 import org.runejs.client.node.NodeCache;
 import org.runejs.client.cache.def.ActorDefinition;
 import org.runejs.client.cache.media.textUtils.TextColourNode;
@@ -15,6 +14,8 @@ import org.runejs.client.media.Rasterizer;
 import org.runejs.client.media.renderable.actor.Actor;
 import org.runejs.client.media.renderable.actor.Npc;
 import org.runejs.client.scene.GroundItemTile;
+
+import jagfs.CacheArchive;
 
 import java.awt.*;
 import java.util.Random;

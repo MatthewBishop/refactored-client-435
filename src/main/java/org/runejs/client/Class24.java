@@ -1,6 +1,5 @@
 package org.runejs.client;
 
-import org.runejs.client.cache.CacheArchive;
 import org.runejs.client.cache.def.GameObjectDefinition;
 import org.runejs.client.cache.def.OverlayDefinition;
 import org.runejs.client.cache.media.ImageRGB;
@@ -9,9 +8,10 @@ import org.runejs.client.io.Buffer;
 import org.runejs.client.scene.Scene;
 import org.runejs.client.scene.util.CollisionMap;
 
+import jagfs.CacheArchive;
+
 public class Class24 {
     public static int[] fullScreenTextureArray;
-    public static CacheArchive[] aClass6_Sub1Array580 = new CacheArchive[256];
     public static int[] walkingQueueX = new int[4000];
 
     public static IndexedImage[] method337(CacheArchive arg1, int arg2, int arg3) {

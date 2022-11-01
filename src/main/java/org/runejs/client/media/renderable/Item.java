@@ -1,6 +1,5 @@
 package org.runejs.client.media.renderable;
 
-import org.runejs.client.cache.CacheArchive;
 import org.runejs.client.cache.def.*;
 import org.runejs.client.cache.media.ImageRGB;
 import org.runejs.client.cache.media.IndexedImage;
@@ -20,6 +19,9 @@ import org.runejs.client.sound.MusicSystem;
 import org.runejs.client.*;
 import org.runejs.Configuration;
 import org.runejs.whitelabel.Images;
+
+import jagfs.CacheArchive;
+import jagfs.FSStatic;
 
 import java.awt.*;
 
@@ -222,7 +224,7 @@ public class Item extends Renderable {
                 MusicSystem.method412(false, CacheArchive.musicCacheArchive, 0, Native.titleSong, 10, "", MusicSystem.musicVolume);
             else
                 MusicSystem.method405(10);
-            GameShell.method19(false);
+            FSStatic.method19(false);
             MovedStatics.clearScreen = true;
             ISAAC.aBoolean512 = true;
         }

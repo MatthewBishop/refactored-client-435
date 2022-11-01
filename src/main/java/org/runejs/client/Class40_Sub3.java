@@ -1,6 +1,5 @@
 package org.runejs.client;
 
-import org.runejs.client.cache.CacheArchive;
 import org.runejs.client.cache.def.*;
 import org.runejs.client.cache.media.AnimationSequence;
 import org.runejs.client.cache.media.ImageRGB;
@@ -25,6 +24,8 @@ import org.runejs.client.scene.tile.WallDecoration;
 import org.runejs.client.scene.util.CollisionMap;
 import org.runejs.client.sound.MusicSystem;
 import org.runejs.client.sound.SoundSystem;
+
+import jagfs.CacheArchive;
 
 public class Class40_Sub3 extends Node {
     public static ImageRGB[] aClass40_Sub5_Sub14_Sub4Array2019;

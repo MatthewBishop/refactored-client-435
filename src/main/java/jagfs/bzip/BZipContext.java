@@ -1,4 +1,4 @@
-package org.runejs.client.cache.bzip;
+package jagfs.bzip;
 
 public class BZipContext {
 

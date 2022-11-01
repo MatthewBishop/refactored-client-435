@@ -1,6 +1,5 @@
 package org.runejs.client;
 
-import org.runejs.client.cache.CacheArchive;
 import org.runejs.client.cache.cs.InvokedScript;
 import org.runejs.client.cache.cs.ClientScript;
 import org.runejs.client.node.Node;
@@ -18,6 +17,9 @@ import org.runejs.client.sound.SoundSystem;
 import org.runejs.client.util.BitUtils;
 import org.runejs.client.util.Signlink;
 import org.runejs.client.util.SignlinkNode;
+
+import jagfs.CacheArchive;
+
 import org.runejs.client.cache.def.ActorDefinition;
 import org.runejs.client.cache.def.ItemDefinition;
 import org.runejs.client.cache.def.VarPlayerDefinition;

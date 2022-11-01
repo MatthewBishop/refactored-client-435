@@ -1,10 +1,11 @@
 package org.runejs.client.cache.def;
 
-import org.runejs.client.cache.CacheArchive;
 import org.runejs.client.io.Buffer;
 import org.runejs.client.node.CachedNode;
 import org.runejs.client.node.NodeCache;
 import org.runejs.client.util.BitUtils;
+
+import jagfs.CacheArchive;
 
 public class VarbitDefinition extends CachedNode {
     public static NodeCache varbitDefinitionCache = new NodeCache(64);

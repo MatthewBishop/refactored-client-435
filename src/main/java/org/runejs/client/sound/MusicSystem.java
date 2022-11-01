@@ -1,8 +1,9 @@
 package org.runejs.client.sound;
 
-import org.runejs.client.cache.CacheArchive;
 import org.runejs.client.node.CachedNode;
 import org.runejs.client.node.NodeCache;
+
+import jagfs.CacheArchive;
 
 public class MusicSystem {
 

@@ -1,11 +1,13 @@
 package org.runejs.client.media.renderable;
 
-import org.runejs.client.cache.CacheArchive;
 import org.runejs.client.cache.def.FrameDefinition;
 import org.runejs.client.cache.def.FramemapDefinition;
 import org.runejs.client.io.Buffer;
 import org.runejs.client.media.Rasterizer3D;
 import org.runejs.client.media.VertexNormal;
+
+import jagfs.CacheArchive;
+
 import org.runejs.client.Class40_Sub5_Sub15;
 import org.runejs.OldEngine.ModelLoader;
 

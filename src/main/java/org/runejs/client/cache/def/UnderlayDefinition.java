@@ -1,9 +1,10 @@
 package org.runejs.client.cache.def;
 
-import org.runejs.client.cache.CacheArchive;
 import org.runejs.client.io.Buffer;
 import org.runejs.client.node.CachedNode;
 import org.runejs.client.node.NodeCache;
+
+import jagfs.CacheArchive;
 
 public class UnderlayDefinition extends CachedNode {
     public static NodeCache underlayDefinitionCache = new NodeCache(64);

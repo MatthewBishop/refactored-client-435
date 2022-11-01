@@ -1,8 +1,9 @@
 package org.runejs.client;
 
 import org.runejs.client.node.HashTable;
-import org.runejs.client.cache.CacheArchive;
 import org.runejs.client.util.BitUtils;
+
+import jagfs.CacheArchive;
 
 import java.awt.*;
 import java.nio.charset.StandardCharsets;

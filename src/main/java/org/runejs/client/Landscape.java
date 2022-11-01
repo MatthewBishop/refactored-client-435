@@ -1,7 +1,5 @@
 package org.runejs.client;
 
-import org.runejs.client.cache.CacheArchive;
-import org.runejs.client.cache.FileOperations;
 import org.runejs.client.cache.media.AnimationSequence;
 import org.runejs.client.cache.media.gameInterface.GameInterface;
 import org.runejs.client.io.Buffer;
@@ -18,6 +16,10 @@ import org.runejs.client.scene.tile.GenericTile;
 import org.runejs.client.scene.util.CollisionMap;
 import org.runejs.client.sound.SoundSystem;
 import org.runejs.client.util.BitUtils;
+
+import jagfs.CacheArchive;
+import jagfs.FileOperations;
+
 import org.runejs.client.cache.def.FramemapDefinition;
 import org.runejs.client.cache.def.GameObjectDefinition;
 import org.runejs.client.cache.def.IdentityKit;
@@ -27,7 +29,6 @@ import org.runejs.OldEngine.MapDecompressor;
 import java.io.IOException;
 
 public class Landscape {
-    public static int anInt1157 = 0;
     public static int mouseY = 0;
     public static CollisionMap[] currentCollisionMap = new CollisionMap[4];
     public static int[] anIntArray1168;

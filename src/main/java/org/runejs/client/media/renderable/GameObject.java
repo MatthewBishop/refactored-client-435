@@ -1,7 +1,6 @@
 package org.runejs.client.media.renderable;
 
 import org.runejs.client.*;
-import org.runejs.client.cache.CacheArchive;
 import org.runejs.client.cache.def.GameObjectDefinition;
 import org.runejs.client.cache.def.IdentityKit;
 import org.runejs.client.cache.def.OverlayDefinition;
@@ -11,6 +10,8 @@ import org.runejs.client.input.MouseHandler;
 import org.runejs.client.io.Buffer;
 import org.runejs.client.scene.Scene;
 import org.runejs.client.scene.util.CollisionMap;
+
+import jagfs.CacheArchive;
 
 import java.awt.*;
 

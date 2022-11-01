@@ -1,7 +1,5 @@
 package org.runejs.client;
 
-import org.runejs.client.node.Class40_Sub6;
-import org.runejs.client.cache.def.IdentityKit;
 import org.runejs.client.cache.media.IndexedImage;
 import org.runejs.client.cache.media.gameInterface.GameInterface;
 import org.runejs.client.media.renderable.GameObject;
@@ -45,20 +43,6 @@ public class Class13 {
             PlayerAppearance.method381(actor);
         Projectile.method762(actor);
         Class40_Sub5_Sub15.method736(true, actor);
-    }
-
-    public static void handleRequests(byte arg0) {
-        if(arg0 > -88)
-            method247(null, (byte) 34);
-        for(; ; ) {
-            Class40_Sub6 class40_sub6;
-            synchronized(RSCanvas.aLinkedList_53) {
-                class40_sub6 = (Class40_Sub6) IdentityKit.aLinkedList_2604.removeFirst(25447);
-            }
-            if(class40_sub6 == null)
-                break;
-            class40_sub6.cacheArchive.method198(false, class40_sub6.aByteArray2102, (int) class40_sub6.key, class40_sub6.cacheIndex);
-        }
     }
 
     public static void handleInterfaceActions(int areaId, int mouseX, int mouseY, int minX, int minY, int maxX, int maxY, int widgetId) {

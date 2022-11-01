@@ -1,7 +1,8 @@
 package org.runejs.client.scene;
 
-import org.runejs.client.cache.CacheArchive;
 import org.runejs.client.media.renderable.Renderable;
+
+import jagfs.CacheArchive;
 
 public class GroundItemTile {
     public static boolean loadGeneratedMap = false;

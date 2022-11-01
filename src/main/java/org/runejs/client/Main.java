@@ -1,8 +1,5 @@
 package org.runejs.client;
 
-import org.runejs.client.cache.CacheIndex;
-import org.runejs.client.cache.CacheArchive;
-import org.runejs.client.cache.CacheFileChannel;
 import org.runejs.client.frame.ChatBox;
 import org.runejs.client.frame.ScreenController;
 import org.runejs.client.frame.ScreenMode;
@@ -33,6 +30,11 @@ import org.runejs.client.sound.MusicSystem;
 import org.runejs.client.sound.SoundSystem;
 import org.runejs.client.util.BitUtils;
 import org.runejs.client.util.Signlink;
+
+import jagfs.CacheArchive;
+import jagfs.FSStatic;
+import jagfs.UpdateServer;
+
 import org.runejs.client.cache.def.*;
 import org.runejs.client.cache.media.AnimationSequence;
 import org.runejs.client.cache.media.ImageRGB;
@@ -58,10 +60,6 @@ public class Main extends GameShell {
     public static int widgetSelected = 0;
     public static String[] playerActions = new String[5];
     public static Signlink signlink;
-    public static CacheIndex metaIndex;
-    public static CacheFileChannel dataChannel;
-    public static CacheFileChannel metaChannel;
-    public static CacheFileChannel[] indexChannels = new CacheFileChannel[13];
     public static int currentPort;
     private static int drawCount = 0;
 
@@ -543,17 +541,6 @@ public class Main extends GameShell {
             }
         }
         return result;
-    }
-
-    public static void method37(CacheArchive cacheArchive, int arg2) {
-        if (UpdateServer.crcTableBuffer == null) {
-            UpdateServer.method327(true, null, 255, 255, (byte) 0, 0);
-            Class24.aClass6_Sub1Array580[arg2] = cacheArchive;
-        } else {
-            UpdateServer.crcTableBuffer.currentPosition = 5 + arg2 * 4;
-            int i = UpdateServer.crcTableBuffer.getIntBE();
-            cacheArchive.requestLatestVersion(i);
-        }
     }
 
     public static void renderFlames() {
@@ -1872,7 +1859,7 @@ public class Main extends GameShell {
     public void processGameLoop() {
         MovedStatics.pulseCycle++;
         handleUpdateServer();
-        Class13.handleRequests((byte) -91);
+        CacheArchive.handleRequests();
         MusicSystem.handleMusic();
         SoundSystem.handleSounds();
         GameInterface.method639(122);
@@ -1954,7 +1941,7 @@ public class Main extends GameShell {
     }
 
     public void method40() {
-        if (MovedStatics.anInt813 >= 4) {
+        if (FSStatic.anInt813 >= 4) {
             this.openErrorPage("js5crc");
             Class51.gameStatusCode = 1000;
         } else {
@@ -2040,25 +2027,7 @@ public class Main extends GameShell {
         MusicSystem.syncedStop(false);
         SoundSystem.stop();
         ActorDefinition.killUpdateServerSocket();
-        GenericTile.method947(-1);
-        do {
-            try {
-                if (dataChannel != null)
-                    dataChannel.close();
-                if (indexChannels != null) {
-                    for (int i = 0; i < indexChannels.length; i++) {
-                        if (indexChannels[i] != null)
-                            indexChannels[i].close();
-                    }
-                }
-                if (metaChannel == null)
-                    break;
-                metaChannel.close();
-            } catch (java.io.IOException ioexception) {
-                break;
-            }
-            break;
-        } while (false);
+        CacheArchive.method947(-1);
     }
 
 
@@ -2072,22 +2041,7 @@ public class Main extends GameShell {
         GameInterface.method642(MouseHandler.gameCanvas, -10);
         RSRuntimeException.method1056(MouseHandler.gameCanvas, (byte) 70);
         RSCanvas.anInt57 = Signlink.anInt737;
-        try {
-            if (signlink.cacheDataAccessFile != null) {
-                dataChannel = new CacheFileChannel(signlink.cacheDataAccessFile, 5200);
-                for (int i = 0; i < 13; i++)
-                    indexChannels[i] = new CacheFileChannel(signlink.dataIndexAccessFiles[i], 6000);
-                metaChannel = new CacheFileChannel(signlink.metaIndexAccessFile, 6000);
-                metaIndex = new CacheIndex(255, dataChannel, metaChannel, 500000);
-                signlink.dataIndexAccessFiles = null;
-                signlink.metaIndexAccessFile = null;
-                signlink.cacheDataAccessFile = null;
-            }
-        } catch (java.io.IOException ioexception) {
-            metaIndex = null;
-            dataChannel = null;
-            metaChannel = null;
-        }
+        signlink.cacheManager.startup();
         if (Class44.modewhere != 0)
             InteractiveObject.showFps = true;
         Class12.chatboxInterface = new GameInterface();

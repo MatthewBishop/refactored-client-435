@@ -12,11 +12,8 @@ import org.runejs.client.io.Buffer;
 import org.runejs.client.media.Rasterizer;
 import org.runejs.client.media.renderable.Item;
 import org.runejs.client.media.renderable.Model;
-import org.runejs.client.net.UpdateServer;
-import org.runejs.client.net.UpdateServerNode;
 import org.runejs.client.node.HashTable;
 import org.runejs.client.node.NodeCache;
-import org.runejs.client.cache.CacheArchive;
 import org.runejs.client.cache.media.AnimationSequence;
 import org.runejs.client.cache.media.IndexedImage;
 import org.runejs.client.cache.media.TypeFace;
@@ -41,6 +38,11 @@ import org.runejs.client.util.BitUtils;
 import org.runejs.client.util.Signlink;
 import org.runejs.client.util.SignlinkNode;
 import org.runejs.client.util.TextUtils;
+
+import jagfs.CacheArchive;
+import jagfs.FSStatic;
+import jagfs.UpdateServer;
+
 import org.runejs.client.cache.def.*;
 import org.runejs.client.media.renderable.actor.*;
 import org.runejs.client.scene.tile.*;
@@ -116,7 +118,6 @@ public class MovedStatics {
     public static int onBuildTimePlane = 0;
     public static int anInt1996 = 0;
     public static HashTable aClass23_805;
-    public static int anInt813 = 0;
     public static int anInt848 = 0;
     public static int currentCameraPositionV;
     public static int[] anIntArray852;
@@ -149,8 +150,6 @@ public class MovedStatics {
     public static IndexedImage[] moderatorIcon;
     public static int[] anIntArray2764 = new int[128];
     public static ImageRGB minimapImage;
-    public static int msSinceLastUpdate = 0;
-    public static long lastUpdateInMillis;
 
     public static void method440() {
         if (ISAAC.aBoolean512) {
@@ -177,7 +176,7 @@ public class MovedStatics {
             Class17.aProducingGraphicsBuffer_463 = null;
             anIntArray1013 = null;
             MusicSystem.method405(10);
-            GameShell.method19(true);
+            FSStatic.method19(true);
             ISAAC.aBoolean512 = false;
         }
     }
@@ -417,14 +416,6 @@ public class MovedStatics {
         KeyFocusListener.aLinkedList_1278 = new LinkedList();
     }
 
-    public static void method332(int arg0) {
-        synchronized (CollisionMap.anObject162) {
-            if (Buffer.anInt1987 == 0)
-                Main.signlink.createThreadNode(5, new Class44());
-            Buffer.anInt1987 = arg0;
-        }
-    }
-
     public static RSString intToStr(int arg0) {
         return PacketBuffer.method521(false, 10, arg0);
     }
@@ -471,16 +462,6 @@ public class MovedStatics {
         int i1 = GameShell.interpolate(a, scale, b, true, muX);
         int i2 = GameShell.interpolate(c, scale, d, true, muX);
         return GameShell.interpolate(i1, scale, i2, true, muY);
-    }
-
-    public static int calculateCrc8(int offset, int size, byte[] data) {
-        int crc = -1;
-        for (int currentByte = offset; currentByte < size; currentByte++) {
-            int tableIndex = 0xff & (crc ^ data[currentByte]);
-            crc = KeyFocusListener.crc8LookupTable[tableIndex] ^ crc >>> 8;
-        }
-        crc ^= 0xffffffff;
-        return crc;
     }
 
     /**
@@ -596,14 +577,6 @@ public class MovedStatics {
     public static void method188() {
         MovedStatics.aClass9_2439.clear();
         aClass9_998.clear();
-    }
-
-    public static void method399(int arg0, int arg2) {
-        long l = (arg0 << 16) + arg2;
-        UpdateServerNode updateServerNode = (UpdateServerNode) UpdateServer.aClass23_2545.getNode(l);
-        if (updateServerNode != null) {
-            InteractiveObject.aNodeQueue_485.unshift(updateServerNode);
-        }
     }
 
     public static String method204(int arg0) {
@@ -762,13 +735,6 @@ public class MovedStatics {
         }
     }
 
-    public static int calculateDataLoaded(int arg1, int arg2) {
-        long l = (long) ((arg1 << 16) + arg2);
-        if (UpdateServer.aUpdateServerNode_2250 == null || UpdateServer.aUpdateServerNode_2250.key != l)
-            return 0;
-        return 1 + UpdateServer.aClass40_Sub1_2752.currentPosition * 99 / (UpdateServer.aClass40_Sub1_2752.buffer.length + -UpdateServer.aUpdateServerNode_2250.aByte2758);
-    }
-
     public static boolean method416(byte arg0) {
         synchronized (Class59.keyFocusListener) {
             if (Class59.anInt1389 == GenericTile.anInt1214)
@@ -794,9 +760,6 @@ public class MovedStatics {
             lightness = -lightness + 127;
             return lightness;
         }
-
-        if (!junk)
-            calculateDataLoaded(-124, -88);
 
         lightness = lightness * (hsl & 0x7f) / 128;
         if (lightness < 2)

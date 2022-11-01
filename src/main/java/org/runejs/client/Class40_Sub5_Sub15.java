@@ -1,6 +1,5 @@
 package org.runejs.client;
 
-import org.runejs.client.cache.CacheArchive;
 import org.runejs.client.cache.def.FrameDefinition;
 import org.runejs.client.cache.def.FramemapDefinition;
 import org.runejs.client.cache.media.AnimationSequence;
@@ -8,6 +7,8 @@ import org.runejs.client.cache.media.IndexedImage;
 import org.runejs.client.cache.def.SpotAnimDefinition;
 import org.runejs.client.media.renderable.actor.Actor;
 import org.runejs.client.node.CachedNode;
+
+import jagfs.CacheArchive;
 
 public class Class40_Sub5_Sub15 extends CachedNode {
     public static IndexedImage loginScreenBox;

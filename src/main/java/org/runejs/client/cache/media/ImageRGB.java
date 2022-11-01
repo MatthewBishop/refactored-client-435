@@ -1,8 +1,10 @@
 package org.runejs.client.cache.media;
 
 import org.runejs.client.MovedStatics;
-import org.runejs.client.cache.CacheArchive;
 import org.runejs.client.node.NodeCache;
+
+import jagfs.CacheArchive;
+
 import org.runejs.client.media.Rasterizer;
 
 import java.awt.*;

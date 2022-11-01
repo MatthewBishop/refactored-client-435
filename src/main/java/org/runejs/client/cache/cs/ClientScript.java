@@ -1,7 +1,6 @@
 package org.runejs.client.cache.cs;
 
 import org.runejs.client.*;
-import org.runejs.client.cache.CacheArchive;
 import org.runejs.client.cache.def.VarPlayerDefinition;
 import org.runejs.client.cache.def.VarbitDefinition;
 import org.runejs.client.node.NodeCache;
@@ -12,6 +11,8 @@ import org.runejs.client.language.Native;
 import org.runejs.client.media.renderable.actor.Player;
 import org.runejs.client.node.CachedNode;
 import org.runejs.client.scene.tile.GenericTile;
+
+import jagfs.CacheArchive;
 
 public class ClientScript extends CachedNode {
 

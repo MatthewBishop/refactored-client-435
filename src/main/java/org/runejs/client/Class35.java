@@ -1,8 +1,9 @@
 package org.runejs.client;
 
-import org.runejs.client.cache.CacheArchive;
 import org.runejs.client.cache.media.IndexedImage;
 import org.runejs.client.io.Buffer;
+
+import jagfs.CacheArchive;
 
 public class Class35 implements Interface3 {
     public static int anInt1730 = 0;

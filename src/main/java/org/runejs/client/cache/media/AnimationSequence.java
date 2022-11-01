@@ -1,7 +1,6 @@
 package org.runejs.client.cache.media;
 
 import org.runejs.client.*;
-import org.runejs.client.cache.CacheArchive;
 import org.runejs.client.cache.def.GameObjectDefinition;
 import org.runejs.client.cache.def.OverlayDefinition;
 import org.runejs.client.io.Buffer;
@@ -12,6 +11,8 @@ import org.runejs.client.media.renderable.actor.Player;
 import org.runejs.client.node.CachedNode;
 import org.runejs.client.scene.util.CollisionMap;
 import org.runejs.client.util.BitUtils;
+
+import jagfs.CacheArchive;
 
 public class AnimationSequence extends CachedNode {
     public static ImageRGB[] aClass40_Sub5_Sub14_Sub4Array2474;

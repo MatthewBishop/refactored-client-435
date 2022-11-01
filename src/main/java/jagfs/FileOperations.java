@@ -1,4 +1,4 @@
-package org.runejs.client.cache;/*
+package jagfs;/*
  * Class: FileOperations.java
  * Reads a separate file.
  * */

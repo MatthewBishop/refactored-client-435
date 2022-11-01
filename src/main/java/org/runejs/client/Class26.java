@@ -1,8 +1,8 @@
 package org.runejs.client;
 
-import org.runejs.client.cache.CacheArchive;
-
 import java.awt.*;
+
+import jagfs.CacheArchive;
 
 public class Class26 {
     public static int loginScreenState = 0;

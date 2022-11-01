@@ -13,10 +13,11 @@ import org.runejs.client.media.renderable.actor.Actor;
 import org.runejs.client.media.renderable.actor.Npc;
 import org.runejs.client.media.renderable.actor.Player;
 import org.runejs.client.net.ISAAC;
-import org.runejs.client.net.UpdateServer;
 import org.runejs.client.node.CachedNode;
 import org.runejs.client.scene.GroundItemTile;
 import org.runejs.client.util.BitUtils;
+
+import jagfs.UpdateServer;
 
 import java.awt.*;
 

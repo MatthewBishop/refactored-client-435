@@ -2,11 +2,12 @@ package org.runejs.client.cache.def;
 
 import org.runejs.client.MovedStatics;
 import org.runejs.client.ProducingGraphicsBuffer_Sub1;
-import org.runejs.client.cache.CacheArchive;
 import org.runejs.client.io.Buffer;
 import org.runejs.client.media.renderable.Model;
 import org.runejs.client.node.CachedNode;
 import org.runejs.client.node.NodeCache;
+
+import jagfs.CacheArchive;
 
 public class SpotAnimDefinition extends CachedNode {
 

@@ -1,6 +1,5 @@
 package org.runejs.client;
 
-import org.runejs.client.cache.CacheArchive;
 import org.runejs.client.cache.media.ImageRGB;
 import org.runejs.client.frame.ChatBox;
 import org.runejs.client.language.English;
@@ -9,6 +8,9 @@ import org.runejs.client.media.renderable.actor.Player;
 import org.runejs.client.net.PacketBuffer;
 import org.runejs.client.scene.tile.SceneTile;
 import org.runejs.client.util.BitUtils;
+
+import jagfs.CacheArchive;
+
 import org.runejs.client.cache.def.ActorDefinition;
 import org.runejs.client.cache.def.ItemDefinition;
 import org.runejs.Configuration;

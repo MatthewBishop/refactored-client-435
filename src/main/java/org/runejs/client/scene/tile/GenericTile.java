@@ -3,7 +3,6 @@ package org.runejs.client.scene.tile;
 import org.runejs.client.HuffmanEncoding;
 import org.runejs.client.Landscape;
 import org.runejs.client.MovedStatics;
-import org.runejs.client.cache.CacheArchive;
 import org.runejs.client.cache.def.GameObjectDefinition;
 import org.runejs.client.cache.def.OverlayDefinition;
 import org.runejs.client.cache.media.ImageRGB;
@@ -11,12 +10,14 @@ import org.runejs.client.cache.media.TypeFace;
 import org.runejs.client.frame.ScreenController;
 import org.runejs.client.frame.ScreenMode;
 import org.runejs.client.input.MouseHandler;
-import org.runejs.client.io.Buffer;
 import org.runejs.client.language.English;
 import org.runejs.client.media.VertexNormal;
 import org.runejs.client.media.renderable.actor.Npc;
 import org.runejs.client.media.renderable.actor.Player;
 import org.runejs.client.scene.util.CollisionMap;
+
+import jagfs.CacheArchive;
+
 import org.runejs.client.Class57;
 
 import java.awt.*;
@@ -144,21 +145,6 @@ public class GenericTile {
                     if(i_5_ < 3 && (OverlayDefinition.tile_flags[1][arg2][arg0] & 0x2) == 2)
                         i_5_++;
                     CollisionMap.method543(Landscape.currentCollisionMap[arg7], arg1, i_5_, arg7, arg3, Npc.currentScene, -22078, arg4, arg0, arg2);
-                }
-            }
-        }
-    }
-
-
-
-    public static void method947(int arg0) {
-        synchronized(CollisionMap.anObject162) {
-            if((Buffer.anInt1987 ^ 0xffffffff) != arg0) {
-                Buffer.anInt1987 = 1;
-                try {
-                    CollisionMap.anObject162.wait();
-                } catch(InterruptedException interruptedexception) {
-                    /* empty */
                 }
             }
         }

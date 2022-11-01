@@ -1,8 +1,9 @@
 package org.runejs.client.cache.media;
 
 import org.runejs.client.Class24;
-import org.runejs.client.cache.CacheArchive;
 import org.runejs.client.media.Rasterizer;
+
+import jagfs.CacheArchive;
 
 public class IndexedImage extends Rasterizer {
     public int imgWidth;

@@ -1,11 +1,9 @@
-package org.runejs.client.net;
+package jagfs;
 
-import org.runejs.client.*;
-import org.runejs.client.cache.CacheArchive;
+import org.runejs.client.GameShell;
+import org.runejs.client.GameSocket;
 import org.runejs.client.io.Buffer;
-import org.runejs.client.media.renderable.actor.Npc;
 import org.runejs.client.node.HashTable;
-import org.runejs.client.scene.InteractiveObject;
 
 import java.io.IOException;
 import java.util.zip.CRC32;
@@ -43,10 +41,10 @@ public class UpdateServer {
         }
 
         updateServerSocket = socket;
-        GameShell.method19(arg2);
+        FSStatic.method19(arg2);
         fileDataBuffer.currentPosition = 0;
         aClass40_Sub1_2752 = null;
-        Landscape.anInt1157 = 0;
+        FSStatic.anInt1157 = 0;
         aUpdateServerNode_2250 = null;
 
         for(; ; ) {
@@ -66,7 +64,7 @@ public class UpdateServer {
                 break;
             }
 
-            InteractiveObject.aNodeQueue_485.unshift(updateServerNode);
+            CacheArchive.aNodeQueue_485.unshift(updateServerNode);
             aClass23_2545.put(updateServerNode.key, updateServerNode);
             anInt1006--;
             anInt554++;
@@ -91,18 +89,18 @@ public class UpdateServer {
                 anInt2278++;
             }
         }
-        MovedStatics.msSinceLastUpdate = 0;
-        MovedStatics.lastUpdateInMillis = System.currentTimeMillis();
+        FSStatic.msSinceLastUpdate = 0;
+        FSStatic.lastUpdateInMillis = System.currentTimeMillis();
     }
 
     public static boolean processUpdateServerResponse() {
         long l = System.currentTimeMillis();
-        int currentMsSinceLastUpdate = (int) (l - MovedStatics.lastUpdateInMillis);
-        MovedStatics.lastUpdateInMillis = l;
+        int currentMsSinceLastUpdate = (int) (l - FSStatic.lastUpdateInMillis);
+        FSStatic.lastUpdateInMillis = l;
         if(currentMsSinceLastUpdate > 200) {
             currentMsSinceLastUpdate = 200;
         }
-        MovedStatics.msSinceLastUpdate += currentMsSinceLastUpdate;
+        FSStatic.msSinceLastUpdate += currentMsSinceLastUpdate;
         if(anInt1006 == 0 && anInt464 == 0 && anInt554 == 0 && anInt1618 == 0) {
             return true;
         }
@@ -111,7 +109,7 @@ public class UpdateServer {
         }
 
         try {
-            if(MovedStatics.msSinceLastUpdate > 30000) {
+            if(FSStatic.msSinceLastUpdate > 30000) {
                 throw new IOException();
             }
 
@@ -131,7 +129,7 @@ public class UpdateServer {
 
             // Queuable file requests
             for(/**/; anInt1006 < 20 && anInt554 > 0; anInt554--) {
-                UpdateServerNode updateServerNode = (UpdateServerNode) InteractiveObject.aNodeQueue_485.next();
+                UpdateServerNode updateServerNode = (UpdateServerNode) CacheArchive.aNodeQueue_485.next();
                 Buffer buffer = new Buffer(4);
                 buffer.putByte(0); // queued file request
                 buffer.putMediumBE((int) updateServerNode.key); // file index + file id
@@ -150,18 +148,18 @@ public class UpdateServer {
                     break;
                 }
 
-                MovedStatics.msSinceLastUpdate = 0;
+                FSStatic.msSinceLastUpdate = 0;
 
                 int i_35_ = 0;
                 if(aUpdateServerNode_2250 == null) {
                     i_35_ = 8;
-                } else if(Landscape.anInt1157 == 0) {
+                } else if(FSStatic.anInt1157 == 0) {
                     i_35_ = 1;
                 }
 
                 if(i_35_ <= 0) {
                     int inboundFileLength = aClass40_Sub1_2752.buffer.length + -aUpdateServerNode_2250.aByte2758;
-                    int i_37_ = -Landscape.anInt1157 + 512;
+                    int i_37_ = -FSStatic.anInt1157 + 512;
                     if(-aClass40_Sub1_2752.currentPosition + inboundFileLength < i_37_) {
                         i_37_ = inboundFileLength - aClass40_Sub1_2752.currentPosition;
                     }
@@ -176,13 +174,13 @@ public class UpdateServer {
                     }
 
                     aClass40_Sub1_2752.currentPosition += i_37_;
-                    Landscape.anInt1157 += i_37_;
+                    FSStatic.anInt1157 += i_37_;
 
                     if(inboundFileLength == aClass40_Sub1_2752.currentPosition) {
                         if(aUpdateServerNode_2250.key == 16711935) { // crc table file key
                             crcTableBuffer = aClass40_Sub1_2752;
                             for(int i = 0; i < 256; i++) {
-                                CacheArchive archive = Class24.aClass6_Sub1Array580[i];
+                                CacheArchive archive = FSStatic.aClass6_Sub1Array580[i];
                                 if(archive != null) {
                                     crcTableBuffer.currentPosition = 4 * i + 5;
                                     int indexCrcValue = crcTableBuffer.getIntBE();
@@ -200,30 +198,30 @@ public class UpdateServer {
                                 }
                                 aByte302 = (byte) (int) (Math.random() * 255.0 + 1.0);
                                 updateServerSocket = null;
-                                MovedStatics.anInt813++;
+                                FSStatic.anInt813++;
                                 return false;
                             }
 
                             anInt2278 = 0;
-                            MovedStatics.anInt813 = 0;
-                            aUpdateServerNode_2250.cacheArchive.method196((aUpdateServerNode_2250.key & 0xff0000L) == 16711680L, (int) (aUpdateServerNode_2250.key & 0xffffL), Npc.aBoolean3298, aClass40_Sub1_2752.buffer);
+                            FSStatic.anInt813 = 0;
+                            aUpdateServerNode_2250.cacheArchive.method196((aUpdateServerNode_2250.key & 0xff0000L) == 16711680L, (int) (aUpdateServerNode_2250.key & 0xffffL), UpdateServer.aBoolean3298, aClass40_Sub1_2752.buffer);
                         }
 
                         aUpdateServerNode_2250.unlink();
                         aUpdateServerNode_2250 = null;
                         aClass40_Sub1_2752 = null;
-                        Landscape.anInt1157 = 0;
+                        FSStatic.anInt1157 = 0;
 
-                        if(!Npc.aBoolean3298) {
+                        if(!UpdateServer.aBoolean3298) {
                             anInt1006--;
                         } else {
                             anInt464--;
                         }
                     } else {
-                        if(Landscape.anInt1157 != 512) {
+                        if(FSStatic.anInt1157 != 512) {
                             break;
                         }
-                        Landscape.anInt1157 = 0;
+                        FSStatic.anInt1157 = 0;
                     }
                 } else {
                     int pos = -fileDataBuffer.currentPosition + i_35_;
@@ -253,11 +251,11 @@ public class UpdateServer {
                         int fileSize = fileDataBuffer.getIntBE();
                         long fileKey = ((long) fileIndexId << 16) + fileId;
                         UpdateServerNode updateServerNode = (UpdateServerNode) activeRequests.getNode(fileKey);
-                        Npc.aBoolean3298 = true;
+                        UpdateServer.aBoolean3298 = true;
 
                         if(updateServerNode == null) {
                             updateServerNode = (UpdateServerNode) queuedRequests.getNode(fileKey);
-                            Npc.aBoolean3298 = false;
+                            UpdateServer.aBoolean3298 = false;
                         }
 
                         if(updateServerNode == null) {
@@ -269,12 +267,12 @@ public class UpdateServer {
                         aClass40_Sub1_2752 = new Buffer(aUpdateServerNode_2250.aByte2758 + compressionSizeOffset + fileSize);
                         aClass40_Sub1_2752.putByte(fileCompression);
                         aClass40_Sub1_2752.putIntBE(fileSize);
-                        Landscape.anInt1157 = 8;
+                        FSStatic.anInt1157 = 8;
                         fileDataBuffer.currentPosition = 0;
-                    } else if(Landscape.anInt1157 == 0) {
+                    } else if(FSStatic.anInt1157 == 0) {
                         if(fileDataBuffer.buffer[0] == -1) {
                             fileDataBuffer.currentPosition = 0;
-                            Landscape.anInt1157 = 1;
+                            FSStatic.anInt1157 = 1;
                         } else {
                             aUpdateServerNode_2250 = null;
                         }
@@ -321,7 +319,7 @@ public class UpdateServer {
                         updateServerRequests.put(fileKey, updateServerNode);
                         anInt1618++;
                     } else {
-                        InteractiveObject.aNodeQueue_485.push(updateServerNode);
+                        CacheArchive.aNodeQueue_485.push(updateServerNode);
                         aClass23_2545.put(fileKey, updateServerNode);
                         anInt554++;
                     }
@@ -334,4 +332,6 @@ public class UpdateServer {
             }
         }
     }
+
+	public static boolean aBoolean3298;
 }

@@ -1,6 +1,5 @@
 package org.runejs.client.scene.tile;
 
-import org.runejs.client.cache.CacheArchive;
 import org.runejs.client.cache.def.ActorDefinition;
 import org.runejs.client.cache.def.OverlayDefinition;
 import org.runejs.client.cache.media.ImageRGB;
@@ -16,6 +15,9 @@ import org.runejs.client.net.IncomingPackets;
 import org.runejs.client.scene.GroundItemTile;
 import org.runejs.client.scene.InteractiveObject;
 import org.runejs.client.util.SignlinkNode;
+
+import jagfs.CacheArchive;
+
 import org.runejs.client.*;
 
 public class FloorDecoration {
