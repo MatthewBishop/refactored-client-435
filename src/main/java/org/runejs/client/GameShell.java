@@ -38,7 +38,7 @@ public abstract class GameShell extends Canvas implements Runnable, FocusListene
     public static Frame clientFrame;
     public static GameShell currentGameShell = null;
     public static int millisPerTick = 20;
-    public boolean gameShellError = false;
+    public static boolean gameShellError = false;
 
 
     public static void runClientScriptsForInterface(int minY, int arg1, int scrollWidth, int arg3, int minX, int parentId, GameInterface[] interfaceCollection, int arg8, int scrollHeight) {
@@ -260,7 +260,7 @@ public abstract class GameShell extends Canvas implements Runnable, FocusListene
     public void windowOpened(WindowEvent arg0) {
     }
 
-    public void openErrorPage(String gameError) {
+    public static void openErrorPage(String gameError) {
         if (!gameShellError) {
             gameShellError = true;
             System.out.println("error_game_" + gameError);
