@@ -1829,30 +1829,30 @@ public class Main extends GameShell {
         }
     }
 
-    public void method35(int arg1) {
+    public void js5error(int arg1) {
         if (currentPort != OverlayDefinition.gameServerPort)
             currentPort = OverlayDefinition.gameServerPort;
         else
             currentPort = CollisionMap.someOtherPort;
         Class29.updateServerSocket = null;
         ProducingGraphicsBuffer.updateServerSignlinkNode = null;
-        MovedStatics.anInt292++;
+        MovedStatics.js5Errors++;
         MovedStatics.connectionStage = 0;
-        if (MovedStatics.anInt292 < 2 || arg1 != 7 && arg1 != 9) {
-            if (MovedStatics.anInt292 < 2 || arg1 != 6) {
-                if (MovedStatics.anInt292 >= 4) {
+        if (MovedStatics.js5Errors < 2 || arg1 != 7 && arg1 != 9) {
+            if (MovedStatics.js5Errors < 2 || arg1 != 6) {
+                if (MovedStatics.js5Errors >= 4) {
                     if (Class51.gameStatusCode <= 5) {
                         this.openErrorPage("js5connect");
-                        ISAAC.anInt509 = 3000;
+                        ISAAC.nextAttempt = 3000;
                     } else
-                        ISAAC.anInt509 = 3000;
+                        ISAAC.nextAttempt = 3000;
                 }
             } else {
                 this.openErrorPage("js5connect_outofdate");
                 Class51.gameStatusCode = 1000;
             }
         } else if (Class51.gameStatusCode > 5)
-            ISAAC.anInt509 = 3000;
+            ISAAC.nextAttempt = 3000;
         else {
             this.openErrorPage("js5connect_full");
             Class51.gameStatusCode = 1000;
@@ -1951,14 +1951,14 @@ public class Main extends GameShell {
             if (UpdateServer.ioExceptions >= 4) {
                 if (Class51.gameStatusCode > 5) {
                     UpdateServer.ioExceptions = 3;
-                    ISAAC.anInt509 = 3000;
+                    ISAAC.nextAttempt = 3000;
                 } else {
                     this.openErrorPage("js5io");
                     Class51.gameStatusCode = 1000;
                     return;
                 }
             }
-            if (ISAAC.anInt509-- <= 0) {
+            if (ISAAC.nextAttempt-- <= 0) {
                 do {
                     try {
                         if (MovedStatics.connectionStage == 0) {
@@ -1967,7 +1967,7 @@ public class Main extends GameShell {
                         }
                         if (MovedStatics.connectionStage == 1) {
                             if (ProducingGraphicsBuffer.updateServerSignlinkNode.status == 2) {
-                                method35(-1);
+                                js5error(-1);
                                 break;
                             }
                             if (ProducingGraphicsBuffer.updateServerSignlinkNode.status == 1)
@@ -1980,18 +1980,18 @@ public class Main extends GameShell {
                             buffer.putIntBE(435); // Cache revision
                             Class29.updateServerSocket.sendDataFromBuffer(5, 0, buffer.buffer);
                             MovedStatics.connectionStage++;
-                            MovedStatics.aLong1841 = System.currentTimeMillis();
+                            MovedStatics.handShakeTime = System.currentTimeMillis();
                         }
                         if (MovedStatics.connectionStage == 3) {
                             if (Class51.gameStatusCode > 5 && Class29.updateServerSocket.inputStreamAvailable() <= 0) {
-                                if (System.currentTimeMillis() + -MovedStatics.aLong1841 > 30000L) {
-                                    method35(-2);
+                                if (System.currentTimeMillis() + -MovedStatics.handShakeTime > 30000L) {
+                                    js5error(-2);
                                     break;
                                 }
                             } else {
                                 int i = Class29.updateServerSocket.read();
                                 if (i != 0) {
-                                    method35(i);
+                                    js5error(i);
                                     break;
                                 }
                                 MovedStatics.connectionStage++;
@@ -2005,10 +2005,10 @@ public class Main extends GameShell {
                         ProducingGraphicsBuffer.updateServerSignlinkNode = null;
                         MovedStatics.connectionStage = 0;
                         Class29.updateServerSocket = null;
-                        MovedStatics.anInt292 = 0;
+                        MovedStatics.js5Errors = 0;
                     } catch (java.io.IOException ioexception) {
                         ioexception.printStackTrace();
-                        method35(-3);
+                        js5error(-3);
                         break;
                     }
                     break;
