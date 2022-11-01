@@ -1832,7 +1832,7 @@ public class Main extends GameShell {
 
     public void processGameLoop() {
         MovedStatics.pulseCycle++;
-        handleUpdateServer();
+        CacheArchiveSystem.handleUpdateServer();
         CacheArchiveWorker.handleRequests();
         MusicSystem.handleMusic();
         SoundSystem.handleSounds();
@@ -1861,14 +1861,6 @@ public class Main extends GameShell {
         } else if (Class51.gameStatusCode == 40) {
             // Connection lost
             handleLoginScreenActions();
-        }
-    }
-
-    public void handleUpdateServer() {
-        if (Class51.gameStatusCode != 1000) {
-            boolean bool = UpdateServer.processUpdateServerResponse();
-            if (!bool)
-                CacheArchiveSystem.connectUpdateServer();
         }
     }
 

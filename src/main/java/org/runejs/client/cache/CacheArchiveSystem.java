@@ -15,7 +15,15 @@ import org.runejs.client.util.SignlinkNode;
 
 public class CacheArchiveSystem {
 
-	public static void connectUpdateServer() {
+	public static void handleUpdateServer() {
+	    if (Class51.gameStatusCode != 1000) {
+	        boolean bool = UpdateServer.processUpdateServerResponse();
+	        if (!bool)
+	            connectUpdateServer();
+	    }
+	}
+	
+	private static void connectUpdateServer() {
 	    if (UpdateServer.crcMismatches >= 4) {
 	    	GameShell.openErrorPage("js5crc");
 	        Class51.gameStatusCode = 1000;
