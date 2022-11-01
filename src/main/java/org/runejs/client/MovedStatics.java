@@ -398,14 +398,6 @@ public class MovedStatics {
         KeyFocusListener.aLinkedList_1278 = new LinkedList();
     }
 
-    public static void method332(int arg0) {
-        synchronized (CollisionMap.anObject162) {
-            if (Buffer.anInt1987 == 0)
-                Main.signlink.createThreadNode(5, new Class44());
-            Buffer.anInt1987 = arg0;
-        }
-    }
-
     public static RSString intToStr(int arg0) {
         return PacketBuffer.method521(false, 10, arg0);
     }
@@ -452,16 +444,6 @@ public class MovedStatics {
         int i1 = GameShell.interpolate(a, scale, b, true, muX);
         int i2 = GameShell.interpolate(c, scale, d, true, muX);
         return GameShell.interpolate(i1, scale, i2, true, muY);
-    }
-
-    public static int calculateCrc8(int offset, int size, byte[] data) {
-        int crc = -1;
-        for (int currentByte = offset; currentByte < size; currentByte++) {
-            int tableIndex = 0xff & (crc ^ data[currentByte]);
-            crc = KeyFocusListener.crc8LookupTable[tableIndex] ^ crc >>> 8;
-        }
-        crc ^= 0xffffffff;
-        return crc;
     }
 
     /**

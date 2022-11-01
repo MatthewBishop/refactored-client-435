@@ -1,14 +1,11 @@
 package org.runejs.client.cache;
 
-import org.runejs.client.*;
+import org.runejs.client.Class18;
+import org.runejs.client.Main;
+import org.runejs.client.RSString;
 import org.runejs.client.cache.bzip.BZip;
-import org.runejs.client.cache.def.GameObjectDefinition;
 import org.runejs.client.io.Buffer;
-import org.runejs.client.media.renderable.actor.Npc;
-import org.runejs.client.media.renderable.actor.Player;
-import org.runejs.client.net.PacketBuffer;
 import org.runejs.client.net.UpdateServer;
-import org.runejs.client.node.Class40_Sub6;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
@@ -57,10 +54,7 @@ public class CacheArchive {
     public int archiveCrcValue;
     public boolean aBoolean1811;
     public CacheIndex dataIndex;
-
-    static {
-        Player.npcs = new Npc[32768];
-    }
+	public static int anInt1195 = 0;
 
     public CacheArchive(CacheIndex dataIndex, CacheIndex metaIndex, int cacheIndexId, boolean arg3, boolean arg4, boolean arg5) {
         aBoolean220 = arg4;
@@ -85,13 +79,13 @@ public class CacheArchive {
         int type = buffer.getUnsignedByte();
         int length = buffer.getIntBE();
 
-        if(length < 0 || Class51.anInt1195 != 0 && Class51.anInt1195 < length) {
+        if(length < 0 || CacheArchive.anInt1195 != 0 && CacheArchive.anInt1195 < length) {
             throw new RuntimeException();
         }
 
         if(type != 0) {
             int decompressedLength = buffer.getIntBE();
-            if(decompressedLength < 0 || Class51.anInt1195 != 0 && decompressedLength > Class51.anInt1195) {
+            if(decompressedLength < 0 || CacheArchive.anInt1195 != 0 && decompressedLength > CacheArchive.anInt1195) {
                 return new byte[100];
                 //throw new RuntimeException();
             }
@@ -123,17 +117,13 @@ public class CacheArchive {
         return decompressed;
     }
 
-    public static int calculateFullCrc8(byte[] data, int size) {
-        return MovedStatics.calculateCrc8(0, size, data);
-    }
-
     public void method196(boolean arg0, int arg2, boolean arg3, byte[] data) {
         if(arg0) {
             if(aBoolean1800) {
                 throw new RuntimeException();
             }
             if(metaIndex != null) {
-                Class40_Sub6.method1055(data, metaIndex, cacheIndexId);
+                CacheArchiveWorker.insertArchive(data, metaIndex, cacheIndexId);
             }
             decodeArchive(data);
             method199();
@@ -141,7 +131,7 @@ public class CacheArchive {
             data[data.length - 2] = (byte) (anIntArray224[arg2] >> 8);
             data[data.length + -1] = (byte) anIntArray224[arg2];
             if(dataIndex != null) {
-                Class40_Sub6.method1055(data, dataIndex, arg2);
+                CacheArchiveWorker.insertArchive(data, dataIndex, arg2);
                 aBooleanArray1796[arg2] = true;
             }
             if(arg3) {
@@ -162,7 +152,7 @@ public class CacheArchive {
 
     }
 
-    public void method198(boolean arg1, byte[] arg2, int arg3, CacheIndex arg4) {
+    public void load(boolean arg1, byte[] arg2, int arg3, CacheIndex arg4) {
         if(metaIndex == arg4) {
             if(aBoolean1800)
                 throw new RuntimeException();
@@ -209,7 +199,7 @@ public class CacheArchive {
 
     public void method177(int arg1) {
         if(dataIndex != null && aBooleanArray1796 != null && aBooleanArray1796[arg1])
-            GameObjectDefinition.method602(this, arg1, dataIndex);
+            CacheArchiveWorker.fetchArchive(this, arg1, dataIndex);
         else
             UpdateServer.method327(true, this, cacheIndexId, arg1, (byte) 2, anIntArray252[arg1]);
     }
@@ -228,7 +218,7 @@ public class CacheArchive {
             anInt1797 = -1;
             for(int i_2_ = 0; aBooleanArray1796.length > i_2_; i_2_++) {
                 if(anIntArray261[i_2_] > 0) {
-                    PacketBuffer.method513(i_2_, this, dataIndex, (byte) -28);
+                    CacheArchiveWorker.fetchArchive(i_2_, this, dataIndex, (byte) -28);
                     anInt1797 = i_2_;
                 }
             }
@@ -242,7 +232,7 @@ public class CacheArchive {
         if(metaIndex == null)
             UpdateServer.method327(true, this, 255, cacheIndexId, (byte) 0, archiveCrcValue);
         else
-            GameObjectDefinition.method602(this, cacheIndexId, metaIndex);
+            CacheArchiveWorker.fetchArchive(this, cacheIndexId, metaIndex);
     }
 
     public int method201(int arg0) {
@@ -329,7 +319,7 @@ public class CacheArchive {
     }
 
     public void decodeArchive(byte[] data) {
-        crc8 = calculateFullCrc8(data, data.length);
+        crc8 = JCRC32.calculateFullCrc8(data, data.length);
         Buffer buffer = new Buffer(decompress(data));
         int format = buffer.getUnsignedByte();
         if(format == 5) {

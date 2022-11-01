@@ -1,9 +1,7 @@
 package org.runejs.client.cache.def;
 
 import org.runejs.client.*;
-import org.runejs.client.cache.CacheIndex;
 import org.runejs.client.cache.CacheArchive;
-import org.runejs.client.node.Class40_Sub6;
 import org.runejs.client.node.NodeCache;
 import org.runejs.client.cache.media.AnimationSequence;
 import org.runejs.client.io.Buffer;
@@ -103,25 +101,6 @@ public class GameObjectDefinition extends CachedNode implements EntityDefinition
         ambient = 0;
         modelSizeY = 128;
     }
-
-    public static void method602(CacheArchive arg0, int arg1, CacheIndex arg2) {
-        byte[] is = null;
-        synchronized(RSCanvas.aLinkedList_53) {
-            for(Class40_Sub6 class40_sub6 = (Class40_Sub6) RSCanvas.aLinkedList_53.peekFirst((byte) -90); class40_sub6 != null; class40_sub6 = (Class40_Sub6) RSCanvas.aLinkedList_53.pollFirst(-4)) {
-                if((long) arg1 == class40_sub6.key && arg2 == class40_sub6.cacheIndex && class40_sub6.anInt2112 == 0) {
-                    is = class40_sub6.aByteArray2102;
-                    break;
-                }
-            }
-        }
-        if(is == null) {
-            byte[] is_6_ = arg2.get(arg1);
-            arg0.method198(true, is_6_, arg1, arg2);
-        } else {
-            arg0.method198(true, is, arg1, arg2);
-        }
-    }
-
 
     public static void method609(int objectId, int arg2, int arg3, int arg4, int arg5, int arg6, int arg7, int arg8, int arg9) {
         Class40_Sub3 class40_sub3 = null;

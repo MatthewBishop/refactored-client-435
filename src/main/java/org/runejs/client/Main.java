@@ -2,6 +2,7 @@ package org.runejs.client;
 
 import org.runejs.client.cache.CacheIndex;
 import org.runejs.client.cache.CacheArchive;
+import org.runejs.client.cache.CacheArchiveWorker;
 import org.runejs.client.cache.CacheFileChannel;
 import org.runejs.client.frame.ChatBox;
 import org.runejs.client.frame.ScreenController;
@@ -1861,7 +1862,7 @@ public class Main extends GameShell {
     public void processGameLoop() {
         MovedStatics.pulseCycle++;
         handleUpdateServer();
-        Class13.handleRequests((byte) -91);
+        CacheArchiveWorker.handleRequests();
         MusicSystem.handleMusic();
         SoundSystem.handleSounds();
         GameInterface.method639(122);
@@ -2029,7 +2030,7 @@ public class Main extends GameShell {
         MusicSystem.syncedStop(false);
         SoundSystem.stop();
         UpdateServer.killUpdateServerSocket();
-        GenericTile.method947(-1);
+        CacheArchiveWorker.method947();
         do {
             try {
                 if (dataChannel != null)

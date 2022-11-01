@@ -84,6 +84,10 @@ public class Player extends Actor {
         }
     }
 
+    static {
+        Player.npcs = new Npc[32768];
+    }
+    
     public Player() {
         skillLevel = 0;
         headIcon = -1;
