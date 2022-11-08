@@ -743,9 +743,6 @@ public class MovedStatics {
             return lightness;
         }
 
-        if (!junk)
-            UpdateServer.calculateDataLoaded(-124, -88);
-
         lightness = lightness * (hsl & 0x7f) / 128;
         if (lightness < 2)
             lightness = 2;
