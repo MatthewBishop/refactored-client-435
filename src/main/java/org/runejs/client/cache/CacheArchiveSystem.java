@@ -1,6 +1,5 @@
 package org.runejs.client.cache;
 
-import java.io.IOException;
 import java.net.Socket;
 
 import org.runejs.client.Class51;
@@ -41,54 +40,54 @@ public class CacheArchiveSystem {
 	        if (CacheArchiveSystem.nextAttempt-- <= 0) {
 	            do {
 	                try {
-	                    if (CacheArchiveSystem.connectionStage == 0) {
-	                        CacheArchiveSystem.updateServerSignlinkNode = Main.signlink.createSocketNode(Main.currentPort);
-	                        CacheArchiveSystem.connectionStage++;
+	                    if (CacheArchiveSystem.handShakeStage == 0) {
+	                        CacheArchiveSystem.handShakeSocketNode = Main.signlink.createSocketNode(Main.currentPort);
+	                        CacheArchiveSystem.handShakeStage++;
 	                    }
-	                    if (CacheArchiveSystem.connectionStage == 1) {
-	                        if (CacheArchiveSystem.updateServerSignlinkNode.status == 2) {
-	                            CacheArchiveSystem.js5error(-1);
+	                    if (CacheArchiveSystem.handShakeStage == 1) {
+	                        if (CacheArchiveSystem.handShakeSocketNode.status == 2) {
+	                            CacheArchiveSystem.updateResponse(-1);
 	                            break;
 	                        }
-	                        if (CacheArchiveSystem.updateServerSignlinkNode.status == 1)
-	                            CacheArchiveSystem.connectionStage++;
+	                        if (CacheArchiveSystem.handShakeSocketNode.status == 1)
+	                            CacheArchiveSystem.handShakeStage++;
 	                    }
-	                    if (CacheArchiveSystem.connectionStage == 2) {
-	                        CacheArchiveSystem.updateServerSocket = new GameSocket((Socket) CacheArchiveSystem.updateServerSignlinkNode.value, Main.signlink);
+	                    if (CacheArchiveSystem.handShakeStage == 2) {
+	                        CacheArchiveSystem.handShakeSocket = new GameSocket((Socket) CacheArchiveSystem.handShakeSocketNode.value, Main.signlink);
 	                        Buffer buffer = new Buffer(5);
 	                        buffer.putByte(15);
 	                        buffer.putIntBE(435); // Cache revision
-	                        CacheArchiveSystem.updateServerSocket.sendDataFromBuffer(5, 0, buffer.buffer);
-	                        CacheArchiveSystem.connectionStage++;
+	                        CacheArchiveSystem.handShakeSocket.sendDataFromBuffer(5, 0, buffer.buffer);
+	                        CacheArchiveSystem.handShakeStage++;
 	                        CacheArchiveSystem.handShakeTime = System.currentTimeMillis();
 	                    }
-	                    if (CacheArchiveSystem.connectionStage == 3) {
-	                        if (Class51.gameStatusCode > 5 && CacheArchiveSystem.updateServerSocket.inputStreamAvailable() <= 0) {
+	                    if (CacheArchiveSystem.handShakeStage == 3) {
+	                        if (Class51.gameStatusCode > 5 && CacheArchiveSystem.handShakeSocket.inputStreamAvailable() <= 0) {
 	                            if (System.currentTimeMillis() + -CacheArchiveSystem.handShakeTime > 30000L) {
-	                                CacheArchiveSystem.js5error(-2);
+	                                CacheArchiveSystem.updateResponse(-2);
 	                                break;
 	                            }
 	                        } else {
-	                            int i = CacheArchiveSystem.updateServerSocket.read();
+	                            int i = CacheArchiveSystem.handShakeSocket.read();
 	                            if (i != 0) {
-	                                CacheArchiveSystem.js5error(i);
+	                                CacheArchiveSystem.updateResponse(i);
 	                                break;
 	                            }
-	                            CacheArchiveSystem.connectionStage++;
+	                            CacheArchiveSystem.handShakeStage++;
 	                        }
 	                    }
-	                    if (CacheArchiveSystem.connectionStage != 4)
+	                    if (CacheArchiveSystem.handShakeStage != 4)
 	                        break;
 	
-	                    UpdateServer.handleUpdateServerConnection(CacheArchiveSystem.updateServerSocket, Class51.gameStatusCode > 20);
+	                    UpdateServer.handleUpdateServerConnection(CacheArchiveSystem.handShakeSocket, Class51.gameStatusCode > 20);
 	
-	                    CacheArchiveSystem.updateServerSignlinkNode = null;
-	                    CacheArchiveSystem.connectionStage = 0;
-	                    CacheArchiveSystem.updateServerSocket = null;
-	                    CacheArchiveSystem.js5Errors = 0;
+	                    CacheArchiveSystem.handShakeSocketNode = null;
+	                    CacheArchiveSystem.handShakeStage = 0;
+	                    CacheArchiveSystem.handShakeSocket = null;
+	                    CacheArchiveSystem.handShakeAttempts = 0;
 	                } catch (java.io.IOException ioexception) {
 	                    ioexception.printStackTrace();
-	                    CacheArchiveSystem.js5error(-3);
+	                    CacheArchiveSystem.updateResponse(-3);
 	                    break;
 	                }
 	                break;
@@ -97,18 +96,18 @@ public class CacheArchiveSystem {
 	    }
 	}
 
-	private static void js5error(int arg1) {
+	private static void updateResponse(int response) {
 	    if (Main.currentPort != OverlayDefinition.gameServerPort)
 	        Main.currentPort = OverlayDefinition.gameServerPort;
 	    else
 	        Main.currentPort = CollisionMap.someOtherPort;
-	    CacheArchiveSystem.updateServerSocket = null;
-	    CacheArchiveSystem.updateServerSignlinkNode = null;
-	    CacheArchiveSystem.js5Errors++;
-	    CacheArchiveSystem.connectionStage = 0;
-	    if (CacheArchiveSystem.js5Errors < 2 || arg1 != 7 && arg1 != 9) {
-	        if (CacheArchiveSystem.js5Errors < 2 || arg1 != 6) {
-	            if (CacheArchiveSystem.js5Errors >= 4) {
+	    CacheArchiveSystem.handShakeSocket = null;
+	    CacheArchiveSystem.handShakeSocketNode = null;
+	    CacheArchiveSystem.handShakeAttempts++;
+	    CacheArchiveSystem.handShakeStage = 0;
+	    if (CacheArchiveSystem.handShakeAttempts < 2 || response != 7 && response != 9) {
+	        if (CacheArchiveSystem.handShakeAttempts < 2 || response != 6) {
+	            if (CacheArchiveSystem.handShakeAttempts >= 4) {
 	                if (Class51.gameStatusCode <= 5) {
 	                    GameShell.openErrorPage("js5connect");
 	                    CacheArchiveSystem.nextAttempt = 3000;
@@ -128,10 +127,10 @@ public class CacheArchiveSystem {
 	}
 
 	private static int nextAttempt = 0;
-	private static int connectionStage = 0;
-	private static int js5Errors = 0;
-	private static GameSocket updateServerSocket;
-	private static SignlinkNode updateServerSignlinkNode;
+	private static int handShakeStage = 0;
+	private static int handShakeAttempts = 0;
+	private static GameSocket handShakeSocket;
+	private static SignlinkNode handShakeSocketNode;
 	private static long handShakeTime;
 
 }
