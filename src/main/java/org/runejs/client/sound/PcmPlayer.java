@@ -13,7 +13,7 @@ public class PcmPlayer implements Runnable {
 
 	private static int[] samples = new int[256];
 	private boolean aBoolean1820;
-	private long aLong1821;
+	private long closeUntil;
 	private int anInt1822;
 	private int anInt1823;
 	private int anInt1824;
@@ -23,7 +23,7 @@ public class PcmPlayer implements Runnable {
 	private int anInt1828;
 	private int anInt1830;
 	private int anInt1831;
-	private long aLong1832;
+	private long timeMs;
 	private int[] anIntArray1833;
 	private SourceDataLine line;
 
@@ -32,7 +32,7 @@ public class PcmPlayer implements Runnable {
 
 	public PcmPlayer() throws Exception {
 		SoundSystem.timeMs = System.currentTimeMillis();
-		aLong1821 = 0L;
+		closeUntil = 0L;
 		anInt1827 = 256;
 		aBoolean1820 = false;
 		anInt1828 = 0;
@@ -53,33 +53,33 @@ public class PcmPlayer implements Runnable {
 		}
 		anInt1823 = 0;
 		anInt1830 = 0;
-		aLong1832 = arg0;
+		timeMs = arg0;
 		aLong1826 = arg0;
 	}
 
 	private void method221(long arg0) {
-		if (aLong1821 != 0L) {
-			for (/**/; aLong1832 < arg0; aLong1832 += (long) (256000 / SoundSystem.SAMPLE_RATE))
+		if (closeUntil != 0L) {
+			for (/**/; timeMs < arg0; timeMs += (long) (256000 / SoundSystem.SAMPLE_RATE))
 				skip(256);
-			if (arg0 < aLong1821)
+			if (arg0 < closeUntil)
 				return;
 			try {
 				method219(arg0);
 			} catch (Exception exception) {
 				close();
-				aLong1821 += 5000L;
+				closeUntil += 5000L;
 				return;
 			}
-			aLong1821 = 0L;
+			closeUntil = 0L;
 		}
-		while (aLong1832 < arg0) {
-			aLong1832 += (long) (250880 / SoundSystem.SAMPLE_RATE);
+		while (timeMs < arg0) {
+			timeMs += (long) (250880 / SoundSystem.SAMPLE_RATE);
 			int i;
 			try {
 				i = avail();
 			} catch (Exception exception) {
 				close();
-				aLong1821 = arg0;
+				closeUntil = arg0;
 				return;
 			}
 			method227(i);
@@ -97,7 +97,7 @@ public class PcmPlayer implements Runnable {
 					if (anInt1823 >= 100) {
 						close();
 						anInt1831 += 2048;
-						aLong1821 = arg0;
+						closeUntil = arg0;
 						return;
 					}
 				} else if (i != anInt1830 && anInt1823 > 0)
@@ -111,7 +111,7 @@ public class PcmPlayer implements Runnable {
 				write();
 			} catch (Exception exception) {
 				close();
-				aLong1821 = arg0;
+				closeUntil = arg0;
 				return;
 			}
 			aLong1826 = arg0;
@@ -119,7 +119,7 @@ public class PcmPlayer implements Runnable {
 		}
 		if (arg0 >= aLong1826 + 5000L) {
 			close();
-			aLong1821 = arg0;
+			closeUntil = arg0;
 			for (int i = 0; i < 512; i++)
 				anIntArray1833[i] = 0;
 			anInt1822 = anInt1824 = anInt1828 = 0;
@@ -161,7 +161,7 @@ public class PcmPlayer implements Runnable {
 		for (;;) {
 			synchronized (this) {
 				if (aBoolean1820) {
-					if (aLong1821 == 0L)
+					if (closeUntil == 0L)
 						close();
 					aBoolean1820 = false;
 					break;
@@ -203,8 +203,8 @@ public class PcmPlayer implements Runnable {
 
 	public synchronized void method212(long arg0) {
 		method221(arg0);
-		if (aLong1832 < arg0)
-			aLong1832 = arg0;
+		if (timeMs < arg0)
+			timeMs = arg0;
 	}
 
 	private void method227(int arg0) {
